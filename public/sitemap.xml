@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/post/syllabus/</loc>
+    <lastmod>2020-04-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/post/optional-r-basics-1/</loc>
     <lastmod>2020-04-26T00:00:00+00:00</lastmod>
   </url>

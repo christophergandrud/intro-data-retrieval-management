@@ -12,14 +12,31 @@
     
     
     <item>
+      <title>Syllabus</title>
+      <link>/post/syllabus/</link>
+      <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/syllabus/</guid>
+      <description>[Core Methods: Data Science] Programming Methods for Data Retrieval &amp;amp; Management Instructor: Christopher Gandrud, PhD
+Email: christopher.gandrud@gmail.com
+Class: 9.00-17.00, 12-13 June 2020
+Location: Virtual
+📜 Course Description The rapid growth of the World Wide Web over the past two decades tremendously changed the way in which we share, collect and publish data. The web is full of data that are of great interest to scientists and businesses alike. Firms, public institutions and private users provide every imaginable type of information and new channels of communication generate vast amounts of data on human behaviour.</description>
+    </item>
+    
+    <item>
       <title>[Optional] R Basics 1</title>
       <link>/post/optional-r-basics-1/</link>
       <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>/post/optional-r-basics-1/</guid>
       <description>Welcome Welcome to to the course! This is the first of 2 sets of exercises introducing you to R, if you are not that familiar with it, or you would like to practice R basics before getting started.
- Getting Started with R and RStudio To complete the exercises in this course, you will need to access RStudio.
-You can do this in the cloud on the course’s RStudio cloud site:</description>
+ Lesson Preview  Set up R and RStudio
+ Install Packages
+ Objects and assignment
+ Component selection
+ Types (character, numeric, vector, data, frame, list)
+   Getting Started with R and RStudio To complete the exercises in this course, you will need to access RStudio.</description>
     </item>
     
     <item>

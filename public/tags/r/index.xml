@@ -18,8 +18,12 @@
       
       <guid>/post/optional-r-basics-1/</guid>
       <description>Welcome Welcome to to the course! This is the first of 2 sets of exercises introducing you to R, if you are not that familiar with it, or you would like to practice R basics before getting started.
- Getting Started with R and RStudio To complete the exercises in this course, you will need to access RStudio.
-You can do this in the cloud on the course’s RStudio cloud site:</description>
+ Lesson Preview  Set up R and RStudio
+ Install Packages
+ Objects and assignment
+ Component selection
+ Types (character, numeric, vector, data, frame, list)
+   Getting Started with R and RStudio To complete the exercises in this course, you will need to access RStudio.</description>
     </item>
     
   </channel>
