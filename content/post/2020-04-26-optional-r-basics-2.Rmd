@@ -1,0 +1,23 @@
+---
+title: '[Optional] R Basics 2'
+author: Christopher Gandrud
+date: '2020-04-26'
+slug: optional-r-basics-2
+weight: 3
+categories:
+  - R
+tags:
+  - R
+  - programming
+Categories: []
+Description: ''
+Tags: []
+---
+
+# Lesson Preview
+
+- Functions and assignment
+
+- `if` statements
+
+- Loops, `apply`, and parallel computation

@@ -30,13 +30,21 @@ Location: Virtual
       <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>/post/optional-r-basics-1/</guid>
-      <description>Welcome Welcome to to the course! This is the first of 2 sets of exercises introducing you to R, if you are not that familiar with it, or you would like to practice R basics before getting started.
- Lesson Preview  Set up R and RStudio
- Install Packages
- Objects and assignment
- Component selection
- Types (character, numeric, vector, data, frame, list)
-   Getting Started with R and RStudio To complete the exercises in this course, you will need to access RStudio.</description>
+      <description>👋 Welcome Welcome to to the course! This is the first of 2 sets of exercises introducing you to the R programming language1 that we will use throughout the course.
+This and the next lesson are optional. Their intended for you if you are not that familiar with R, or you would like to practice your R basics before getting started.
+ 📝 Lesson Preview  Set up R and RStudio</description>
+    </item>
+    
+    <item>
+      <title>[Optional] R Basics 2</title>
+      <link>/post/optional-r-basics-2/</link>
+      <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/optional-r-basics-2/</guid>
+      <description>  Lesson Preview  Functions and assignment
+ if statements
+ Loops, apply, and parallel computation
+   </description>
     </item>
     
     <item>

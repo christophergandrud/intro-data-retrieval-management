@@ -47,6 +47,8 @@
 	            
 	                <a href="//tags/r">R</a>
 	            
+	                <a href="//tags/install">install</a>
+	            
 	        </div>
 	    </div>
 	    <hr>
@@ -56,21 +58,24 @@
 
 
 <div id="welcome" class="section level1">
-<h1>Welcome</h1>
-<p>Welcome to to the course! This is the first of 2 sets of exercises introducing you to R, if you are not that familiar with it, or you would like to practice R basics before getting started.</p>
+<h1>👋 Welcome</h1>
+<p>Welcome to to the course! This is the first of 2 sets of exercises introducing you to the R programming language<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> that we will use throughout the course.</p>
+<p>This and the next lesson are optional. Their intended for you if you are not that familiar with R, or you would like to practice your R basics before getting started.</p>
 </div>
 <div id="lesson-preview" class="section level1">
-<h1>Lesson Preview</h1>
+<h1>📝 Lesson Preview</h1>
 <ul>
-<li><p>Set up R and RStudio</p></li>
-<li><p>Install Packages</p></li>
-<li><p>Objects and assignment</p></li>
-<li><p>Component selection</p></li>
-<li><p>Types (character, numeric, vector, data, frame, list)</p></li>
+<li><p><a href="#install-rstudio">Set up R and RStudio</a></p></li>
+<li><p>The R console</p></li>
+<li><p><a href="#install-packages">Install packages</a></p></li>
+<li><p><a href="#objects">Objects and assignment</a></p></li>
+<li><p>Types (<a href="#numeric-string-type">character, numeric</a>, <a href="#vectors-data-frames">vector, data frame</a>, <a href="#lists">list</a>)</p></li>
+<li><p><a href="#component-selection">Component selection</a></p></li>
+<li><p>Workspace and history</p></li>
 </ul>
 </div>
-<div id="getting-started-with-r-and-rstudio" class="section level1">
-<h1>Getting Started with R and RStudio</h1>
+<div id="install-rstudio" class="section level1">
+<h1>🏁 Getting Started with R and RStudio</h1>
 <p>To complete the exercises in this course, you will need to access RStudio.</p>
 <p>You can do this in the cloud on the course’s <strong>RStudio cloud</strong> site:</p>
 <ul>
@@ -81,26 +86,280 @@
 <li><p>Install R: <a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a></p></li>
 <li><p>Install RStudio (free version): <a href="https://rstudio.com/products/rstudio/download/" class="uri">https://rstudio.com/products/rstudio/download/</a></p></li>
 </ol>
+<p>When you open RStudio you should see something like:</p>
+<div class="figure">
+<img src="/post/2020-04-26-optional-r-basics-1_files/rstudio-startup.png" alt="" />
+<p class="caption">RStudio Cloud at Startup</p>
+</div>
+<p>Take some time to explore the interface. Then we’ll dive into details.</p>
+<p>Notice in particular the <code>&gt;</code> character in the left-most window called the <strong>Console</strong>. This prompt is where you enter R code. To run R code that you have typed after the prompt, press the <code>Return</code> or <code>Enter</code> key.</p>
 </div>
 <div id="install-packages" class="section level1">
 <h1>Install packages</h1>
 <p>In base R, use the <code>install.packages()</code> function to install the add-on packages you’ll need to gather and manage data:</p>
 <pre class="r"><code>install.packages(&quot;tidyverse&quot;)</code></pre>
+<p>When you install a package, you will likely be given a list
+of “mirrors” from which you can download the package. Select the
+mirror closest to you.</p>
+<div id="load-packages" class="section level2">
+<h2>Load packages</h2>
 <p>To use the packages, you need to theme with the <code>library()</code> function:</p>
 <pre class="r"><code>library(&quot;tidyverse&quot;)</code></pre>
 <p>Personally, I prefer (and will use for the rest of the course) <code>xfun::pkg_attach2()</code>. It installs packages if they aren’t present and loads them all in one call.</p>
 <pre class="r"><code>xfun::pkg_attach2(&quot;tidyverse&quot;)</code></pre>
 <p>Note you will need to install the <code>xfun</code> package (<code>install.packages("xfun")</code>) if you haven’t already.</p>
 </div>
-<div id="basic-concepts" class="section level1">
-<h1>Basic concepts</h1>
+</div>
+<div id="object-oriented-programming-in-the-r-language" class="section level1">
+<h1>Object Oriented Programming in the R Language</h1>
+<div id="objects" class="section level2">
+<h2>Objects: R’s “nouns”</h2>
+<p>If you’ve read a description of the R language before, you will probably have seen it
+referred to as an ‘object-oriented language’. What are objects? Objects
+are like the R language’s <em>nouns</em>. They are things, like a vector of
+numbers, a data set, a word, a table of results from some analysis, and
+so on. Saying that R is object-oriented means that R is focused on doing
+actions to objects. We will talk about the actions, functions, later in this
+section. Now let’s create a few objects.</p>
+<div id="numeric-string-type" class="section level3">
+<h3>Numeric and string objects</h3>
+<p>Objects can have a number of different types. Let’s make two simple
+objects. The first is a <strong>numeric</strong>-type object. The other is a <strong>character</strong>
+object.</p>
+<p>We can choose almost any name we want for our
+objects as long as it begins with an alphabetic character and does not
+contain spaces. Just because there are relatively few hard
+restrictions on object names, doesn’t
+mean that you should name your object anything.
+Your code will be much easier to read if object
+names are short and meaningful. Give each object a
+unique name to avoid confusion and conflicts. For example, if you reuse an object
+name in an R session, you could easily accidentally overwrite it.</p>
+<p>Let’s begin working with numeric objects by creating a new object called
+<em>number</em> with the number 10 in it.
+Use the <strong>assignment operator</strong> (<code>&lt;-</code>) to put something into the object:</p>
+<pre class="r"><code>number &lt;- 10</code></pre>
+<p>To see the contents of our object, type its name into the R console.</p>
+<pre class="r"><code>number</code></pre>
+<pre><code>## [1] 10</code></pre>
+<p>Let’s briefly breakdown this output. <code>10</code> is clearly the contents of
+<em>number</em>. The double hash (<code>##</code>) is included here to tell
+you that this is output rather than R code. If you run functions
+in your R console, you will not get the double hash in your output.
+Finally, <code>[1]</code> gives the position in the object that the number 10 is on. Our object only
+has one position.</p>
+<p>Creating an object with words and other characters, a character object, is
+very similar. The only difference is that you enclose the character
+string (letters in a word for example) inside of single or double
+quotation marks (<code>''</code>, or <code>""</code>). Let’s create an object called <em>words</em>
+containing the character string <code>Hello World</code>:</p>
+<pre class="r"><code>words &lt;- &quot;Hello World&quot;</code></pre>
+<p>An object’s type is important to keep in mind. It determines what we
+can do to the object. For example, you cannot take the mean of a character
+object like the <em>words</em> object:</p>
+<pre class="r"><code>mean(words)</code></pre>
+<pre><code>## Warning in mean.default(words): argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## [1] NA</code></pre>
+<p>Trying to find the mean of our <em>words</em> object gives us a
+warning message and returns the value NA: not applicable. You can also
+think of <code>NA</code> as meaning “missing”. To find out an object’s type, use the <code>class()</code>
+function.[^chapter_3_types] For example:</p>
+<pre class="r"><code>class(words)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+</div>
+<div id="vectors-data-frames" class="section level3">
+<h3>Vector and data frame objects</h3>
+<p>So far, we have only looked at objects with a single number or character
+string. Clearly we often want to use objects that have many strings
+and numbers. In R these are usually data frame-type objects and are
+roughly equivalent to the data structures you would be familiar with
+from using a program such as Microsoft Excel. We will be using data
+frames extensively throughout the book. Before looking at data frames it
+is useful to first look at the simpler objects that make up data frames.
+These are called vectors. Vectors are R’s “workhorse” <span class="citation">(Matloff 2011)</span>.</p>
+<div id="vectors" class="section level4">
+<h4>Vectors</h4>
+<p>Vectors are the “fundamental data type” in R <span class="citation">(Matloff 2011)</span>. They are an ordered group of numbers, character strings, and so on. It may be useful to think of most data in R as composed of vectors. For example, data frames are basically collections of vectors of the same length, i.e. they have the same number of rows, attached
+together to form columns.</p>
+<p>Let’s create a simple numeric vector containing the numbers 2.8, 2, and
+14.8. To do this, we will use the <code>c()</code> (combine)
+function and separate the numbers with commas (<code>,</code>):</p>
+<pre class="r"><code># Create numeric vector
+numeric_vector &lt;- c(2.8, 2, 14.8)
+
+# Show numeric_vector&#39;s contents
+numeric_vector</code></pre>
+<pre><code>## [1]  2.8  2.0 14.8</code></pre>
+<p>Vectors of character strings are created in a similar way. The only difference is that each character string is enclosed in quotation marks like this:</p>
+<pre class="r"><code>character_vector &lt;- c(&quot;Albania&quot;, &quot;Botswana&quot;, &quot;Cambodia&quot;)
+
+# Show character_vector&#39;s contents
+character_vector</code></pre>
+<pre><code>## [1] &quot;Albania&quot;  &quot;Botswana&quot; &quot;Cambodia&quot;</code></pre>
+</div>
+<div id="matrices" class="section level4">
+<h4>Matrices</h4>
+<p>To give you a preview of what we are going to do when we start working
+with real data sets, let’s combine the two vectors
+<em>numeric_vector</em> and <em>character_vector</em> into a new
+object with the <code>cbind()</code> function. This function binds the two vectors
+together side-by-side as columns.</p>
+<pre class="r"><code>string_num_matrix &lt;- cbind(character_vector, numeric_vector)
+string_num_matrix</code></pre>
+<pre><code>##      character_vector numeric_vector
+## [1,] &quot;Albania&quot;        &quot;2.8&quot;         
+## [2,] &quot;Botswana&quot;       &quot;2&quot;           
+## [3,] &quot;Cambodia&quot;       &quot;14.8&quot;</code></pre>
+<p>By binding these two objects together, we’ve created a new matrix
+object. You can see that the numbers in the
+<strong>numeric_vector</strong> column are between quotation marks. Matrices,
+like vectors, can only have one data type, so R has converted the numbers to strings.</p>
+</div>
+<div id="data-frames" class="section level4">
+<h4>Data frames</h4>
+<p>If we want to have an object with rows and columns and allow the columns
+to contain data with different types, we need to use data frames. Let’s
+use the <code>data.frame</code> function to combine the <em>numeric_vector</em>
+and <em>character_vector</em> objects.</p>
+<pre class="r"><code>string_num_df &lt;- data.frame(character_vector, numeric_vector)
+string_num_df</code></pre>
+<pre><code>##   character_vector numeric_vector
+## 1          Albania            2.8
+## 2         Botswana            2.0
+## 3         Cambodia           14.8</code></pre>
+<p>In this output, you can see the data frame’s <em>names</em> attribute. It is the column names. You can use the <code>names()</code> function to see any data frame’s names:</p>
+<pre class="r"><code>names(string_num_df)</code></pre>
+<pre><code>## [1] &quot;character_vector&quot; &quot;numeric_vector&quot;</code></pre>
+<p>You will also notice that the first column of the data set has no name
+and is a series of numbers. This is the <em>row.names</em> attribute. Data frame
+rows can be given any name as long as each row name is unique. We can
+use the <code>row.names()</code> function to set the row names from a vector. For
+example,</p>
+<pre class="r"><code># Reassign row.names
+row.names(string_num_df) &lt;- c(&quot;First&quot;, &quot;Second&quot;, &quot;Third&quot;)
+
+# Display new row.names
+row.names(string_num_df)</code></pre>
+<pre><code>## [1] &quot;First&quot;  &quot;Second&quot; &quot;Third&quot;</code></pre>
+<p>You can see in this example how <code>row.names()</code> can also be used
+to print the row names. The <em>row.names</em> attribute does not behave
+like a regular data frame column. You cannot, for example, include it as
+a variable in a regression. You can use the <code>row.names()</code> function to
+assign the <em>row.names</em> values to a regular column.</p>
+<p>You will notice in the output for <em>string_num_df</em> that the strings in
+the <strong>character_vector</strong> column are not in quotation marks. This does
+not mean that they are now numeric data. To prove this, try to
+find the mean of <strong>character_vector</strong> by running it through the <code>mean()</code> function:</p>
+<pre class="r"><code>mean(string_num_df$character_vector)</code></pre>
+<pre><code>## Warning in mean.default(string_num_df$character_vector): argument is not numeric
+## or logical: returning NA</code></pre>
+<pre><code>## [1] NA</code></pre>
+</div>
+</div>
+<div id="lists" class="section level3">
+<h3>Lists</h3>
+<p>Lists are objects whose contents can be items of different values. For example you could have a list with a vector and a data frame. Use the <code>list()</code> function to create lists. For example:</p>
+<pre class="r"><code>vector_df_list &lt;- list(numeric_vector, string_num_df)
+
+vector_df_list</code></pre>
+<pre><code>## [[1]]
+## [1]  2.8  2.0 14.8
+## 
+## [[2]]
+##        character_vector numeric_vector
+## First           Albania            2.8
+## Second         Botswana            2.0
+## Third          Cambodia           14.8</code></pre>
+<p>Note that each element of the list has a number. For example, the former contents of <em>numeric_vector</em> are element <code>[[1]]</code>.</p>
+</div>
+</div>
+<div id="component-selection" class="section level2">
+<h2>Component selection</h2>
+<p>The last bit of code we just saw will probably be confusing. Why do we have a dollar sign (<code>$</code>) between the name of our data frame object name and the <code>character_vector</code> variable? The dollar sign is called the component selector. It’s also sometimes called the element name operator. Either way, it extracts a part, component, of an object. In the previous example, it extracted the <strong>character_vector</strong> column from the <em>string_num_df</em> so that it could be fed to
+the <code>mean()</code> function.</p>
+<p>We can use the component selector to create new objects with parts of other objects. Imagine that we have <em>string_num_df</em> and want an object with only the information in the <strong>numeric_vector</strong> column. Let’s use the following code:</p>
+<pre class="r"><code># Extract a numeric vector from string_num_df
+numeric_extract &lt;- string_num_df$numeric_vector
+numeric_extract</code></pre>
+<pre><code>## [1]  2.8  2.0 14.8</code></pre>
+<div id="subscripts" class="section level3 unnumbered">
+<h3>Subscripts</h3>
+<p>Another way to select parts of an object is to use subscripts. You have
+already seen subscripts in the output from our examples so far. They are
+denoted with square braces (<code>[]</code>). We can use subscripts to select not
+only columns from data frames but also rows and individual values. As we
+began to see in some of the previous output, each part of a data frame
+has an address captured by its row and column number. We can tell R to
+find a part of an object by putting the row number/name, column
+number/name, or both in square braces. The first part denotes the rows
+and separated by a comma (<code>,</code>) are the columns.</p>
+<p>To give you an idea of how this works, let’s use the <em>cars</em>
+data set again. Use <code>head()</code> to get a sense of what this data looks like.</p>
+<pre class="r"><code>head(cars)</code></pre>
+<pre><code>##   speed dist
+## 1     4    2
+## 2     4   10
+## 3     7    4
+## 4     7   22
+## 5     8   16
+## 6     9   10</code></pre>
+<p>We can see a data frame with information on various car speeds
+(<strong>speed</strong>) and stopping distances (<strong>dist</strong>). If we want to select only
+the third through seventh rows, we can use the following subscript
+function call:</p>
+<pre class="r"><code>cars[3:7, ]</code></pre>
+<pre><code>##   speed dist
+## 3     7    4
+## 4     7   22
+## 5     8   16
+## 6     9   10
+## 7    10   18</code></pre>
+<p>The colon (<code>:</code>) creates a sequence of whole numbers from 3 to 7. To
+select the fourth row of the <strong>dist</strong> column, we can type:</p>
+<pre class="r"><code>cars[4, 2]</code></pre>
+<pre><code>## [1] 22</code></pre>
+<p>An equivalent way to do this is:</p>
+<pre class="r"><code>cars[4, &quot;dist&quot;]</code></pre>
+<pre><code>## [1] 22</code></pre>
+<p>Finally, we can even include a vector of column names to select:</p>
+<pre class="r"><code>cars[4, c(&quot;speed&quot;, &quot;dist&quot;)]</code></pre>
+<pre><code>##   speed dist
+## 4     7   22</code></pre>
+<p>To extract elements of a list use the double square brackets <code>[[]]</code>:</p>
+<pre class="r"><code>vector_df_list[[2]]</code></pre>
+<pre><code>##        character_vector numeric_vector
+## First           Albania            2.8
+## Second         Botswana            2.0
+## Third          Cambodia           14.8</code></pre>
+<p>You can stack up component selectors to extract deeper components of a list. For example:</p>
+<pre class="r"><code>vector_df_list[[2]]$numeric_vector</code></pre>
+<pre><code>## [1]  2.8  2.0 14.8</code></pre>
+</div>
+</div>
 </div>
 <div id="exercises" class="section level1">
 <h1>Exercises</h1>
 <ul>
+<li><p>Create a <strong>list</strong> of three <strong>data frames</strong> with any numeric and string content you want.</p></li>
 <li><p><a href="https://rstudio.cloud/learn/primers/1.2">RStudio Primers</a></p></li>
-<li></li>
 </ul>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
+<div id="refs" class="references hanging-indent">
+<div id="ref-gandrud2020">
+<p>Gandrud, Christopher. 2020. <em>Reproducible Research with R and Rstudio</em>. Boca Raton, FL: CRC Press.</p>
+</div>
+<div id="ref-matloff2011">
+<p>Matloff, Norman. 2011. <em>The Art of Programming in R: A Tour of Statistical Programming Design</em>. San Francisco: No Starch Press.</p>
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>These lessons are based on <span class="citation">Gandrud (2020)</span>, Chapter 3.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
 
 	    </div>
@@ -112,7 +371,7 @@
 </div>
 		<nav id="pagination">
 			<a class="prev" href="/post/syllabus/">Prev</a>
-			<a class="next" href="/post/2015-07-23-r-rmarkdown/">Next</a>
+			<a class="next" href="/post/optional-r-basics-2/">Next</a>
 		</nav>
 	
 		        <footer>
