@@ -4,5 +4,5 @@
 
 ## Exercises
 
-The workshop has eight exercise blocks. Each set of exercises are in the [Exercises](Exercises)
+The workshop has eight exercise blocks. Each set of exercises are in the [Exercises](Exercises).
 

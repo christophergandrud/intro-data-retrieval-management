@@ -1,0 +1,17 @@
+---
+title: "R Basics 1"
+author: "Christopher Gandrud"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+What is R and how does it work?
+
+```{r}
+xfun::pkg_attach2("learnr")
+```
+
+
+```{r addition, exercise=TRUE}
+2 + 2
+```
