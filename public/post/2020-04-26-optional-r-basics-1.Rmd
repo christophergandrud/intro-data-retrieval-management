@@ -9,7 +9,6 @@ tags: [R]
 Categories: []
 Description: ''
 Tags: [R]
-runtime: shiny_prerendered
 ---
 
 ```{r setup-basics, include=FALSE}
