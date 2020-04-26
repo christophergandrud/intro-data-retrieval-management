@@ -1,0 +1,19 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>Programming Methods for Data Retrieval &amp; Management on Programming Methods for Data Retrieval &amp; Management </title>
+    <link>/</link>
+    <language>en-us</language>
+    <author>Alexander Ivanov</author>
+    <updated>2020-04-26 00:00:00 &#43;0000 UTC</updated>
+    
+    <item>
+      <title>Posts</title>
+      <link>/post/</link>
+      <pubDate>Sun, 26 Apr 2020 00:00:00 UTC</pubDate>
+      <author>Alexander Ivanov</author>
+      <guid>/post/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

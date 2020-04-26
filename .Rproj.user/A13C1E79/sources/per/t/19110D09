@@ -1,0 +1,25 @@
+{
+    "id": "19110D09",
+    "path": "~/git_repos/intro-data-retrieval-management/index.Rmd",
+    "project_path": "index.Rmd",
+    "type": "r_markdown",
+    "hash": "126678165",
+    "contents": "",
+    "dirty": false,
+    "created": 1587898754314.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "cursorPosition": "1,30",
+        "scrollLine": "0",
+        "last_setup_crc32": "D2CEBA1F60218f27"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1587899656,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1587901624244,
+    "read_only": false,
+    "read_only_alternatives": []
+}

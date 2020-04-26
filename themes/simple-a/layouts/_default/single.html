@@ -1,0 +1,26 @@
+	{{ $baseurl := .Site.BaseURL }}
+	{{ template "partials/header.html" . }}
+	    <!-- CONTENT -->
+	  <div class="post">
+	    <header class="post-header">
+	        <h1><a href="{{ .RelPermalink }}">{{ .Title }}</a></h1>
+	        <div class="post-time">{{ .Date.Format "January 2 2006" }}</div>
+	    </header>
+	    <div class="post-after">
+	        <div class="tags">
+	            {{ range .Params.tags }}
+	                <a href="{{ $baseurl }}/tags/{{ . | urlize }}">{{ . }}</a>
+	            {{ end }}
+	        </div>
+	    </div>
+	    <hr>
+	    <div class="post content">
+	        {{ .Content }}
+	    </div>
+	    <!-- END CONTENT -->
+	{{ template "partials/about.html" . }}
+		<nav id="pagination">
+			{{if .NextPage}}<a class="prev" href="{{.NextPage.Permalink}}">Prev</a>{{end}}
+			{{if .PrevPage}}<a class="next" href="{{.PrevPage.Permalink}}">Next</a>{{end}}
+		</nav>
+	{{ template "partials/footer.html" . }}

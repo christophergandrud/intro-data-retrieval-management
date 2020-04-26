@@ -1,0 +1,4 @@
+theme = "simple-a"
+baseURL = "http://example.org/"
+languageCode = "en-us"
+title = "Programming Methods for Data Retrieval & Management"

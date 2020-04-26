@@ -1,0 +1,13 @@
+name = "simple-a"
+license = "MIT"
+licenselink = "https://github.com/AlexFinn/simple-a/blob/master/LICENSE.md"
+description = "Minimalistic Hugo theme"
+min_version = 0.57
+
+tags = ["Rstats", "data management"]
+features = ["blog", ]
+
+[author]
+    name = "Christopher Gandrud"
+    homepage = ""
+    source_repo = "https://github.com/christophergandrud/intro-data-retrieval-management"
