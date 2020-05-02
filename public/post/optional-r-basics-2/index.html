@@ -45,6 +45,16 @@
 	    <div class="post-after">
 	        <div class="tags">
 	            
+	                <a href="//tags/r">R</a>
+	            
+	                <a href="//tags/functions">functions</a>
+	            
+	                <a href="//tags/if">if</a>
+	            
+	                <a href="//tags/loops">loops</a>
+	            
+	                <a href="//tags/basics">basics</a>
+	            
 	        </div>
 	    </div>
 	    <hr>
@@ -58,7 +68,8 @@
 <ul>
 <li><p><a href="#functions-functions-intro">Functions</a></p></li>
 <li><p><a href="#if"><code>if</code> statements</a></p></li>
-<li><p>Loops, <code>apply</code>, and parallel computation</p></li>
+<li><p><a href="#loop-intro"><code>for</code> loops</a> and <a href="#apply-intro"><code>apply()</code></a></p></li>
+<li><p><a href="#parallel-intro">Parallel computation</a></p></li>
 </ul>
 </div>
 <div id="functions-intro" class="section level1">
@@ -142,6 +153,7 @@ mean(numeric_vector) %&gt;%
 
 mean_rounder(numeric_vector)</code></pre>
 <pre><code>## [1] 6.5</code></pre>
+<p>Notice that the contents of the function are enclosed inside of curly brackets <code>{}</code>.</p>
 <p>When you make a function, remember to document it. You want to be able to use this function over and over. If it isn’t well documented, this will be harder.</p>
 <p>A common convention is to use <code>@param</code> to document function arguments:<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
 <pre class="r"><code># @param x a numeric vector to find the mean of
@@ -156,19 +168,146 @@ mean_rounder &lt;- function(x) {
 <div id="if" class="section level1">
 <h1>If statements</h1>
 <p>So we have seen functions that always (try to) do the same thing for any inputs. There are many cases when you want to do different things depending on the type of input.</p>
-<p>For example, imagine we create a function that takes the mean of numeric vectors, but for other type it returns an error with a friendlier message than R’s default:</p>
-<pre class="r"><code>mean(&quot;a string&quot;)</code></pre>
-<pre><code>## Warning in mean.default(&quot;a string&quot;): argument is not numeric or logical:
-## returning NA</code></pre>
-<pre><code>## [1] NA</code></pre>
-<p>We can use <code>ifelse()</code>:</p>
-<p>For more complex if statements, use <code>if() . . . else()</code></p>
+<p>For example, imagine we want to create a new binary <code>[0, 1]</code> variable from a vector. We want a new vector with a 0 if the original value was less than 5 and 1 if it is greater than or equal to 5. We can use <code>ifelse()</code>:</p>
+<pre class="r"><code>numeric_vector</code></pre>
+<pre><code>## [1]  2.8  2.0 14.8</code></pre>
+<pre class="r"><code>greater_than_5 &lt;- ifelse(numeric_vector &gt;= 5, 
+                         yes = 1, 
+                         no = 0) 
+
+greater_than_5</code></pre>
+<pre><code>## [1] 0 0 1</code></pre>
+<p>The way we read this is if the value is greater than or equal to 5 (<code>yes</code>) then the new value is <code>1</code>, if not (<code>no</code>) then it is <code>0</code>.</p>
+<p>Note that <code>&gt;=</code> is one of R’s <strong>logical operators</strong>. See the additional material for a table of common <a href="#logical-operators">logical operators</a> in R.</p>
+<p>For more complex if statements, use <code>if() {. . .} else()</code>.</p>
+</div>
+<div id="loop-intro" class="section level1">
+<h1><code>for</code> loops</h1>
+<p>Some times you want to do the same thing to each part of an object. We already saw an example with <code>ifelse()</code> which ran an if statement on each element of <em>numeric_vector</em>.</p>
+<p>A general solution to iterating through elements of an object is the <code>for()</code> loop function. Here is an example using R’s built in <strong>swiss</strong> data set:</p>
+<pre class="r"><code>head(swiss)</code></pre>
+<pre><code>##              Fertility Agriculture Examination Education Catholic
+## Courtelary        80.2        17.0          15        12     9.96
+## Delemont          83.1        45.1           6         9    84.84
+## Franches-Mnt      92.5        39.7           5         5    93.40
+## Moutier           85.8        36.5          12         7    33.77
+## Neuveville        76.9        43.5          17        15     5.16
+## Porrentruy        76.1        35.3           9         7    90.57
+##              Infant.Mortality
+## Courtelary               22.2
+## Delemont                 22.2
+## Franches-Mnt             20.2
+## Moutier                  20.3
+## Neuveville               20.6
+## Porrentruy               26.6</code></pre>
+<p>For each column in the data set, we’ll take the mean, round it to 1 digit, and then print the results with R’s <code>cat()</code>–concatenate–function.</p>
+<pre class="r"><code>for (i in 1:ncol(swiss)) {
+    swiss[, i] %&gt;%
+    mean() %&gt;%
+    round(digits = 1) %&gt;%
+    paste(names(swiss)[i], ., &#39;\n&#39;) %&gt;%  # the . directs the pipe
+    cat()
+}</code></pre>
+<pre><code>## Fertility 70.1 
+## Agriculture 50.7 
+## Examination 16.5 
+## Education 11 
+## Catholic 41.1 
+## Infant.Mortality 19.9</code></pre>
+<p>The first line reads: “for each <code>i</code> in the vector 1 through the number of columns in the <strong>swiss</strong> data frame . . .”</p>
+<p>We then use <code>i</code> in the subscripts <code>[]</code> to select each column of <strong>swiss</strong> to find and print its mean.</p>
+</div>
+<div id="apply-intro" class="section level1">
+<h1>Apply</h1>
+<p>Loops in R are <em>notoriously slow</em>. The <code>apply</code> family of functions does a something similar and is usually faster.</p>
+<p>For example, let’s find the mean of each column in <strong>swiss</strong>:</p>
+<pre class="r"><code>apply(swiss, MARGIN = 2, mean)</code></pre>
+<pre><code>##        Fertility      Agriculture      Examination        Education 
+##         70.14255         50.65957         16.48936         10.97872 
+##         Catholic Infant.Mortality 
+##         41.14383         19.94255</code></pre>
+<p>For data frames and matrices, we need to specify whether we are applying the function to each row (<code>MARGIN = 1</code>) or each column (<code>MARGIN = 2</code>).</p>
+</div>
+<div id="parallel-intro" class="section level1">
+<h1>Advanced: Parallelisation</h1>
+<p>By default, all computation in R is done sequentially–one after the other. However, your computer likely has more processor cores and so can run computations in “parallel”.</p>
+<p>To find the number of cores on your computer use:</p>
+<pre class="r"><code>library(parallel)
+detectCores()</code></pre>
+<pre><code>## [1] 4</code></pre>
+<p>Not all computation can be done in parallel. Somethings have to be done in sequence, because the output of one operation is needed for the computation of the subsequent operations. However, pretty much anything that can be looped or applied can be done in parallel. This will often improve the speed of the computation.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
+<p><code>mclapply()</code> from base R’s <em>parallel</em> package works like <code>lapply</code> (list apply) for. Imagine we have a list with 3 numeric vectors:</p>
+<pre class="r"><code>three_list &lt;- list(A = rnorm(n = 100, mean = 1),
+                   B = rnorm(n = 100, mean = 2),
+                   C = rnorm(n = 100, mean = 5))</code></pre>
+<p>Note <code>rnorm()</code> simulates data from the normal distribution.</p>
+<p>Let’s compute the mean of each vector in the list in parallel:</p>
+<pre class="r"><code>mclapply(three_list, mean, mc.cores = 3)</code></pre>
+<pre><code>## $A
+## [1] 0.9345577
+## 
+## $B
+## [1] 1.960993
+## 
+## $C
+## [1] 4.906829</code></pre>
+<p><code>mc.cores</code> sets the number of cores to use. Usually use 1 - the number of cores you have available.</p>
 </div>
 <div id="exercises" class="section level1">
 <h1>🥅 Exercises</h1>
 <ul>
-<li>Create a new function to transform summarise numeric vectors in a method of your choosing</li>
+<li><p>Create a new function to transform summarise numeric vectors in a method of your choosing.</p></li>
+<li><p>Create a data frame with numeric and character columns. Then, for each column find the standard deviation (<code>sd()</code>) if it is numeric and return the <code>message()</code> “This column has characters” if it is a character type column.</p></li>
+<li><p><code>ncar()</code> counts the number of characters in a string Create a list of character vectors with strings of different lengths. In parallel, count the number of characters in each vector.</p></li>
 </ul>
+</div>
+<div id="additional-materials" class="section level1">
+<h1>Additional Materials</h1>
+<div id="logical-operators" class="section level2">
+<h2>Logical Operators</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Logical Operator</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>&amp;</code></td>
+<td>and</td>
+</tr>
+<tr class="even">
+<td><code>|</code> or</td>
+<td>or</td>
+</tr>
+<tr class="odd">
+<td><code>&lt;</code></td>
+<td>less than</td>
+</tr>
+<tr class="even">
+<td><code>&gt;</code></td>
+<td>greater than</td>
+</tr>
+<tr class="odd">
+<td><code>&gt;=</code></td>
+<td>greater than or equal to</td>
+</tr>
+<tr class="even">
+<td><code>&lt;=</code></td>
+<td>less than or equal to</td>
+</tr>
+<tr class="odd">
+<td><code>!=</code></td>
+<td>not equal</td>
+</tr>
+<tr class="even">
+<td><code>isTRUE(x)</code></td>
+<td>test if <code>x</code> is <code>TRUE</code></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div id="references" class="section level1">
 <h1>📚 References</h1>
@@ -177,6 +316,7 @@ mean_rounder &lt;- function(x) {
 <hr />
 <ol>
 <li id="fn1"><p>This stands for “parameter”, a more general programming term for “argument”. If you want to go deep on documenting functions, see the <a href="https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html">roxygen2</a> package.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>It won’t necessarily be faster as there is “overhead” for breaking up the operation into parallel computation. Also, while the computation time can go down, the enegery usage will be the same as in total the same computation will have happened.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 

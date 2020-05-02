@@ -12,11 +12,47 @@
     
     
     <item>
+      <title>basics</title>
+      <link>/tags/basics/</link>
+      <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/basics/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>functions</title>
+      <link>/tags/functions/</link>
+      <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/functions/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>if</title>
+      <link>/tags/if/</link>
+      <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/if/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>install</title>
       <link>/tags/install/</link>
       <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>/tags/install/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>loops</title>
+      <link>/tags/loops/</link>
+      <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/loops/</guid>
       <description></description>
     </item>
     

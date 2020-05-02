@@ -6,7 +6,7 @@
     <description>Recent content in Posts on Programming Methods for Data Retrieval &amp; Management</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 26 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 02 May 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
@@ -22,6 +22,15 @@ Email: christopher.gandrud@gmail.com
 Class: 9.00-17.00, 12-13 June 2020
 Location: Virtual
 📜 Course Description The rapid growth of the World Wide Web over the past two decades tremendously changed the way in which we share, collect and publish data. The web is full of data that are of great interest to scientists and businesses alike. Firms, public institutions and private users provide every imaginable type of information and new channels of communication generate vast amounts of data on human behaviour.</description>
+    </item>
+    
+    <item>
+      <title>Why Automated Data Collection?</title>
+      <link>/post/why-automated-data-collection/</link>
+      <pubDate>Sat, 02 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/why-automated-data-collection/</guid>
+      <description>  </description>
     </item>
     
     <item>
@@ -43,7 +52,8 @@ This and the next lesson are optional. Their intended for you if you are not tha
       <guid>/post/optional-r-basics-2/</guid>
       <description>Lesson Preview  Functions
  if statements
- Loops, apply, and parallel computation
+ for loops and apply()
+ Parallel computation
    Functions If objects are the nouns of the R language, functions are the verbs. They do things to objects. Let’s use the mean function as an example. This function takes the mean of a numeric vector object. Remember our numeric_vector object from Lesson 1:
 numeric_vector &amp;lt;- c(2.8, 2, 14.8) numeric_vector ## [1] 2.</description>
     </item>
