@@ -41,21 +41,11 @@ This and the next lesson are optional. Their intended for you if you are not tha
       <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>/post/optional-r-basics-2/</guid>
-      <description>  Lesson Preview  Functions and assignment
+      <description>Lesson Preview  Functions
  if statements
  Loops, apply, and parallel computation
-   </description>
-    </item>
-    
-    <item>
-      <title>Introduction to Data Retreval</title>
-      <link>/post/2015-07-23-r-rmarkdown/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
-      
-      <guid>/post/2015-07-23-r-rmarkdown/</guid>
-      <description>R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.</description>
+   Functions If objects are the nouns of the R language, functions are the verbs. They do things to objects. Let’s use the mean function as an example. This function takes the mean of a numeric vector object. Remember our numeric_vector object from Lesson 1:
+numeric_vector &amp;lt;- c(2.8, 2, 14.8) numeric_vector ## [1] 2.</description>
     </item>
     
   </channel>

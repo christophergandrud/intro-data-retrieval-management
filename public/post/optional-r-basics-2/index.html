@@ -23,7 +23,7 @@
     <div class="navbar navbar-fixed-top">
   <div id="navbar-inner">
     <div id="logo">
-       <a href=""><img src="/images/cover-img.png" width="1000px"></img></a>
+       <a href="https://brave-pasteur-c09ffa.netlify.app/"><img src="/images/cover-img.png" width="1000px"></img></a>
     </div>
   </div>
 </div>
@@ -56,10 +56,128 @@
 <div id="lesson-preview" class="section level1">
 <h1>Lesson Preview</h1>
 <ul>
-<li><p>Functions and assignment</p></li>
-<li><p><code>if</code> statements</p></li>
+<li><p><a href="#functions-functions-intro">Functions</a></p></li>
+<li><p><a href="#if"><code>if</code> statements</a></p></li>
 <li><p>Loops, <code>apply</code>, and parallel computation</p></li>
 </ul>
+</div>
+<div id="functions-intro" class="section level1">
+<h1>Functions</h1>
+<p>If objects are the nouns of the R language, functions
+are the verbs. They do things to objects. Let’s use the <code>mean</code> function
+as an example. This function takes the mean of a numeric vector object.
+Remember our <em>numeric_vector</em> object from Lesson 1:</p>
+<pre class="r"><code>numeric_vector &lt;- c(2.8, 2, 14.8)
+
+numeric_vector</code></pre>
+<pre><code>## [1]  2.8  2.0 14.8</code></pre>
+<p>To find the mean of this object, type:</p>
+<pre class="r"><code>mean(x = numeric_vector)</code></pre>
+<pre><code>## [1] 6.533333</code></pre>
+<p>We use the assignment operator to place a function’s output into an
+object. For example:</p>
+<pre class="r"><code>numeric_vector_mean &lt;- mean(x = numeric_vector)</code></pre>
+<p>Notice that we typed the function’s name then enclosed the object name in
+parentheses immediately afterwards. This is the basic syntax that all
+functions use, i.e. <code>FUNCTION(ARGUMENTS)</code>. Even if you don’t want to explicitly
+include an argument, <em>you still need to type the parentheses after the function</em>.</p>
+<div id="arguments" class="section level2">
+<h2>Arguments</h2>
+<p>Arguments modify what functions do. In our most recent example, we gave
+the <code>mean</code> function one argument (<code>x = numeric_vector</code>) telling it that we
+wanted to find the mean of <em>numeric_vector</em>. Arguments use the
+<code>ARGUMENT_LABEL = VALUE</code> syntax. In this case, <strong>x</strong> is the argument
+label.</p>
+<p>To find all of the arguments that a function can accept, look at the
+<strong>Arguments</strong> section of the function’s help
+file. To access the help file, type: <code>?FUNCTION</code>. For example:</p>
+<pre class="r"><code>?mean</code></pre>
+<p>The help file will also tell you the default values that the arguments
+are set to. You do not need to explicitly set an argument if
+you want to use its default value.</p>
+<p>You do need to be fairly precise with the syntax for your argument’s
+values. Values for logical arguments must be written as <code>TRUE</code> or
+<code>FALSE</code>. Arguments that accept character strings require quotation
+marks.</p>
+<p>Let’s see how to use multiple arguments with the <code>round()</code> function. This
+function rounds a vector of numbers. We can use the <code>digits</code> argument to
+specify how many decimal places we want the numbers rounded to. To round
+the object <em>numeric_vector_mean</em> to one decimal place, type:</p>
+<pre class="r"><code>round(x = numeric_vector_mean, digits = 1)</code></pre>
+<pre><code>## [1] 6.5</code></pre>
+<p>Note that <em>arguments are always separated by commas</em>.</p>
+<p>Some arguments do not need to be explicitly labeled. For example, we
+could write:</p>
+<pre class="r"><code># Find mean of numeric_vector
+mean(numeric_vector)</code></pre>
+<pre><code>## [1] 6.533333</code></pre>
+<p>R will do its best to figure out what you want and will only give up
+when it can’t. This will generate an error message. However, to avoid
+any misunderstandings between yourself and R, it is good practice to
+label your argument values. This will also make your code easier for
+other people to read, i.e. it will be more reproducible.</p>
+<p>You can stack functions inside of arguments. For example, have R find the
+mean of <em>numeric_vector</em> and round it to one decimal place:</p>
+<pre class="r"><code>round(mean(numeric_vector), digits = 1)</code></pre>
+<pre><code>## [1] 6.5</code></pre>
+<p>Stacking functions inside of each other can create code that is
+difficult to read. Another option that potentially makes more easily
+understandable code is piping using the pipe function (<code>%&gt;%</code>) that you
+can access from the <em>magrittr</em> or <em>dplyr</em> packages. The basic idea behind the pipe function is that the output of one function is set as the first argument of the next. For example, to find the mean of <em>numeric_vector</em> and then round it to one decimal place use:</p>
+<pre class="r"><code># Load magrittr package
+library(magrittr)
+# Find mean of numeric_vector and round to 1 decimal place
+mean(numeric_vector) %&gt;%
+    round(digits = 1)</code></pre>
+<pre><code>## [1] 6.5</code></pre>
+</div>
+<div id="creating-functions" class="section level2">
+<h2>Creating functions</h2>
+<p>Functions are just objects. You can create your own functions with the <code>function()</code> function! Why would you create your own functions? If you ever find yourself repeating code with only minor variation, e.g. just changing the inputs, then it is time to create a function.</p>
+<p>For example imagine we want to repeatedly find vector means and the round them to one digit. We can create a new function called <code>mean_rounder()</code> to do this for us.</p>
+<pre class="r"><code>mean_rounder &lt;- function(x) {
+  mean(x) %&gt;% 
+    round(digits = 1)
+}
+
+mean_rounder(numeric_vector)</code></pre>
+<pre><code>## [1] 6.5</code></pre>
+<p>When you make a function, remember to document it. You want to be able to use this function over and over. If it isn’t well documented, this will be harder.</p>
+<p>A common convention is to use <code>@param</code> to document function arguments:<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<pre class="r"><code># @param x a numeric vector to find the mean of
+
+mean_rounder &lt;- function(x) {
+  mean(x) %&gt;% 
+    round(digits = 1)
+}</code></pre>
+<p>Notice that we started the <code>@param</code> line with a <code>#</code>. In R (and many other languages), <code>#</code> is the <strong>comment character</strong>. Everything on a line that starts with <code>#</code> is ignored by R.</p>
+</div>
+</div>
+<div id="if" class="section level1">
+<h1>If statements</h1>
+<p>So we have seen functions that always (try to) do the same thing for any inputs. There are many cases when you want to do different things depending on the type of input.</p>
+<p>For example, imagine we create a function that takes the mean of numeric vectors, but for other type it returns an error with a friendlier message than R’s default:</p>
+<pre class="r"><code>mean(&quot;a string&quot;)</code></pre>
+<pre><code>## Warning in mean.default(&quot;a string&quot;): argument is not numeric or logical:
+## returning NA</code></pre>
+<pre><code>## [1] NA</code></pre>
+<p>We can use <code>ifelse()</code>:</p>
+<p>For more complex if statements, use <code>if() . . . else()</code></p>
+</div>
+<div id="exercises" class="section level1">
+<h1>🥅 Exercises</h1>
+<ul>
+<li>Create a new function to transform summarise numeric vectors in a method of your choosing</li>
+</ul>
+</div>
+<div id="references" class="section level1">
+<h1>📚 References</h1>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>This stands for “parameter”, a more general programming term for “argument”. If you want to go deep on documenting functions, see the <a href="https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html">roxygen2</a> package.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
 
 	    </div>
@@ -71,7 +189,7 @@
 </div>
 		<nav id="pagination">
 			<a class="prev" href="/post/optional-r-basics-1/">Prev</a>
-			<a class="next" href="/post/2015-07-23-r-rmarkdown/">Next</a>
+			
 		</nav>
 	
 		        <footer>

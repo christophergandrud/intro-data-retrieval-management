@@ -16,8 +16,169 @@ Tags: []
 
 # Lesson Preview
 
-- Functions and assignment
+- [Functions](#functions-functions-intro)
 
-- `if` statements
+- [`if` statements](#if)
 
 - Loops, `apply`, and parallel computation
+
+
+# Functions {#functions-intro}
+
+If objects are the nouns of the R language, functions
+are the verbs. They do things to objects. Let's use the `mean` function
+as an example. This function takes the mean of a numeric vector object.
+Remember our *numeric_vector* object from Lesson 1:
+
+```{r Shownumeric_vector, echo=TRUE}
+numeric_vector <- c(2.8, 2, 14.8)
+
+numeric_vector
+```
+
+To find the mean of this object, type:
+
+```{r numeric_vector_mean, echo=TRUE}
+mean(x = numeric_vector)
+```
+
+We use the assignment operator to place a function's output into an
+object. For example:
+
+```{r numeric_vector_meanAssign, echo=TRUE}
+numeric_vector_mean <- mean(x = numeric_vector)
+```
+
+Notice that we typed the function's name then enclosed the object name in
+parentheses immediately afterwards. This is the basic syntax that all
+functions use, i.e. `FUNCTION(ARGUMENTS)`. Even if you don't want to explicitly
+include an argument, *you still need to type the parentheses after the function*.
+
+## Arguments
+
+Arguments modify what functions do. In our most recent example, we gave
+the `mean` function one argument (`x = numeric_vector`) telling it that we
+wanted to find the mean of *numeric_vector*. Arguments use the
+`ARGUMENT_LABEL = VALUE` syntax. In this case, **x** is the argument
+label.
+
+To find all of the arguments that a function can accept, look at the
+**Arguments** section of the function's help
+file. To access the help file, type: `?FUNCTION`. For example:
+
+```{r Ch3HelpMean, echo=TRUE, eval=FALSE, tidy=FALSE}
+?mean
+```
+
+The help file will also tell you the default values that the arguments
+are set to. You do not need to explicitly set an argument if
+you want to use its default value.
+
+You do need to be fairly precise with the syntax for your argument's
+values. Values for logical arguments must be written as `TRUE` or
+`FALSE`. Arguments that accept character strings require quotation
+marks.
+
+Let's see how to use multiple arguments with the `round()` function. This
+function rounds a vector of numbers. We can use the `digits` argument to
+specify how many decimal places we want the numbers rounded to. To round
+the object *numeric_vector_mean* to one decimal place, type:
+
+```{r Ch3Round, echo=TRUE}
+round(x = numeric_vector_mean, digits = 1)
+```
+
+Note that *arguments are always separated by commas*.
+
+Some arguments do not need to be explicitly labeled. For example, we
+could write:
+
+```{r Ch3ArgeNoLabel, echo=TRUE}
+# Find mean of numeric_vector
+mean(numeric_vector)
+```
+
+R will do its best to figure out what you want and will only give up
+when it can't. This will generate an error message. However, to avoid
+any misunderstandings between yourself and R, it is good practice to
+label your argument values. This will also make your code easier for
+other people to read, i.e. it will be more reproducible.
+
+You can stack functions inside of arguments. For example, have R find the
+mean of *numeric_vector* and round it to one decimal place:
+
+```{r Ch3StackedArgs, echo=TRUE}
+round(mean(numeric_vector), digits = 1)
+```
+
+Stacking functions inside of each other can create code that is
+difficult to read. Another option that potentially makes more easily
+understandable code is piping\index{pipe} using the pipe function (`%>%`) that you
+can access from the *magrittr*  or *dplyr* packages. The basic idea behind the pipe function is that the output of one function is set as the first argument of the next. For example, to find the mean of *numeric_vector* and then round it to one decimal place use:
+
+```{r Ch3Pipe, echo=TRUE}
+# Load magrittr package
+library(magrittr)
+# Find mean of numeric_vector and round to 1 decimal place
+mean(numeric_vector) %>%
+    round(digits = 1)
+```
+
+## Creating functions
+
+Functions are just objects. You can create your own functions with the `function()` function! Why would you create your own functions? If you ever find yourself repeating code with only minor variation, e.g. just changing the inputs, then it is time to create a function.
+
+For example imagine we want to repeatedly find vector means and the round them to one digit. We can create a new function called `mean_rounder()` to do this for us. 
+
+```{r create-mean-rounder}
+mean_rounder <- function(x) {
+  mean(x) %>% 
+    round(digits = 1)
+}
+
+mean_rounder(numeric_vector)
+```
+
+When you make a function, remember to document it. You want to be able to use this function over and over. If it isn't well documented, this will be harder. 
+
+A common convention is to use `@param` to document function arguments:[^param]
+
+```{r create-mean-rounder-document}
+# @param x a numeric vector to find the mean of
+
+mean_rounder <- function(x) {
+  mean(x) %>% 
+    round(digits = 1)
+}
+```
+
+Notice that we started the `@param` line with a `#`. In R (and many other languages), `#` is the **comment character**. Everything on a line that starts with `#` is ignored by R.
+
+# If statements {#if}
+
+So we have seen functions that always (try to) do the same thing for any inputs. There are many cases when you want to do different things depending on the type of input. 
+
+For example, imagine we create a function that takes the mean of numeric vectors, but for other type it returns an error with a friendlier message than R's default:
+
+```{r default-error-mean}
+mean("a string")
+```
+
+We can use `ifelse()`:
+
+```{r ifelse}
+
+```
+
+
+For more complex if statements, use `if() . . . else()` 
+
+# 🥅 Exercises
+
+- Create a new function to transform summarise numeric vectors in a method of your choosing
+
+
+# 📚 References
+
+
+[^param]: This stands for "parameter", a more general programming term for "argument". If you want to go deep on documenting functions, see the [roxygen2](https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html) package.

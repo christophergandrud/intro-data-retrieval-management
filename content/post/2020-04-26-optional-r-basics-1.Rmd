@@ -351,13 +351,13 @@ vector_df_list[[2]]$numeric_vector
 ```
 
 
-# Exercises
+# 🥅 Exercises
 
 - Create a **list** of three **data frames** with any numeric and string content you want. 
 
 - [RStudio Primers](https://rstudio.cloud/learn/primers/1.2)
 
-# References
+# 📚 References
 
 
 

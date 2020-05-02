@@ -1,4 +1,4 @@
 theme = "simple-a"
-baseURL = "https://brave-pasteur-c09ffa.netlify.app"
+baseURL = "https://brave-pasteur-c09ffa.netlify.app/"
 languageCode = "en-us"
 title = "Programming Methods for Data Retrieval & Management"
