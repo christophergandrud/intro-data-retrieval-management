@@ -18,9 +18,13 @@ Tags: [R, functions, if, loops, basics]
 
 - [Functions](#functions-functions-intro)
 
-- [`if` statements](#if)
+- Control Flow
 
-- [`for` loops](#loop-intro) and [`apply()`](#apply-intro) 
+  + [`if` statements](#if)
+
+  + [`for` loops](#loop-intro)
+  
+  +  [`apply()`](#apply-intro) 
 
 - [Parallel computation](#parallel-intro)
 
@@ -158,7 +162,11 @@ mean_rounder <- function(x) {
 
 Notice that we started the `@param` line with a `#`. In R (and many other languages), `#` is the **comment character**. Everything on a line that starts with `#` is ignored by R.
 
-# If statements {#if}
+# Control flow
+
+We can use conditional evaluation (like if statements) and loops to control the flow of our programs.
+
+## If statements {#if}
 
 So we have seen functions that always (try to) do the same thing for any inputs. There are many cases when you want to do different things depending on the type of input. 
 
@@ -180,7 +188,7 @@ Note that `>=` is one of R's **logical operators**. See the additional material 
 
 For more complex if statements, use `if() {. . .} else()`. 
 
-# `for` loops {#loop-intro}
+## `for` loops {#loop-intro}
 
 Some times you want to do the same thing to each part of an object. We already saw an example with `ifelse()` which ran an if statement on each element of *numeric_vector*. 
 
@@ -206,7 +214,7 @@ The first line reads: "for each `i` in the vector 1 through the number of column
 
 We then use `i` in the subscripts `[]` to select each column of **swiss** to find and print its mean.
 
-# Apply {#apply-intro}
+## Apply {#apply-intro}
 
 Loops in R are *notoriously slow*. The `apply` family of functions does a something similar and is usually faster.
 
