@@ -1,9 +1,9 @@
 ---
-title: "Why Automated Data Retreval?"
-subtitle: ""
-author: "Christopher Gandrud"
-institute: "HU Dynamics"
-date: "2020-05-17 (updated: `r Sys.Date()`)"
+title: "Why Automated Data"
+subtitle: "⚔<br/>with xaringan"
+author: "Yihui Xie"
+institute: "RStudio, PBC"
+date: "2016/12/12 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
     lib_dir: libs

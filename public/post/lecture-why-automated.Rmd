@@ -2,7 +2,7 @@
 title: "Why Automated Data Retreval?"
 subtitle: ""
 author: "Christopher Gandrud"
-institute: "RStudio, PBC"
+institute: "HU Dynamics"
 date: "2020-05-17 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
@@ -26,7 +26,9 @@ Image credit: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Sharin
 ---
 class: center, middle
 
-# xaringan
+# Slides
+
+[slides](lecture-why-automated.html)
 
 ### /ʃaː.'riŋ.ɡan/
 
