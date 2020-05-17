@@ -2,4 +2,4 @@ title = "Programming Methods for Data Retrieval & Management"
 theme = "simple-a"
 baseURL = "https://brave-pasteur-c09ffa.netlify.app/"
 languageCode = "en-us"
-ignoreFiles = ["content/slides/*"]
+ignoreFiles = ["content/slides*"]
