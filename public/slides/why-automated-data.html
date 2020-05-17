@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Why Automated Data Retreval and Management?</title>
+    <title>Why Automated Data Retrieval and Management?</title>
     <meta charset="utf-8" />
     <meta name="author" content="Christopher Gandrud" />
     <script src="libs/header-attrs-2.1/header-attrs.js"></script>
@@ -12,12 +12,14 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Why Automated Data Retreval and Management?
+# Why Automated Data Retrieval and Management?
 ### Christopher Gandrud
 ### HU DYNAMICS
 ### 2020-06-12 (updated: 2020-05-17)
 
 ---
+
+
 
 
 # 📝 Lesson Preview
@@ -59,6 +61,54 @@ class: inverse, centre, middle
 
 ---
 
+class: inverse, centre, middle
+
+# ⍰ What is automated data retrieval and management?
+
+---
+
+class: inverse, centre, middle
+background-color: #FFC400
+color: #24292F
+
+# Automated data retrieval
+
+&gt; process of **programmatically** extracting data (from structured and unstructured sources) for further data processing, analysis, and storage.
+
+.small[see also [Wikipedia Data Extraction](https://en.wikipedia.org/wiki/Data_extraction)]
+
+---
+
+class: inverse, centre, middle
+background-color: #FFC400
+color: #24292F
+
+# Automated data management
+
+&gt; Creation, storage, and modification of structured data (including metadata) for programmatic access .
+
+---
+
+class: inverse, centre, middle
+background-color: #FFC400
+color: #24292F
+
+# Programmatic
+
+&gt; a task done through computer program **code**, not manual.
+
+---
+
+class: inverse, centre, middle
+background-color: #FFC400
+color: #24292F
+
+# Ideally our programs are **extensible**
+
+&gt; designed to be used not just with data we have seen, but also new data.
+
+---
+
 # 🎓 Academic
 
 - Skills needed to do **original quantitative research** for your **research**.
@@ -73,7 +123,216 @@ class: inverse, centre, middle
 
 ---
 
+# 🏛 Government 
+
+- Public data is increasingly **accessible**.
+
+    + e.g. [World Bank Development Indicators](http://data.worldbank.org/data-catalog/world-development-indicators),
+    [GovData Germany](https://www.govdata.de/neues), [Berlin Open Data](https://daten.berlin.de/), [data.gov.uk](http://data.gov.uk/),
+    [New York City](https://nycopendata.socrata.com/),
+    [data.gov](https://www.data.gov/open-gov/)
+
+- Governments rely on data analysis for evidence based decision-making.
+
+    + Tools of open data analysis enable better use of data **within** and
+    **between** government actors.
+
+    + Governments can take advantage of analyses done by **third parties**.
+
+---
+
+# 🏕 NGOs
+
+NGO's are becoming increasingly data-oriented and need people with **skills** to
+**handle and analyse** this data.
+
+Ex. Former Hertie Master's students co-founded
+[CorrelAid](http://correlaid.org/) to assist NGOs with data analysis.
+
+---
+
 # 🏭 Industry 
+
+Automated data collection and retrieval **scales**.
+
+We don't just want to solve a customer problem once, we want to solve it many times with the **marginal cost decreasing** each additional time we solve the problem.
+
+![](why-automated-data_files/figure-html/return-to-scale-1.png)&lt;!-- --&gt;
+
+---
+
+# 🏭 Industry 
+
+So, data science being able to automate data retrieval and management are highly valued. E.g. on [PayScale](https://www.payscale.com/research/DE/Job=Data_Scientist/Salary):
+
+&lt;img src="img/pay-by-experience.png" width="1819" /&gt;
+
+---
+
+class: inverse, centre, middle
+
+# ⍰ Why reproducible research?
+
+---
+
+class: inverse, centre, middle
+background-color: #FFC400
+
+# Automated data retrieval and management is a part of reproducible research.
+
+---
+
+class: inverse, centre, middle
+background-color: #FF8C03
+
+# ⍰ What is reproducible research?
+
+---
+
+class: inverse, centre, middle
+background-color: #FFC400
+
+#  Really reproducible research
+
+&gt; the data and code used to make a finding are **available** and they are **sufficient** for an independent researcher to **recreate the finding** (Peng 2011, 1226)
+
+Make available the research, **not just the advertising** for the findings (e.g. papers, book).
+
+---
+
+# Reproducibility vs. Replication
+
+**Reproducibility**: an independent study makes the same findings using the
+**same data** and **code** as the original researchers.
+
+**Replicability**: an independent study makes the same conclusions as the original
+using **other** data, code, and even methods,
+i.e. independent verification.
+
+---
+
+# Reproducibility vs. Replication
+
+&gt; ''A study can be reproducible and still be wrong'' [Peng 2014](http://simplystatistics.org/2014/06/06/the-real-reason-reproducible-research-is-important/).
+
+E.g. a finding that is statistically significant in one study may remain statistically
+significant when reproduced using the original data/code, but **replication studies
+are unable to find a similar result**.
+
+The original finding could just have been
+[noise](http://andrewgelman.com/2014/09/03/disagree-alan-turing-daniel-kahneman-regarding-strength-statistical-evidence/).
+
+---
+
+# Why reproducibility?
+
+- **Replication** is the ''**ultimate standard**'' for judging scientific claims (Peng 2011).
+
+- **Reproducibility**
+
+    + **Enhances replication** (other researchers can understand how an analysis
+    was actually done)
+
+    + Is a **minimum standard** for judging scientific claims when replication is
+    not possible.
+
+---
+
+# Why reproducibility?
+
+Reproducibility helps **avoid effort duplication**:
+
+- Others **don't waste time**:
+
+    + Gathering data that has already been gathered.
+
+    + Discovering procedures that have already been discovered.
+
+---
+
+# Why reproducibility?
+
+- Reproducibility also makes it possible to **find and correct errors**.
+
+- Recent examples:
+    - Translation errors in the
+    [World Values Survey](http://www.washingtonpost.com/blogs/monkey-cage/wp/2014/09/02/world-values-lost-in-translation/).
+
+    - Data errors in research on
+    [intestinal worm treatment and school attendance](http://www.columbia.edu/~mh2245/w/worms.html).
+
+    - [L'Affaire LaCour](http://www.vox.com/2015/5/20/8630535/same-sex-marriage-study):
+    data *fabrication* discovered.
+
+- Data errors can cause spurious findings that ultimately **waste researchers time**,
+because they try to explain 'wrong' findings.
+
+---
+
+# Why reproducibility?
+
+- **Higher research impact**
+
+    + Reproducible research is likely to be more **useful for other researchers**.
+    They can use your data and learn from your code and methods.
+
+    + More use → more impact (e.g. citations)
+
+- **Better work habits**
+
+    + Thinking about reproducibility from the beginning makes your files
+    **better organised** and your work is **better documented**.
+
+    + This allows you to **build on your own work** more effectively.
+
+---
+
+# Reproducible research workflow
+
+.center[
+&lt;img src="img/rep-research-workflow.png" width="70%" /&gt;
+]
+
+.small[from Gandrud (2020, 25)]
+---
+
+# Practical tips for reproducible research
+
+- ✏️ Document Everything!
+
+- 📄 Everything is a (text) file.
+
+- 🤓 All files should be human readable.
+
+- ⋈ Explicitly tie your files together.
+
+- 🗂 Have a plan to organise, store, and make your files available.
+
+---
+
+class: inverse, center, middle
+
+# Personal data privacy and GDPR
+
+
+
+---
+
+class: inverse, center, middle
+background-color: #FF8C03
+
+# 🥅 With a partner
+
+**Identify** ~three online data sets (in any format). What **research questions** could you explore with these data sets?
+
+---
+
+class: inverse, center, middle
+background-color: #FF8C03
+
+# 🥅 With a partner
+
+What are the 
 
 ---
     </textarea>
