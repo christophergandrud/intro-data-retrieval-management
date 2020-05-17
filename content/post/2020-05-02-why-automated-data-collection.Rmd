@@ -27,4 +27,6 @@ bibliography: main.bib
 
 ## 📣 Lecture slides
 
-[slides](https://brave-pasteur-c09ffa.netlify.app/slides/slides-why-automated-data.html)
+[Slides](https://brave-pasteur-c09ffa.netlify.app/slides/slides-why-automated-data.html)
+
+<https://brave-pasteur-c09ffa.netlify.app/slides/slides-why-automated-data.html>
