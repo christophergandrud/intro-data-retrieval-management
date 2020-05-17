@@ -6,7 +6,7 @@
     <description>Recent content in Posts on Programming Methods for Data Retrieval &amp; Management</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 17 May 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 02 May 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
@@ -66,20 +66,11 @@ numeric_vector &amp;lt;- c(2.</description>
     </item>
     
     <item>
-      <title>Why Automated Data Collection?</title>
-      <link>/post/why-automated-data-collection/</link>
-      <pubDate>Sun, 17 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/post/why-automated-data-collection/</guid>
-      <description> </description>
-    </item>
-    
-    <item>
-      <title>Why Automated Data Retreval?</title>
-      <link>/post/lecture-why-automated/</link>
+      <title>Why Automated Data</title>
+      <link>/post/why-automated-data/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/post/lecture-why-automated/</guid>
+      <guid>/post/why-automated-data/</guid>
       <description>background-image: url(https://upload.wikimedia.org/wikipedia/commons/b/be/Sharingan_triple.svg)
 ???
 Image credit: Wikimedia Commons
