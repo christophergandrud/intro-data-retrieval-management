@@ -27,4 +27,4 @@ bibliography: main.bib
 
 ## 📣 Lecture slides
 
-[slides](lecture-why-automated.html)
+[slides](slides/slides-why-automated-data.html)
