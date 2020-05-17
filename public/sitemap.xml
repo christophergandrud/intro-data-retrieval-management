@@ -86,4 +86,12 @@
     <loc>/categories/</loc>
   </url>
   
+  <url>
+    <loc>/slides/</loc>
+  </url>
+  
+  <url>
+    <loc>/slides/slides-why-automated-data/</loc>
+  </url>
+  
 </urlset>

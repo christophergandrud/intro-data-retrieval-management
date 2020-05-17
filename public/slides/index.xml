@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Slides on Programming Methods for Data Retrieval &amp; Management</title>
+    <link>/slides/</link>
+    <description>Recent content in Slides on Programming Methods for Data Retrieval &amp; Management</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="/slides/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Why Automated Data</title>
+      <link>/slides/slides-why-automated-data/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/slides/slides-why-automated-data/</guid>
+      <description>background-image: url(https://upload.wikimedia.org/wikipedia/commons/b/be/Sharingan_triple.svg)
+???
+Image credit: Wikimedia Commons
+class: inverse, center, middle
+Get Started  Hello World Install the xaringan package from Github:
+devtools::install_github(&amp;quot;yihui/xaringan&amp;quot;) –
+You are recommended to use the RStudio IDE, but you do not have to.
+ Create a new R Markdown document from the menu File -&amp;gt; New File -&amp;gt; R Markdown -&amp;gt; From Template -&amp;gt; Ninja Presentation;1  –</description>
+    </item>
+    
+  </channel>
+</rss>
