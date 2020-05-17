@@ -14,13 +14,13 @@ Tags: [R, install, basics]
 bibliography: main.bib
 ---
 
-# 👋 Welcome 
+## 👋 Welcome 
 
 Welcome to to the course! This is the first of 2 sets of exercises introducing you to the R programming language[^fromch3] that we will use throughout the course. 
 
 This and the next lesson are optional. Their intended for you if you are not that familiar with R, or you would like to practice your R basics before getting started.
 
-# 📝 Lesson Preview
+## 📝 Lesson Preview
 
 - [Set up R and RStudio](#install-rstudio)
 
@@ -37,7 +37,7 @@ This and the next lesson are optional. Their intended for you if you are not tha
 - Workspace and history
 
 
-# 🏁 Getting Started with R and RStudio {#install-rstudio}
+## 🏁 Getting Started with R and RStudio {#install-rstudio}
 
 To complete the exercises in this course, you will need to access RStudio. 
 
@@ -59,7 +59,7 @@ Take some time to explore the interface. Then we'll dive into details.
 
 Notice in particular the `>` character in the left-most window called the **Console**. This prompt is where you enter R code. To run R code that you have typed after the prompt, press the `Return` or `Enter` key. 
 
-# Install packages {#install-packages}
+## Install packages {#install-packages}
 
 In base R, use the `install.packages()` function to install the add-on packages you'll need to gather and manage data:
 
@@ -71,7 +71,7 @@ When you install a package, you will likely be given a list
 of "mirrors" from which you can download the package. Select the
 mirror closest to you.
 
-## Load packages
+### Load packages
 
 To use the packages, you need to theme with the `library()` function:
 
@@ -87,9 +87,9 @@ xfun::pkg_attach2("tidyverse")
 
 Note you will need to install the `xfun` package (`install.packages("xfun")`) if you haven't already.
 
-# Object Oriented Programming in the R Language
+## Object Oriented Programming in the R Language
 
-## Objects: R's "nouns" {#objects}
+### Objects: R's "nouns" {#objects}
 
 If you've read a description of the R language before, you will probably have seen it
 referred to as an 'object-oriented language'. What are objects? Objects
@@ -99,7 +99,7 @@ so on. Saying that R is object-oriented means that R is focused on doing
 actions to objects. We will talk about the actions, functions, later in this
 section. Now let's create a few objects.
 
-### Numeric and string objects {#numeric-string-type}
+#### Numeric and string objects {#numeric-string-type}
 
 Objects can have a number of different types. Let's make two simple
 objects. The first is a **numeric**-type object. The other is a **character**
@@ -163,7 +163,7 @@ function.[^chapter_3_types]\index{R function!class} For example:
 class(words)
 ```
 
-### Vector and data frame objects {#vectors-data-frames}
+#### Vector and data frame objects {#vectors-data-frames}
 
 So far, we have only looked at objects with a single number or character
 string. Clearly we often want to use objects that have many strings
@@ -174,7 +174,7 @@ frames extensively throughout the book. Before looking at data frames it
 is useful to first look at the simpler objects that make up data frames.
 These are called vectors. Vectors are R's "workhorse" [@matloff2011].
 
-#### Vectors
+##### Vectors
 
 Vectors are the "fundamental data type" in R [@matloff2011]. They are an ordered group of numbers, character strings, and so on. It may be useful to think of most data in R as composed of vectors. For example, data frames are basically collections of vectors of the same length, i.e. they have the same number of rows, attached
 together to form columns.
@@ -201,7 +201,7 @@ character_vector <- c("Albania", "Botswana", "Cambodia")
 character_vector
 ```
 
-#### Matrices
+##### Matrices
 
 To give you a preview of what we are going to do when we start working
 with real data sets, let's combine the two vectors
@@ -219,7 +219,7 @@ object. You can see that the numbers in the
 **numeric_vector** column are between quotation marks. Matrices,
 like vectors, can only have one data type, so R has converted the numbers to strings.
 
-#### Data frames {#data-frames}
+##### Data frames {#data-frames}
 
 If we want to have an object with rows and columns and allow the columns
 to contain data with different types, we need to use data frames. Let's
@@ -266,7 +266,7 @@ find the mean of **character_vector** by running it through the `mean()` functio
 mean(string_num_df$character_vector)
 ```
 
-### Lists {#lists}
+#### Lists {#lists}
 
 Lists are objects whose contents can be items of different values. For example you could have a list with a vector and a data frame. Use the `list()` function to create lists. For example:
 
@@ -278,7 +278,7 @@ vector_df_list
 
 Note that each element of the list has a number. For example, the former contents of *numeric_vector* are element `[[1]]`. 
 
-## Component selection {#component-selection}
+### Component selection {#component-selection}
 
 The last bit of code we just saw will probably be confusing. Why do we have a dollar sign (`$`) between the name of our data frame object name and the `character_vector` variable? The dollar sign is called the component selector.\index{R!component selector}\index{R function!\$} It's also sometimes called the element name operator. Either way, it extracts a part, component, of an object. In the previous example, it extracted the **character_vector** column from the *string_num_df* so that it could be fed to
 the `mean()` function.
@@ -291,7 +291,7 @@ numeric_extract <- string_num_df$numeric_vector
 numeric_extract
 ```
 
-### Subscripts {-}
+#### Subscripts {-}
 
 Another way to select parts of an object is to use subscripts. You have
 already seen subscripts in the output from our examples so far. They are
@@ -350,14 +350,13 @@ You can stack up component selectors to extract deeper components of a list. For
 vector_df_list[[2]]$numeric_vector
 ```
 
-
-# 🥅 Exercises
+## 🥅 Exercises
 
 - Create a **list** of three **data frames** with any numeric and string content you want. 
 
 - [RStudio Primers](https://rstudio.cloud/learn/primers/1.2)
 
-# 📚 References
+## 📚 References
 
 
 

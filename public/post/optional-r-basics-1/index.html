@@ -59,13 +59,13 @@
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
-<div id="welcome" class="section level1">
-<h1>👋 Welcome</h1>
+<div id="welcome" class="section level2">
+<h2>👋 Welcome</h2>
 <p>Welcome to to the course! This is the first of 2 sets of exercises introducing you to the R programming language<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> that we will use throughout the course.</p>
 <p>This and the next lesson are optional. Their intended for you if you are not that familiar with R, or you would like to practice your R basics before getting started.</p>
 </div>
-<div id="lesson-preview" class="section level1">
-<h1>📝 Lesson Preview</h1>
+<div id="lesson-preview" class="section level2">
+<h2>📝 Lesson Preview</h2>
 <ul>
 <li><p><a href="#install-rstudio">Set up R and RStudio</a></p></li>
 <li><p>The R console</p></li>
@@ -76,8 +76,8 @@
 <li><p>Workspace and history</p></li>
 </ul>
 </div>
-<div id="install-rstudio" class="section level1">
-<h1>🏁 Getting Started with R and RStudio</h1>
+<div id="install-rstudio" class="section level2">
+<h2>🏁 Getting Started with R and RStudio</h2>
 <p>To complete the exercises in this course, you will need to access RStudio.</p>
 <p>You can do this in the cloud on the course’s <strong>RStudio cloud</strong> site:</p>
 <ul>
@@ -96,15 +96,15 @@
 <p>Take some time to explore the interface. Then we’ll dive into details.</p>
 <p>Notice in particular the <code>&gt;</code> character in the left-most window called the <strong>Console</strong>. This prompt is where you enter R code. To run R code that you have typed after the prompt, press the <code>Return</code> or <code>Enter</code> key.</p>
 </div>
-<div id="install-packages" class="section level1">
-<h1>Install packages</h1>
+<div id="install-packages" class="section level2">
+<h2>Install packages</h2>
 <p>In base R, use the <code>install.packages()</code> function to install the add-on packages you’ll need to gather and manage data:</p>
 <pre class="r"><code>install.packages(&quot;tidyverse&quot;)</code></pre>
 <p>When you install a package, you will likely be given a list
 of “mirrors” from which you can download the package. Select the
 mirror closest to you.</p>
-<div id="load-packages" class="section level2">
-<h2>Load packages</h2>
+<div id="load-packages" class="section level3">
+<h3>Load packages</h3>
 <p>To use the packages, you need to theme with the <code>library()</code> function:</p>
 <pre class="r"><code>library(&quot;tidyverse&quot;)</code></pre>
 <p>Personally, I prefer (and will use for the rest of the course) <code>xfun::pkg_attach2()</code>. It installs packages if they aren’t present and loads them all in one call.</p>
@@ -112,10 +112,10 @@ mirror closest to you.</p>
 <p>Note you will need to install the <code>xfun</code> package (<code>install.packages("xfun")</code>) if you haven’t already.</p>
 </div>
 </div>
-<div id="object-oriented-programming-in-the-r-language" class="section level1">
-<h1>Object Oriented Programming in the R Language</h1>
-<div id="objects" class="section level2">
-<h2>Objects: R’s “nouns”</h2>
+<div id="object-oriented-programming-in-the-r-language" class="section level2">
+<h2>Object Oriented Programming in the R Language</h2>
+<div id="objects" class="section level3">
+<h3>Objects: R’s “nouns”</h3>
 <p>If you’ve read a description of the R language before, you will probably have seen it
 referred to as an ‘object-oriented language’. What are objects? Objects
 are like the R language’s <em>nouns</em>. They are things, like a vector of
@@ -123,8 +123,8 @@ numbers, a data set, a word, a table of results from some analysis, and
 so on. Saying that R is object-oriented means that R is focused on doing
 actions to objects. We will talk about the actions, functions, later in this
 section. Now let’s create a few objects.</p>
-<div id="numeric-string-type" class="section level3">
-<h3>Numeric and string objects</h3>
+<div id="numeric-string-type" class="section level4">
+<h4>Numeric and string objects</h4>
 <p>Objects can have a number of different types. Let’s make two simple
 objects. The first is a <strong>numeric</strong>-type object. The other is a <strong>character</strong>
 object.</p>
@@ -169,8 +169,8 @@ function.[^chapter_3_types] For example:</p>
 <pre class="r"><code>class(words)</code></pre>
 <pre><code>## [1] &quot;character&quot;</code></pre>
 </div>
-<div id="vectors-data-frames" class="section level3">
-<h3>Vector and data frame objects</h3>
+<div id="vectors-data-frames" class="section level4">
+<h4>Vector and data frame objects</h4>
 <p>So far, we have only looked at objects with a single number or character
 string. Clearly we often want to use objects that have many strings
 and numbers. In R these are usually data frame-type objects and are
@@ -179,8 +179,8 @@ from using a program such as Microsoft Excel. We will be using data
 frames extensively throughout the book. Before looking at data frames it
 is useful to first look at the simpler objects that make up data frames.
 These are called vectors. Vectors are R’s “workhorse” <span class="citation">(Matloff 2011)</span>.</p>
-<div id="vectors" class="section level4">
-<h4>Vectors</h4>
+<div id="vectors" class="section level5">
+<h5>Vectors</h5>
 <p>Vectors are the “fundamental data type” in R <span class="citation">(Matloff 2011)</span>. They are an ordered group of numbers, character strings, and so on. It may be useful to think of most data in R as composed of vectors. For example, data frames are basically collections of vectors of the same length, i.e. they have the same number of rows, attached
 together to form columns.</p>
 <p>Let’s create a simple numeric vector containing the numbers 2.8, 2, and
@@ -199,8 +199,8 @@ numeric_vector</code></pre>
 character_vector</code></pre>
 <pre><code>## [1] &quot;Albania&quot;  &quot;Botswana&quot; &quot;Cambodia&quot;</code></pre>
 </div>
-<div id="matrices" class="section level4">
-<h4>Matrices</h4>
+<div id="matrices" class="section level5">
+<h5>Matrices</h5>
 <p>To give you a preview of what we are going to do when we start working
 with real data sets, let’s combine the two vectors
 <em>numeric_vector</em> and <em>character_vector</em> into a new
@@ -217,8 +217,8 @@ object. You can see that the numbers in the
 <strong>numeric_vector</strong> column are between quotation marks. Matrices,
 like vectors, can only have one data type, so R has converted the numbers to strings.</p>
 </div>
-<div id="data-frames" class="section level4">
-<h4>Data frames</h4>
+<div id="data-frames" class="section level5">
+<h5>Data frames</h5>
 <p>If we want to have an object with rows and columns and allow the columns
 to contain data with different types, we need to use data frames. Let’s
 use the <code>data.frame</code> function to combine the <em>numeric_vector</em>
@@ -258,8 +258,8 @@ find the mean of <strong>character_vector</strong> by running it through the <co
 <pre><code>## [1] NA</code></pre>
 </div>
 </div>
-<div id="lists" class="section level3">
-<h3>Lists</h3>
+<div id="lists" class="section level4">
+<h4>Lists</h4>
 <p>Lists are objects whose contents can be items of different values. For example you could have a list with a vector and a data frame. Use the <code>list()</code> function to create lists. For example:</p>
 <pre class="r"><code>vector_df_list &lt;- list(numeric_vector, string_num_df)
 
@@ -275,8 +275,8 @@ vector_df_list</code></pre>
 <p>Note that each element of the list has a number. For example, the former contents of <em>numeric_vector</em> are element <code>[[1]]</code>.</p>
 </div>
 </div>
-<div id="component-selection" class="section level2">
-<h2>Component selection</h2>
+<div id="component-selection" class="section level3">
+<h3>Component selection</h3>
 <p>The last bit of code we just saw will probably be confusing. Why do we have a dollar sign (<code>$</code>) between the name of our data frame object name and the <code>character_vector</code> variable? The dollar sign is called the component selector. It’s also sometimes called the element name operator. Either way, it extracts a part, component, of an object. In the previous example, it extracted the <strong>character_vector</strong> column from the <em>string_num_df</em> so that it could be fed to
 the <code>mean()</code> function.</p>
 <p>We can use the component selector to create new objects with parts of other objects. Imagine that we have <em>string_num_df</em> and want an object with only the information in the <strong>numeric_vector</strong> column. Let’s use the following code:</p>
@@ -284,8 +284,8 @@ the <code>mean()</code> function.</p>
 numeric_extract &lt;- string_num_df$numeric_vector
 numeric_extract</code></pre>
 <pre><code>## [1]  2.8  2.0 14.8</code></pre>
-<div id="subscripts" class="section level3 unnumbered">
-<h3>Subscripts</h3>
+<div id="subscripts" class="section level4 unnumbered">
+<h4>Subscripts</h4>
 <p>Another way to select parts of an object is to use subscripts. You have
 already seen subscripts in the output from our examples so far. They are
 denoted with square braces (<code>[]</code>). We can use subscripts to select not
@@ -339,15 +339,15 @@ select the fourth row of the <strong>dist</strong> column, we can type:</p>
 </div>
 </div>
 </div>
-<div id="exercises" class="section level1">
-<h1>🥅 Exercises</h1>
+<div id="exercises" class="section level2">
+<h2>🥅 Exercises</h2>
 <ul>
 <li><p>Create a <strong>list</strong> of three <strong>data frames</strong> with any numeric and string content you want.</p></li>
 <li><p><a href="https://rstudio.cloud/learn/primers/1.2">RStudio Primers</a></p></li>
 </ul>
 </div>
-<div id="references" class="section level1 unnumbered">
-<h1>📚 References</h1>
+<div id="references" class="section level2 unnumbered">
+<h2>📚 References</h2>
 <div id="refs" class="references hanging-indent">
 <div id="ref-gandrud2020">
 <p>Gandrud, Christopher. 2020. <em>Reproducible Research with R and Rstudio</em>. Boca Raton, FL: CRC Press.</p>
@@ -372,7 +372,7 @@ select the fourth row of the <strong>dist</strong> column, we can type:</p>
     </p>
 </div>
 		<nav id="pagination">
-			<a class="prev" href="/post/why-automated-data-collection/">Prev</a>
+			<a class="prev" href="/post/syllabus/">Prev</a>
 			<a class="next" href="/post/optional-r-basics-2/">Next</a>
 		</nav>
 	

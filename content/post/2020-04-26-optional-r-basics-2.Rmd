@@ -14,7 +14,7 @@ Description: ''
 Tags: [R, functions, if, loops, basics]
 ---
 
-# Lesson Preview
+## Lesson Preview
 
 - [Functions](#functions-functions-intro)
 
@@ -29,7 +29,7 @@ Tags: [R, functions, if, loops, basics]
 - [Parallel computation](#parallel-intro)
 
 
-# Functions {#functions-intro}
+## Functions {#functions-intro}
 
 If objects are the nouns of the R language, functions
 are the verbs. They do things to objects. Let's use the `mean` function
@@ -60,7 +60,7 @@ parentheses immediately afterwards. This is the basic syntax that all
 functions use, i.e. `FUNCTION(ARGUMENTS)`. Even if you don't want to explicitly
 include an argument, *you still need to type the parentheses after the function*.
 
-## Arguments
+### Arguments
 
 Arguments modify what functions do. In our most recent example, we gave
 the `mean` function one argument (`x = numeric_vector`) telling it that we
@@ -130,7 +130,7 @@ mean(numeric_vector) %>%
     round(digits = 1)
 ```
 
-## Creating functions
+### Creating functions
 
 Functions are just objects. You can create your own functions with the `function()` function! Why would you create your own functions? If you ever find yourself repeating code with only minor variation, e.g. just changing the inputs, then it is time to create a function.
 
@@ -162,11 +162,11 @@ mean_rounder <- function(x) {
 
 Notice that we started the `@param` line with a `#`. In R (and many other languages), `#` is the **comment character**. Everything on a line that starts with `#` is ignored by R.
 
-# Control flow
+## Control flow
 
 We can use conditional evaluation (like if statements) and loops to control the flow of our programs.
 
-## If statements {#if}
+### If statements {#if}
 
 So we have seen functions that always (try to) do the same thing for any inputs. There are many cases when you want to do different things depending on the type of input. 
 
@@ -188,7 +188,7 @@ Note that `>=` is one of R's **logical operators**. See the additional material 
 
 For more complex if statements, use `if() {. . .} else()`. 
 
-## `for` loops {#loop-intro}
+### `for` loops {#loop-intro}
 
 Some times you want to do the same thing to each part of an object. We already saw an example with `ifelse()` which ran an if statement on each element of *numeric_vector*. 
 
@@ -214,7 +214,7 @@ The first line reads: "for each `i` in the vector 1 through the number of column
 
 We then use `i` in the subscripts `[]` to select each column of **swiss** to find and print its mean.
 
-## Apply {#apply-intro}
+### Apply {#apply-intro}
 
 Loops in R are *notoriously slow*. The `apply` family of functions does a something similar and is usually faster.
 
@@ -226,7 +226,7 @@ apply(swiss, MARGIN = 2, mean)
 
 For data frames and matrices, we need to specify whether we are applying the function to each row (`MARGIN = 1`) or each column (`MARGIN = 2`). 
 
-# Advanced: Parallelisation {#parallel-intro}
+## Advanced: Parallelisation {#parallel-intro}
 
 By default, all computation in R is done sequentially--one after the other. However, your computer likely has more processor cores and so can run computations in "parallel". 
 
@@ -258,7 +258,7 @@ mclapply(three_list, mean, mc.cores = 3)
 `mc.cores` sets the number of cores to use. Usually use 1 - the number of cores you have available. 
 
 
-# 🥅 Exercises
+## 🥅 Exercises
 
 - Create a new function to transform summarise numeric vectors in a method of your choosing.
 
@@ -266,12 +266,9 @@ mclapply(three_list, mean, mc.cores = 3)
 
 - `ncar()` counts the number of characters in a string Create a list of character vectors with strings of different lengths. In parallel, count the number of characters in each vector.
 
+## Additional Materials
 
-
-# Additional Materials
-
-
-## Logical Operators {#logical-operators}
+## (Some) Logical Operators {#logical-operators}
 
 | Logical Operator | Meaning |
 | ---------------- | ------- |
@@ -284,9 +281,7 @@ mclapply(three_list, mean, mc.cores = 3)
 | `!=`             | not equal |
 | `isTRUE(x)`      | test if `x` is `TRUE` |
 
-
-# 📚 References
-
+## 📚 References
 
 [^param]: This stands for "parameter", a more general programming term for "argument". If you want to go deep on documenting functions, see the [roxygen2](https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html) package.
 

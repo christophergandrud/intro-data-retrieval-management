@@ -18,11 +18,13 @@
       
       <guid>/post/optional-r-basics-2/</guid>
       <description>Lesson Preview  Functions
+ Control Flow
  if statements
- for loops and apply()
- Parallel computation
+ for loops
+ apply()
+  Parallel computation
    Functions If objects are the nouns of the R language, functions are the verbs. They do things to objects. Let’s use the mean function as an example. This function takes the mean of a numeric vector object. Remember our numeric_vector object from Lesson 1:
-numeric_vector &amp;lt;- c(2.8, 2, 14.8) numeric_vector ## [1] 2.</description>
+numeric_vector &amp;lt;- c(2.</description>
     </item>
     
   </channel>

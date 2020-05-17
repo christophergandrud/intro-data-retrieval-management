@@ -63,17 +63,21 @@
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
-<div id="lesson-preview" class="section level1">
-<h1>Lesson Preview</h1>
+<div id="lesson-preview" class="section level2">
+<h2>Lesson Preview</h2>
 <ul>
 <li><p><a href="#functions-functions-intro">Functions</a></p></li>
+<li><p>Control Flow</p>
+<ul>
 <li><p><a href="#if"><code>if</code> statements</a></p></li>
-<li><p><a href="#loop-intro"><code>for</code> loops</a> and <a href="#apply-intro"><code>apply()</code></a></p></li>
+<li><p><a href="#loop-intro"><code>for</code> loops</a></p></li>
+<li><p><a href="#apply-intro"><code>apply()</code></a></p></li>
+</ul></li>
 <li><p><a href="#parallel-intro">Parallel computation</a></p></li>
 </ul>
 </div>
-<div id="functions-intro" class="section level1">
-<h1>Functions</h1>
+<div id="functions-intro" class="section level2">
+<h2>Functions</h2>
 <p>If objects are the nouns of the R language, functions
 are the verbs. They do things to objects. Let’s use the <code>mean</code> function
 as an example. This function takes the mean of a numeric vector object.
@@ -92,8 +96,8 @@ object. For example:</p>
 parentheses immediately afterwards. This is the basic syntax that all
 functions use, i.e. <code>FUNCTION(ARGUMENTS)</code>. Even if you don’t want to explicitly
 include an argument, <em>you still need to type the parentheses after the function</em>.</p>
-<div id="arguments" class="section level2">
-<h2>Arguments</h2>
+<div id="arguments" class="section level3">
+<h3>Arguments</h3>
 <p>Arguments modify what functions do. In our most recent example, we gave
 the <code>mean</code> function one argument (<code>x = numeric_vector</code>) telling it that we
 wanted to find the mean of <em>numeric_vector</em>. Arguments use the
@@ -142,8 +146,8 @@ mean(numeric_vector) %&gt;%
     round(digits = 1)</code></pre>
 <pre><code>## [1] 6.5</code></pre>
 </div>
-<div id="creating-functions" class="section level2">
-<h2>Creating functions</h2>
+<div id="creating-functions" class="section level3">
+<h3>Creating functions</h3>
 <p>Functions are just objects. You can create your own functions with the <code>function()</code> function! Why would you create your own functions? If you ever find yourself repeating code with only minor variation, e.g. just changing the inputs, then it is time to create a function.</p>
 <p>For example imagine we want to repeatedly find vector means and the round them to one digit. We can create a new function called <code>mean_rounder()</code> to do this for us.</p>
 <pre class="r"><code>mean_rounder &lt;- function(x) {
@@ -165,8 +169,11 @@ mean_rounder &lt;- function(x) {
 <p>Notice that we started the <code>@param</code> line with a <code>#</code>. In R (and many other languages), <code>#</code> is the <strong>comment character</strong>. Everything on a line that starts with <code>#</code> is ignored by R.</p>
 </div>
 </div>
-<div id="if" class="section level1">
-<h1>If statements</h1>
+<div id="control-flow" class="section level2">
+<h2>Control flow</h2>
+<p>We can use conditional evaluation (like if statements) and loops to control the flow of our programs.</p>
+<div id="if" class="section level3">
+<h3>If statements</h3>
 <p>So we have seen functions that always (try to) do the same thing for any inputs. There are many cases when you want to do different things depending on the type of input.</p>
 <p>For example, imagine we want to create a new binary <code>[0, 1]</code> variable from a vector. We want a new vector with a 0 if the original value was less than 5 and 1 if it is greater than or equal to 5. We can use <code>ifelse()</code>:</p>
 <pre class="r"><code>numeric_vector</code></pre>
@@ -181,8 +188,8 @@ greater_than_5</code></pre>
 <p>Note that <code>&gt;=</code> is one of R’s <strong>logical operators</strong>. See the additional material for a table of common <a href="#logical-operators">logical operators</a> in R.</p>
 <p>For more complex if statements, use <code>if() {. . .} else()</code>.</p>
 </div>
-<div id="loop-intro" class="section level1">
-<h1><code>for</code> loops</h1>
+<div id="loop-intro" class="section level3">
+<h3><code>for</code> loops</h3>
 <p>Some times you want to do the same thing to each part of an object. We already saw an example with <code>ifelse()</code> which ran an if statement on each element of <em>numeric_vector</em>.</p>
 <p>A general solution to iterating through elements of an object is the <code>for()</code> loop function. Here is an example using R’s built in <strong>swiss</strong> data set:</p>
 <pre class="r"><code>head(swiss)</code></pre>
@@ -217,8 +224,8 @@ greater_than_5</code></pre>
 <p>The first line reads: “for each <code>i</code> in the vector 1 through the number of columns in the <strong>swiss</strong> data frame . . .”</p>
 <p>We then use <code>i</code> in the subscripts <code>[]</code> to select each column of <strong>swiss</strong> to find and print its mean.</p>
 </div>
-<div id="apply-intro" class="section level1">
-<h1>Apply</h1>
+<div id="apply-intro" class="section level3">
+<h3>Apply</h3>
 <p>Loops in R are <em>notoriously slow</em>. The <code>apply</code> family of functions does a something similar and is usually faster.</p>
 <p>For example, let’s find the mean of each column in <strong>swiss</strong>:</p>
 <pre class="r"><code>apply(swiss, MARGIN = 2, mean)</code></pre>
@@ -228,8 +235,9 @@ greater_than_5</code></pre>
 ##         41.14383         19.94255</code></pre>
 <p>For data frames and matrices, we need to specify whether we are applying the function to each row (<code>MARGIN = 1</code>) or each column (<code>MARGIN = 2</code>).</p>
 </div>
-<div id="parallel-intro" class="section level1">
-<h1>Advanced: Parallelisation</h1>
+</div>
+<div id="parallel-intro" class="section level2">
+<h2>Advanced: Parallelisation</h2>
 <p>By default, all computation in R is done sequentially–one after the other. However, your computer likely has more processor cores and so can run computations in “parallel”.</p>
 <p>To find the number of cores on your computer use:</p>
 <pre class="r"><code>library(parallel)
@@ -244,27 +252,28 @@ detectCores()</code></pre>
 <p>Let’s compute the mean of each vector in the list in parallel:</p>
 <pre class="r"><code>mclapply(three_list, mean, mc.cores = 3)</code></pre>
 <pre><code>## $A
-## [1] 0.9345577
+## [1] 1.080263
 ## 
 ## $B
-## [1] 1.960993
+## [1] 2.003107
 ## 
 ## $C
-## [1] 4.906829</code></pre>
+## [1] 4.996133</code></pre>
 <p><code>mc.cores</code> sets the number of cores to use. Usually use 1 - the number of cores you have available.</p>
 </div>
-<div id="exercises" class="section level1">
-<h1>🥅 Exercises</h1>
+<div id="exercises" class="section level2">
+<h2>🥅 Exercises</h2>
 <ul>
 <li><p>Create a new function to transform summarise numeric vectors in a method of your choosing.</p></li>
 <li><p>Create a data frame with numeric and character columns. Then, for each column find the standard deviation (<code>sd()</code>) if it is numeric and return the <code>message()</code> “This column has characters” if it is a character type column.</p></li>
 <li><p><code>ncar()</code> counts the number of characters in a string Create a list of character vectors with strings of different lengths. In parallel, count the number of characters in each vector.</p></li>
 </ul>
 </div>
-<div id="additional-materials" class="section level1">
-<h1>Additional Materials</h1>
+<div id="additional-materials" class="section level2">
+<h2>Additional Materials</h2>
+</div>
 <div id="logical-operators" class="section level2">
-<h2>Logical Operators</h2>
+<h2>(Some) Logical Operators</h2>
 <table>
 <thead>
 <tr class="header">
@@ -308,9 +317,8 @@ detectCores()</code></pre>
 </tbody>
 </table>
 </div>
-</div>
-<div id="references" class="section level1">
-<h1>📚 References</h1>
+<div id="references" class="section level2">
+<h2>📚 References</h2>
 </div>
 <div class="footnotes">
 <hr />
@@ -329,7 +337,7 @@ detectCores()</code></pre>
 </div>
 		<nav id="pagination">
 			<a class="prev" href="/post/optional-r-basics-1/">Prev</a>
-			
+			<a class="next" href="/post/why-automated-data-collection/">Next</a>
 		</nav>
 	
 		        <footer>
