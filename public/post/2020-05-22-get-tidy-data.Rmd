@@ -1,0 +1,32 @@
+---
+title: GET Tidy Data
+author: Christopher Gandrud
+date: '2020-05-22 (updated: `r Sys.Date()`)'
+slug: get-tidy-data
+categories: []
+tags:
+  - R
+  - programming
+  - GET
+  - tidy
+  - retrieval
+Categories: []
+Description: ''
+Tags: [R, programming, GET, tidy, data retrieval]
+---
+
+## 📝 Lesson Preview
+
+- What is public data?
+
+- APIs
+
+- HTTP verbs (GET, POST, HEAD, PUT)
+
+- Retrieving and cleaning (tabular) public data
+
+## 📣 Lecture slides
+
+```{r echo=FALSE}
+knitr::include_url("https://brave-pasteur-c09ffa.netlify.app/slides/get-tidy-data")
+```

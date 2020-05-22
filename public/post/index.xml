@@ -76,5 +76,18 @@ numeric_vector &amp;lt;- c(2.</description>
    📣 Lecture slides   </description>
     </item>
     
+    <item>
+      <title>GET Tidy Data</title>
+      <link>/post/get-tidy-data/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/post/get-tidy-data/</guid>
+      <description>  📝 Lesson Preview  What is public data?
+ APIs
+ HTTP verbs (GET, POST, HEAD, PUT)
+ Retrieving and cleaning (tabular) public data
+   📣 Lecture slides   </description>
+    </item>
+    
   </channel>
 </rss>

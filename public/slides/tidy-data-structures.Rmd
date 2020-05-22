@@ -479,7 +479,7 @@ For example, see if:
 
 - Distributions are what you expect them to be.
 
---- 
+---
 
 class: inverse, center, middle
 background-color: #FF8C03

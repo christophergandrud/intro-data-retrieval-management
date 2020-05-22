@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>tidy on Programming Methods for Data Retrieval &amp; Management</title>
+    <link>/tags/tidy/</link>
+    <description>Recent content in tidy on Programming Methods for Data Retrieval &amp; Management</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="/tags/tidy/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>GET Tidy Data</title>
+      <link>/post/get-tidy-data/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/post/get-tidy-data/</guid>
+      <description>  📝 Lesson Preview  What is public data?
+ APIs
+ HTTP verbs (GET, POST, HEAD, PUT)
+ Retrieving and cleaning (tabular) public data
+   📣 Lecture slides   </description>
+    </item>
+    
+  </channel>
+</rss>

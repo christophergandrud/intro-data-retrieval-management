@@ -22,7 +22,19 @@ class: center, middle, inverse, title-slide
 
 
 
-## What is open public data?
+# 📝 Lesson Preview
+
+- What is public data?
+
+- Retrieving and cleaning (tabular) public data
+
+- APIs
+
+- HTTP verbs (GET, POST, HEAD, PUT)
+
+---
+
+# What is open public data?
 
 @Janssen2012 [258]:
 
@@ -30,7 +42,9 @@ class: center, middle, inverse, title-slide
 data which is produced with public money and is made available without any
 restrictions on its usage or distribution."
 
-## Some benefits of open public data
+---
+
+# Some benefits of open public data
 
 - **Greater returns** on public investment in data gathering.
 
@@ -42,7 +56,9 @@ restrictions on its usage or distribution."
 
 See @Janssen2012 [261] for more.
 
-## Mending separation between public and users
+---
+
+# Mending separation between public and users
 
 - **Assumes** that government **considers outside** views and information (including opposing)
 views as **constructive**.
@@ -50,7 +66,9 @@ views as **constructive**.
 - Results in government **giving up** (some) control and more **actively interacting**
 with its environment.
 
-## An ideal for open public data
+---
+
+# An ideal for open public data
 
 &lt;br&gt;
 &lt;br&gt;
@@ -59,7 +77,9 @@ with its environment.
 Not only should data be published, but potential **data users in society** should be
 **actively** sought for input on **improving government**.
 
-## Challenges to open data
+---
+
+# Challenges to open data
 
 - **Lack of technological competence** to implement open data that is **useful**.
 
@@ -72,10 +92,638 @@ to use and understand the data.
 
 See @Janssen2012 [262-263] for more.
 
-## Recommended podcast
+---
+
+# Recommended podcast
 
 Max Ogden on the Request for Commits podcast discussing challenges faced working 
 for the City of Boston with Code for America (&lt;https://changelog.com/rfc-6/&gt;).
+
+---
+
+# Accessing data
+
+Social science and public data is becoming **increasingly open** and **accessible**.
+
+However, the level of **accessibility varies**:
+
+- use restrictions
+
+- format
+
+- documentation
+
+- version control
+
+---
+
+# So . . .
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+We are only going to begin **scratching the surface** of the data access
+**obstacles** you are likely to encounter.
+
+---
+
+# Tie your research to your data
+
+Do as much **data gathering** and **cleaning** as possible in R scripts:
+
+- Fully document for reproducible research.
+
+- Can find (inevitable) mistakes.
+
+- Easy to update when the data is updated.
+
+- Can apply methods to other data sets.
+
+---
+
+# "Easy" automatic data gathering
+
+1. Plain-text data (e.g. CSV) stored at non-secure (http) URL, not embedded in
+a larger HTML marked-up website.
+
+2. Plain-text data (e.g. CSV) stored at secure (https) URL, not embedded in
+a larger HTML marked-up website.
+
+3. Data stored in a database with a well structured API (Application Programming
+    Interface), that has a corresponding R package.
+
+---
+
+# Non-Secure URL Plain-text data
+
+Use `read.table` or `read.csv` (just a wrapper for `read.csv` with `sep = ','`).
+
+Include the URL rather than the file path.
+
+
+```r
+read.table('http://SOMEDATA.csv')
+```
+
+---
+
+# Loading compressed plain-text data
+
+You can download and load data files stored in compressed formats.
+
+1. Download the compressed file into a **temporary file**.
+
+2. Uncompress the file and pass it to `read.table`, `import`, etc.
+
+---
+
+# Loading compressed plain-text data
+
+Load data from @Pemstein2010 in a file called *uds_summary.csv*.
+
+
+```r
+# For simplicity, store the URL in an object called 'URL'.
+
+URL &lt;- "http://bit.ly/1jXJgDh"
+
+# Create a temporary file called 'temp' to put the zip file into.
+temp &lt;- tempfile()
+
+# Download the compressed file into the temporary file.
+download.file(URL, temp)
+
+# Decompress the file and convert it into a data frame
+uds &lt;- read.csv(gzfile(temp, "uds_summary.csv"))
+
+# Delete the temporary file.
+unlink(temp)
+```
+
+
+
+---
+
+# Secure (https) URL Plain-text data
+
+Use `import()` from the devtools package.
+
+Data on GitHub is stored at secure URLs. Select the **RAW** URL:
+
+
+```r
+URL &lt;- paste0('https://raw.githubusercontent.com/christophergandrud/',
+        'LegislativeViolence/master/Data/LegViolenceDescriptives.csv')
+main &lt;- rio::import(URL)
+```
+
+---
+
+# Versioning and reproducible research
+
+Data maintainers (unfortunately) often change data sets with little or no documentation.
+
+`source_data` allows you to notice these changes by assigning each file a unique
+[SHA1 Hash](http://en.wikipedia.org/wiki/SHA-1).
+
+Each download can be checked against the Hash
+
+
+```r
+main &lt;- repmis::source_data(URL,
+                sha1 = '01cff579b689cea9ef9c98e433ce3122745cc5cb')
+```
+
+```
+## Downloading data from: https://raw.githubusercontent.com/christophergandrud/LegislativeViolence/master/Data/LegViolenceDescriptives.csv
+```
+
+```
+## Specified SHA-1 hash matches downloaded data file.
+```
+
+---
+
+# Can also use rio
+
+You can also use the rio package (but no sha1 hashing):
+
+
+```r
+main &lt;- rio::import(URL)
+```
+
+---
+
+# Excel Files
+
+The `source_XlsxData` function in repmis does the same thing as `source_data`, but
+for Excel files. 
+
+Builds on `read.xlsx` for loading locally stored Excel files. 
+
+Can also use `import` from rio.
+
+Note: Excel data often needs **a lot of cleaning** before it is useful
+for statistical/graphical analyses.
+
+---
+
+# Caching
+
+`source_data` allows you to **cache** data with `cache = TRUE`.
+
+This is useful if you are downloading a large data set/to speed up knitting.
+
+Creates a locally stored version of the data set which is useful for 
+reproducibility.
+
+You can also cache data when you *knit* your R Markdown files.
+
+Note: if you are caching a "large" data set in GitHub terms (&gt;50 mb) consider 
+ignoring it in a *.gitignore* file. Advanced users can store it using 
+[Git Large File Storage](https://git-lfs.github.com/).
+
+---
+
+# Data APIs
+
+API = Application Programming Interface, a documented way for programs to talk
+to each other.
+
+Data API = a documented way to access data from one program stored with another.
+
+---
+
+# R and Data APIs
+
+R can interact with most data APIs using the [httr](https://github.com/hadley/httr)
+package.
+
+Even easier: users have written API-specific packages to interact with 
+particular data APIs.
+
+---
+
+# World Bank Development Indications with WDI
+
+Access the [World Bank's Development Indicators](http://data.worldbank.org/indicator)
+with the WDI package.
+
+Alternative Energy Use example:
+
+
+```r
+# Load WDI package
+library(WDI)
+# Per country alternative energy use as % of total energy use
+alt_energy &lt;- WDI(indicator = 'EG.USE.COMM.CL.ZS')
+```
+
+Note: The indicator ID is at the end of the indicator's URL on the World Bank site.
+
+---
+
+# Financial Data with quantmod
+
+The [quantmod](http://www.quantmod.com/) package allows you to access financial
+data from a variety of sources (e.g. [Yahoo Finance](http://finance.yahoo.com/),
+[Google Finance](https://www.google.com/finance),
+[US Federal Reserve's FRED database](http://research.stlouisfed.org/fred2/)).
+
+
+```r
+library(quantmod)
+# Download Yen/USD exchange rate
+YenDollar &lt;- getSymbols(Symbols = 'DEXJPUS', src = 'FRED')
+```
+
+---
+
+# Other API-R packages
+
+There are many more R packages that interact with web data APIs.
+
+For a good beginner list see:
+&lt;http://cran.r-project.org/web/views/WebTechnologies.html&gt;
+
+---
+
+# Working with non-table data
+
+| Format      | R packages                                                     |
+| ----------- | -------------------------------------------------------------- |
+| Excel, Stata, SPSS, SAS       | rio |
+| [JSON](http://en.wikipedia.org/wiki/JSON) | [jsonlite](https://cran.r-project.org/web/packages/jsonlite/index.html) |
+| [MySQL](http://en.wikipedia.org/wiki/MySQL) | [RMySQL](http://biostat.mc.vanderbilt.edu/wiki/Main/RMySQL), [more info](http://www.jason-french.com/blog/2014/07/03/using-r-with-mysql-databases/) |
+| [couchDB](http://couchdb.apache.org/) | [R4CouchDB](https://github.com/wactbprot/R4CouchDB) |
+
+---
+
+# &lt;i class="fa fa-paint-brush"&gt;&lt;/i&gt; Data Cleaning
+
+The data you need for your analysis is often **not clean**.
+
+Perhaps **80%** of data analysis is typically spent cleaning and preparing data [@Dasu2003].
+
+- This doesn't include the time taken to gather the data.
+
+To help streamline this process @Wickham2014 laid out **principles of data
+tidying**.
+
+- Links the **physical structure** of a data set to its **meaning**
+(semantics).
+
+---
+
+# Data structure
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+Many (not all) statistical data sets are organised into **rows** and **columns**.
+
+Rows and columns have **no inherent meaning**.
+
+---
+
+# Data structure
+
+| Person       |  treatmentA | treatmentB |
+| ------------ | ----------- | ---------- |
+| John Smith   |             | 2          |
+| Jane Doe     | 16          | 11         |
+| Mary Johnson | 3           | 1          |
+
+&lt;br&gt;
+
+| Treatment  | John Smith | Jane Doe | Mary Johnson |
+| ---------- | ---------- | -------- | ------------ |
+| treatmentA |            | 16       | 3            |
+| treatmentB | 2          | 11       | 1            |
+
+---
+
+# Data semantics
+
+Data sets are **collections of values**.
+
+All values are assigned to a **variable** and an **observation**.
+
+- **Variable**: all values measuring the same attribute across units
+
+- **Observation**: all values measured within the same unit across attributes.
+
+---
+
+# Tidy data semantics + structure
+
+&lt;br&gt;
+
+1. Each variable forms a column.
+
+2. Each observation forms a row.
+
+3. Each type of observational unit forms a table.
+
+---
+
+# Tidy data
+
+| Person       |  treatment  | result     |
+| ------------ | ----------- | ---------- |
+| John Smith   | a           |            |
+| Jane Doe     | a           | 16         |
+| Mary Johnson | a           | 3          |
+| John Smith   | b           | 2          |
+| Jane Doe     | b           | 11         |
+| Mary Johnson | b           | 1          |
+
+---
+
+# Messy to Tidy data
+
+First identify what your observations and variables are.
+
+Then use R tools to convert your data into this format.
+
+**tidyr** and its predecessor **reshape2** are particularly useful.
+
+---
+
+# Messy to tidy data
+
+
+```r
+# Create messy (wide) data
+messy &lt;- data.frame(
+  person = c("John Smith", "Jane Doe", "Mary Johnson"),
+  a = c(NA, 16, 3),
+  b = c(2, 11, 1)
+)
+messy
+```
+
+```
+##         person  a  b
+## 1   John Smith NA  2
+## 2     Jane Doe 16 11
+## 3 Mary Johnson  3  1
+```
+
+---
+
+# Messy to tidy data
+
+
+```r
+library(tidyr)
+# Gather the data into tidy long format
+tidy &lt;- gather(messy, treatement, result, a:b)
+tidy
+```
+
+```
+##         person treatement result
+## 1   John Smith          a     NA
+## 2     Jane Doe          a     16
+## 3 Mary Johnson          a      3
+## 4   John Smith          b      2
+## 5     Jane Doe          b     11
+## 6 Mary Johnson          b      1
+```
+
+---
+
+# Tidy to messy data
+
+Sometimes it is useful to reverse this operation with `spread`.
+
+
+```r
+messyAgain &lt;- spread(data = tidy, key = treatement,
+                     value = result)
+messyAgain
+```
+
+```
+##         person  a  b
+## 1     Jane Doe 16 11
+## 2   John Smith NA  2
+## 3 Mary Johnson  3  1
+```
+
+---
+
+# Other issues cleaning data
+
+Always **look at** and **poke your data**.
+
+For example, see if:
+
+- Missing values are designated with `NA`
+
+- Variable classes are what you expect them to be.
+
+- Distributions are what you expect them to be.
+
+[testdat](https://github.com/ropensci/testdat) can be useful for this, though 
+not actively maintained.
+
+---
+
+# Merging data
+
+Once you have tidy data frames, you can merge them for analysis.
+
+In general: **each observation** must have a **unique identifier** to merge them
+on.
+
+These identifiers **must match exactly across the data frames**.
+
+---
+
+# Merging data
+
+
+```r
+tail(alt_energy, n = 3)
+```
+
+```
+##       iso2c  country EG.USE.COMM.CL.ZS year
+## 15838    ZW Zimbabwe                NA 1962
+## 15839    ZW Zimbabwe                NA 1961
+## 15840    ZW Zimbabwe                NA 1960
+```
+
+```r
+tail(uds, n = 3)
+```
+
+```
+##         X       country year cowcode      mean        sd    median     pct025
+## 9135 9135 Western Samoa 2006     990 0.2485397 0.2155926 0.2474691 -0.1702781
+## 9136 9136 Western Samoa 2007     990 0.2439135 0.2151686 0.2487054 -0.1874372
+## 9137 9137 Western Samoa 2008     990 0.2407623 0.2192563 0.2443505 -0.1881970
+##         pct975
+## 9135 0.6648156
+## 9136 0.6571918
+## 9137 0.6622615
+```
+
+---
+
+# Create unique ID: country codes
+
+Unique identifier will be
+[iso 2 letter country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
+and **year**.
+
+Use the [countrycode](https://github.com/vincentarelbundock/countrycode)
+package to turn UDS data's
+[Correlates of War Country Code](http://www.correlatesofwar.org/datasets.htm)
+(`cowcode`) to `iso2c`.
+
+
+```r
+library(countrycode)
+# Assign iso2c codes base on correlates of war codes
+uds$iso2c &lt;- countrycode(uds$cowcode, origin = 'cown',
+                             destination = 'iso2c', warn = TRUE)
+```
+
+**NOTE**: Always check the data to make sure the correct codes have been applied!
+
+---
+
+# Creating IDs: geocodes
+
+countrycode clearly only works for standardising country IDs
+
+Other packages can be useful for standardising other unit IDs.
+
+For example, `geocode` from
+[ggmap](http://journal.r-project.org/archive/2013-1/kahle-wickham.pdf) can be
+used to create latitude/longitudes for other geographic units:
+
+
+```r
+places &lt;- c('Bavaria', 'Seoul', '6 Parisier Platz, Berlin')
+ggmap::geocode(places, source = 'google')
+```
+
+Note: [you need to](https://github.com/dkahle/ggmap#attention) sign up for a Google Cloud account to use this.
+
+---
+
+# Creating IDs: Time 
+
+Time units may be important components of observation IDs.
+
+Use the [lubridate](http://cran.r-project.org/web/packages/lubridate/vignettes/lubridate.html)
+package to standardise dates.
+
+---
+
+# Creating IDs: Time
+
+
+```r
+library(lubridate)
+
+# Create time data
+times &lt;- c('Sep. 17 1980', 'March 23 2000', 'Nov. 3 2003')
+mdy(times)
+```
+
+```
+## [1] "1980-09-17" "2000-03-23" "2003-11-03"
+```
+
+Note: Times should always go from **longest to shortest** unit (e.g. YEAR-MONTH-DAY). 
+Makes dates **sortable**.
+
+---
+
+# Merge data
+
+
+```r
+# Keep only desired variables
+uds &lt;- uds[, c('iso2c', 'year', 'median')]
+names(uds)
+```
+
+```
+## [1] "iso2c"  "year"   "median"
+```
+
+
+```r
+Combined &lt;- merge(alt_energy, uds,
+                  by = c('iso2c', 'year'))
+head(Combined, n = 3)
+```
+
+```
+##   iso2c year country EG.USE.COMM.CL.ZS    median
+## 1    AD 1993 Andorra                NA 0.6033493
+## 2    AD 1994 Andorra                NA 0.7945102
+## 3    AD 1995 Andorra                NA 0.7945606
+```
+
+---
+
+# Some merge details
+
+By default, only observations in both data sets are kept. Use `all`, `all.x`, or
+`all.y` to keep non-merged observations.
+
+&lt;br&gt;
+&lt;br&gt;
+
+Always **check your data** after a merge to see if you did what you wanted to do!
+
+---
+
+# Clean up
+
+You many want to do some post merge cleaning. For example assign new variable
+names:
+
+
+```r
+names(Combined) &lt;- c('iso2c', 'year', 'country',
+                     'alt_energy_use',  'uds_median')
+```
+
+or
+
+
+```r
+Combined &lt;- dplyr::rename(Combined, new_year = year)
+```
+
+And reorder variables
+
+
+```r
+Combined &lt;- DataCombine::MoveFront(Combined, 'country')
+```
+
+---
+
+# &lt;i class="fa fa-arrow-circle-o-up"&gt;&lt;/i&gt; Seminar: Access web-based data
+
+Thinking of your pair research project, write an R script to download **two or more**
+data sets from the web.
+
+Either in the same or a linked R script  **clean** and **merge** the data.
+
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

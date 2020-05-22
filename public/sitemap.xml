@@ -101,4 +101,20 @@
     <loc>/categories/</loc>
   </url>
   
+  <url>
+    <loc>/tags/data-retrieval/</loc>
+  </url>
+  
+  <url>
+    <loc>/tags/get/</loc>
+  </url>
+  
+  <url>
+    <loc>/post/get-tidy-data/</loc>
+  </url>
+  
+  <url>
+    <loc>/tags/tidy/</loc>
+  </url>
+  
 </urlset>
