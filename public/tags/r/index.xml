@@ -6,7 +6,7 @@
     <description>Recent content in R on Programming Methods for Data Retrieval &amp; Management</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 02 May 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 22 May 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/r/index.xml" rel="self" type="application/rss+xml" />
     
@@ -36,6 +36,18 @@ This and the next lesson are optional. Their intended for you if you are not tha
   Parallel computation
    Functions If objects are the nouns of the R language, functions are the verbs. They do things to objects. Let’s use the mean function as an example. This function takes the mean of a numeric vector object. Remember our numeric_vector object from Lesson 1:
 numeric_vector &amp;lt;- c(2.</description>
+    </item>
+    
+    <item>
+      <title>Tidy Data Structures</title>
+      <link>/post/tidy-data-structures/</link>
+      <pubDate>Fri, 22 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tidy-data-structures/</guid>
+      <description>  📝 Lesson Preview  Why data structures are important?
+ What is tidy data?
+ Manipulating tidy data (SQL-like queries)
+   📣 Lecture slides   </description>
     </item>
     
   </channel>

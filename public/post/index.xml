@@ -6,7 +6,7 @@
     <description>Recent content in Posts on Programming Methods for Data Retrieval &amp; Management</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 02 May 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 22 May 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
@@ -61,6 +61,18 @@ numeric_vector &amp;lt;- c(2.</description>
  Why reproducible research?
  Reproducible research workflow
  Personal data privacy and GDPR
+   📣 Lecture slides   </description>
+    </item>
+    
+    <item>
+      <title>Tidy Data Structures</title>
+      <link>/post/tidy-data-structures/</link>
+      <pubDate>Fri, 22 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tidy-data-structures/</guid>
+      <description>  📝 Lesson Preview  Why data structures are important?
+ What is tidy data?
+ Manipulating tidy data (SQL-like queries)
    📣 Lecture slides   </description>
     </item>
     
