@@ -39,14 +39,14 @@ numeric_vector &amp;lt;- c(2.</description>
     </item>
     
     <item>
-      <title>Tidy Data Structures</title>
+      <title>File Organisation and Tidy Data Structures</title>
       <link>/post/tidy-data-structures/</link>
       <pubDate>Fri, 22 May 2020 00:00:00 +0000</pubDate>
       
       <guid>/post/tidy-data-structures/</guid>
-      <description>  📝 Lesson Preview  Why data structures are important?
+      <description>  📝 Lesson Preview  Why is file management is important?
  What is tidy data?
- Manipulating tidy data (SQL-like queries)
+ Manipulating and joining tidy data
    📣 Lecture slides   </description>
     </item>
     

@@ -1,5 +1,5 @@
 ---
-title: Tidy Data Structures
+title: File Organisation and Tidy Data Structures
 author: Christopher Gandrud
 date: '2020-05-22'
 slug: tidy-data-structures
@@ -16,11 +16,11 @@ bibliography: main.bib
 
 ## 📝 Lesson Preview
 
-- Why data structures are important?
+- Why is file management is important?
 
 - What is tidy data?
 
-- Manipulating tidy data (SQL-like queries)
+- Manipulating and joining tidy data
 
 ## 📣 Lecture slides
 

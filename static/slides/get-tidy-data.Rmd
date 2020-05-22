@@ -1,0 +1,71 @@
+---
+title: "Get Tidy Data"
+author: "Christopher Gandrud"
+institute: "HU DYNAMICS"
+date: "2020-05-22 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    css: [robot, metropolis-fonts]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+
+## What is open public data?
+
+@Janssen2012 [258]:
+
+"Non-privacy-restricted and non-confidential
+data which is produced with public money and is made available without any
+restrictions on its usage or distribution."
+
+## Some benefits of open public data
+
+- **Greater returns** on public investment in data gathering.
+
+- Better **coordination** within government.
+
+- Provides **policy-makers with information** needed to address complex problems.
+
+- ''**Mends the traditional separation** between public organizations and users''.
+
+See @Janssen2012 [261] for more.
+
+## Mending separation between public and users
+
+- **Assumes** that government **considers outside** views and information (including opposing)
+views as **constructive**.
+
+- Results in government **giving up** (some) control and more **actively interacting**
+with its environment.
+
+## An ideal for open public data
+
+<br>
+<br>
+<br>
+
+Not only should data be published, but potential **data users in society** should be
+**actively** sought for input on **improving government**.
+
+## Challenges to open data
+
+- **Lack of technological competence** to implement open data that is **useful**.
+
+- **Worry** by bureaucrats that open data will be used to **criticise** them.
+
+- **No incentives** for users to access the data. **Lack of skills** needed
+to use and understand the data.
+
+- Balancing individual **privacy** concerns.
+
+See @Janssen2012 [262-263] for more.
+
+## Recommended podcast
+
+Max Ogden on the Request for Commits podcast discussing challenges faced working 
+for the City of Boston with Code for America (<https://changelog.com/rfc-6/>).
