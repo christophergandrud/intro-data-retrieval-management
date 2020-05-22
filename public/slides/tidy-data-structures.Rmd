@@ -357,6 +357,12 @@ Many (not all) statistical data sets are organised into **rows** and **columns**
 
 Rows and columns have **no inherent meaning**.
 
+Wickham (2014) laid out **principles of data
+tidying** to standardize statistical semantics.
+
+- Links the **physical structure** of a data set to its **meaning**
+(semantics).
+
 ---
 
 # Two ways to represent the same data

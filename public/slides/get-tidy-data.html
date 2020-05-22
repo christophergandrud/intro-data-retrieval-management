@@ -34,9 +34,16 @@ class: center, middle, inverse, title-slide
 
 ---
 
+class: inverse, center, middle
+
 # What is open public data?
 
-@Janssen2012 [258]:
+---
+
+
+# What is open public data?
+
+Janssen (2012, 258):
 
 "Non-privacy-restricted and non-confidential
 data which is produced with public money and is made available without any
@@ -52,9 +59,9 @@ restrictions on its usage or distribution."
 
 - Provides **policy-makers with information** needed to address complex problems.
 
-- ''**Mends the traditional separation** between public organizations and users''.
+- "**Mends the traditional separation** between public organizations and users".
 
-See @Janssen2012 [261] for more.
+See Janssen (2012, 261) for more.
 
 ---
 
@@ -70,11 +77,8 @@ with its environment.
 
 # An ideal for open public data
 
-&lt;br&gt;
-&lt;br&gt;
-&lt;br&gt;
 
-Not only should data be published, but potential **data users in society** should be
+&gt; Not only should data be published, but potential **data users in society** should be
 **actively** sought for input on **improving government**.
 
 ---
@@ -90,7 +94,7 @@ to use and understand the data.
 
 - Balancing individual **privacy** concerns.
 
-See @Janssen2012 [262-263] for more.
+See Janssen (2012, 262-263) for more.
 
 ---
 
@@ -128,9 +132,15 @@ We are only going to begin **scratching the surface** of the data access
 
 ---
 
-# Tie your research to your data
+class: inverse, center, middle
 
-Do as much **data gathering** and **cleaning** as possible in R scripts:
+# Retrieving and cleaning (tabular) public data
+
+---
+
+# Remember programmatically ie your research to your data
+
+Do as much **data gathering** and **cleaning** as possible programmatically:
 
 - Fully document for reproducible research.
 
@@ -157,7 +167,7 @@ a larger HTML marked-up website.
 
 # Non-Secure URL Plain-text data
 
-Use `read.table` or `read.csv` (just a wrapper for `read.csv` with `sep = ','`).
+Use `read.table()` or `read.csv()` (just a wrapper for `read.csv()` with `sep = ','`).
 
 Include the URL rather than the file path.
 
@@ -174,7 +184,7 @@ You can download and load data files stored in compressed formats.
 
 1. Download the compressed file into a **temporary file**.
 
-2. Uncompress the file and pass it to `read.table`, `import`, etc.
+2. Uncompress the file and pass it to `read.table()`, `import()`, etc.
 
 ---
 
@@ -245,25 +255,14 @@ main &lt;- repmis::source_data(URL,
 
 ---
 
-# Can also use rio
-
-You can also use the rio package (but no sha1 hashing):
-
-
-```r
-main &lt;- rio::import(URL)
-```
-
----
-
 # Excel Files
 
-The `source_XlsxData` function in repmis does the same thing as `source_data`, but
+The `source_XlsxData()` function in repmis does the same thing as `source_data()`, but
 for Excel files. 
 
-Builds on `read.xlsx` for loading locally stored Excel files. 
+Builds on `read.xlsx()` for loading locally stored Excel files. 
 
-Can also use `import` from rio.
+Can also use `import()` from rio.
 
 Note: Excel data often needs **a lot of cleaning** before it is useful
 for statistical/graphical analyses.
@@ -272,18 +271,14 @@ for statistical/graphical analyses.
 
 # Caching
 
-`source_data` allows you to **cache** data with `cache = TRUE`.
+`source_data()` allows you to **cache** data with `cache = TRUE`.
 
-This is useful if you are downloading a large data set/to speed up knitting.
+Caching stores data so that future requests for the data can be done faster.
 
 Creates a locally stored version of the data set which is useful for 
 reproducibility.
 
-You can also cache data when you *knit* your R Markdown files.
-
-Note: if you are caching a "large" data set in GitHub terms (&gt;50 mb) consider 
-ignoring it in a *.gitignore* file. Advanced users can store it using 
-[Git Large File Storage](https://git-lfs.github.com/).
+The cache and the source can become out of sync, hence the need to be able to compare their hashes.
 
 ---
 
@@ -317,6 +312,7 @@ Alternative Energy Use example:
 ```r
 # Load WDI package
 library(WDI)
+
 # Per country alternative energy use as % of total energy use
 alt_energy &lt;- WDI(indicator = 'EG.USE.COMM.CL.ZS')
 ```
@@ -335,8 +331,15 @@ data from a variety of sources (e.g. [Yahoo Finance](http://finance.yahoo.com/),
 
 ```r
 library(quantmod)
+
 # Download Yen/USD exchange rate
 YenDollar &lt;- getSymbols(Symbols = 'DEXJPUS', src = 'FRED')
+
+head(YenDollar)
+```
+
+```
+## [1] "DEXJPUS"
 ```
 
 ---
@@ -352,73 +355,21 @@ For a good beginner list see:
 
 # Working with non-table data
 
-| Format      | R packages                                                     |
-| ----------- | -------------------------------------------------------------- |
-| Excel, Stata, SPSS, SAS       | rio |
-| [JSON](http://en.wikipedia.org/wiki/JSON) | [jsonlite](https://cran.r-project.org/web/packages/jsonlite/index.html) |
-| [MySQL](http://en.wikipedia.org/wiki/MySQL) | [RMySQL](http://biostat.mc.vanderbilt.edu/wiki/Main/RMySQL), [more info](http://www.jason-french.com/blog/2014/07/03/using-r-with-mysql-databases/) |
-| [couchDB](http://couchdb.apache.org/) | [R4CouchDB](https://github.com/wactbprot/R4CouchDB) |
+| Format                                      | R packages                                                              |
+| ------------------------------------------- | ----------------------------------------------------------------------- |
+| Excel, Stata, SPSS, SAS                     | rio                                                                     |
+| [JSON](http://en.wikipedia.org/wiki/JSON)   | [jsonlite](https://cran.r-project.org/web/packages/jsonlite/index.html) |
+| Databases, e.g. a Google BigQuery data base | [dbplyr](https://dbplyr.tidyverse.org/)                                 |
 
 ---
 
-# &lt;i class="fa fa-paint-brush"&gt;&lt;/i&gt; Data Cleaning
+class: inverse, center, middle
 
-The data you need for your analysis is often **not clean**.
-
-Perhaps **80%** of data analysis is typically spent cleaning and preparing data [@Dasu2003].
-
-- This doesn't include the time taken to gather the data.
-
-To help streamline this process @Wickham2014 laid out **principles of data
-tidying**.
-
-- Links the **physical structure** of a data set to its **meaning**
-(semantics).
+# Data Cleaning
 
 ---
 
-# Data structure
-
-&lt;br&gt;
-&lt;br&gt;
-&lt;br&gt;
-
-Many (not all) statistical data sets are organised into **rows** and **columns**.
-
-Rows and columns have **no inherent meaning**.
-
----
-
-# Data structure
-
-| Person       |  treatmentA | treatmentB |
-| ------------ | ----------- | ---------- |
-| John Smith   |             | 2          |
-| Jane Doe     | 16          | 11         |
-| Mary Johnson | 3           | 1          |
-
-&lt;br&gt;
-
-| Treatment  | John Smith | Jane Doe | Mary Johnson |
-| ---------- | ---------- | -------- | ------------ |
-| treatmentA |            | 16       | 3            |
-| treatmentB | 2          | 11       | 1            |
-
----
-
-# Data semantics
-
-Data sets are **collections of values**.
-
-All values are assigned to a **variable** and an **observation**.
-
-- **Variable**: all values measuring the same attribute across units
-
-- **Observation**: all values measured within the same unit across attributes.
-
----
-
-# Tidy data semantics + structure
+# 🙇‍♀️ Remember: Tidy data semantics + structure
 
 &lt;br&gt;
 
@@ -430,20 +381,22 @@ All values are assigned to a **variable** and an **observation**.
 
 ---
 
-# Tidy data
+# 🙇‍♀️ Remember: Tidy data
 
-| Person       |  treatment  | result     |
-| ------------ | ----------- | ---------- |
-| John Smith   | a           |            |
-| Jane Doe     | a           | 16         |
-| Mary Johnson | a           | 3          |
-| John Smith   | b           | 2          |
-| Jane Doe     | b           | 11         |
-| Mary Johnson | b           | 1          |
+| Person       | treatment | result |
+| ------------ | --------- | ------ |
+| John Smith   | a         |        |
+| Jane Doe     | a         | 16     |
+| Mary Johnson | a         | 3      |
+| John Smith   | b         | 2      |
+| Jane Doe     | b         | 11     |
+| Mary Johnson | b         | 1      |
+
+
 
 ---
 
-# Messy to Tidy data
+# 🙇‍♀️ Remember: Messy to Tidy data
 
 First identify what your observations and variables are.
 
@@ -453,71 +406,58 @@ Then use R tools to convert your data into this format.
 
 ---
 
-# Messy to tidy data
+# 🙇‍♀️ Remember:Messy to tidy data
+
+Using `pivot_longer()`
 
 
 ```r
-# Create messy (wide) data
-messy &lt;- data.frame(
-  person = c("John Smith", "Jane Doe", "Mary Johnson"),
-  a = c(NA, 16, 3),
-  b = c(2, 11, 1)
-)
-messy
+tidied &lt;- tidyr::pivot_longer(data = messy, 
+                     cols = c("a", "b"),     # Columns to pivot
+                     names_to = "treatment",
+                     values_to = "result")
+tidied
 ```
 
 ```
-##         person  a  b
-## 1   John Smith NA  2
-## 2     Jane Doe 16 11
-## 3 Mary Johnson  3  1
+## # A tibble: 6 x 3
+##   person       treatment result
+##   &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt;
+## 1 John Smith   a             NA
+## 2 John Smith   b              2
+## 3 Jane Doe     a             16
+## 4 Jane Doe     b             11
+## 5 Mary Johnson a              3
+## 6 Mary Johnson b              1
 ```
 
 ---
 
-# Messy to tidy data
+# 🙇‍♀️ Remember: Tidy to messy data
+
+Sometimes it is useful to reverse this operation with `pivot_wider`.
 
 
 ```r
-library(tidyr)
-# Gather the data into tidy long format
-tidy &lt;- gather(messy, treatement, result, a:b)
-tidy
+messy_again &lt;- tidyr::pivot_wider(data = tidied, 
+                                 names_from = "treatment",
+                                 values_from = result)
+
+messy_again
 ```
 
 ```
-##         person treatement result
-## 1   John Smith          a     NA
-## 2     Jane Doe          a     16
-## 3 Mary Johnson          a      3
-## 4   John Smith          b      2
-## 5     Jane Doe          b     11
-## 6 Mary Johnson          b      1
+## # A tibble: 3 x 3
+##   person           a     b
+##   &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;
+## 1 John Smith      NA     2
+## 2 Jane Doe        16    11
+## 3 Mary Johnson     3     1
 ```
 
 ---
 
-# Tidy to messy data
-
-Sometimes it is useful to reverse this operation with `spread`.
-
-
-```r
-messyAgain &lt;- spread(data = tidy, key = treatement,
-                     value = result)
-messyAgain
-```
-
-```
-##         person  a  b
-## 1     Jane Doe 16 11
-## 2   John Smith NA  2
-## 3 Mary Johnson  3  1
-```
-
----
-
-# Other issues cleaning data
+# 🙇‍♀️ Remember: Other issues cleaning data
 
 Always **look at** and **poke your data**.
 
@@ -534,14 +474,40 @@ not actively maintained.
 
 ---
 
-# Merging data
+# Join (merge) tidy data frames
 
 Once you have tidy data frames, you can merge them for analysis.
 
-In general: **each observation** must have a **unique identifier** to merge them
+In general: **each observation** must have a **unique key identifier** to merge them
 on.
 
 These identifiers **must match exactly across the data frames**.
+
+---
+
+# 🔑 Key-Value pairs
+
+Key-value pairs are a fundamental data representation.
+
+Data frames don't have explicit key-value pairs: e.g. 
+
+$$
+\langle \mathrm{Christopher},\: \mathrm{Lecturer}\rangle
+$$
+
+`Christopher` is the key and the value is `Lecturer`. 
+
+🤓 Fun fact: this is also called a `2-tuple`. Other languages like Python and Julia handle these with data structures called "dictionaries".
+
+---
+
+# Data frames!
+
+Data frames don't have explicit key-value pairings
+
+- Nice for flexibility
+
+- Bad for data manipulation speed and consistency  
 
 ---
 
@@ -590,6 +556,7 @@ package to turn UDS data's
 
 ```r
 library(countrycode)
+
 # Assign iso2c codes base on correlates of war codes
 uds$iso2c &lt;- countrycode(uds$cowcode, origin = 'cown',
                              destination = 'iso2c', warn = TRUE)
@@ -613,6 +580,11 @@ used to create latitude/longitudes for other geographic units:
 ```r
 places &lt;- c('Bavaria', 'Seoul', '6 Parisier Platz, Berlin')
 ggmap::geocode(places, source = 'google')
+
+##         lon      lat
+## 1  11.49789 48.79045
+## 2 126.97797 37.56654
+## 3  13.37854 52.51701
 ```
 
 Note: [you need to](https://github.com/dkahle/ggmap#attention) sign up for a Google Cloud account to use this.
@@ -648,7 +620,7 @@ Makes dates **sortable**.
 
 ---
 
-# Merge data
+# Join data
 
 
 ```r
@@ -663,27 +635,42 @@ names(uds)
 
 
 ```r
-Combined &lt;- merge(alt_energy, uds,
-                  by = c('iso2c', 'year'))
-head(Combined, n = 3)
+combined &lt;- full_join(x = alt_energy, 
+                      y = uds,
+                      by = c('iso2c', 'year'))
+head(combined, n = 3)
 ```
 
 ```
-##   iso2c year country EG.USE.COMM.CL.ZS    median
-## 1    AD 1993 Andorra                NA 0.6033493
-## 2    AD 1994 Andorra                NA 0.7945102
-## 3    AD 1995 Andorra                NA 0.7945606
+##   iso2c    country EG.USE.COMM.CL.ZS year median
+## 1    1A Arab World                NA 2019     NA
+## 2    1A Arab World                NA 2018     NA
+## 3    1A Arab World                NA 2017     NA
 ```
 
 ---
 
-# Some merge details
+# (Many) of the joins
 
-By default, only observations in both data sets are kept. Use `all`, `all.x`, or
-`all.y` to keep non-merged observations.
+```r
+combined &lt;- full_join(x = alt_energy, 
+                      y = uds,
+                      by = c('iso2c', 'year'))
+```
+
+
+| Name         | Description                                               |
+| ------------ | --------------------------------------------------------- |
+| `full_join`  | Returns all rows and columns from both data sets          |
+| `inner_join` | Returns all rows where there is a match in both data sets |
+| `left_join`  | Returns all rows from x                                   |
+| `right_join` | Returns all rows from y                                   |
+
 
 &lt;br&gt;
 &lt;br&gt;
+
+Joins are a crucial part of Structure Query Language (**SQL**) work that is common in commercial data science for working with data.bases
 
 Always **check your data** after a merge to see if you did what you wanted to do!
 
@@ -696,7 +683,7 @@ names:
 
 
 ```r
-names(Combined) &lt;- c('iso2c', 'year', 'country',
+names(combined) &lt;- c('iso2c', 'year', 'country',
                      'alt_energy_use',  'uds_median')
 ```
 
@@ -704,24 +691,26 @@ or
 
 
 ```r
-Combined &lt;- dplyr::rename(Combined, new_year = year)
+combined &lt;- dplyr::rename(combined, new_year = year)
 ```
 
 And reorder variables
 
 
 ```r
-Combined &lt;- DataCombine::MoveFront(Combined, 'country')
+combined &lt;- DataCombine::MoveFront(Combined, 'country')
 ```
+
+(You should replace with `relocate() from dplyr when version 1.0.0 is released)
 
 ---
 
-# &lt;i class="fa fa-arrow-circle-o-up"&gt;&lt;/i&gt; Seminar: Access web-based data
+class: inverse, center, middle
+background-color: #FF8C03
 
-Thinking of your pair research project, write an R script to download **two or more**
-data sets from the web.
+# 🥅 Practice
 
-Either in the same or a linked R script  **clean** and **merge** the data.
+Download two data sets (that conceivable could be merged) using the API-based packages discussed today. Either in the same or a linked R script  **clean** and **merge** the data.
 
 
     </textarea>
