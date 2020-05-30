@@ -37,7 +37,17 @@
   </url>
   
   <url>
+    <loc>/post/nested-json-and-text-as-data/</loc>
+    <lastmod>2020-05-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/tags/data-retrieval/</loc>
+    <lastmod>2020-05-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/dplyr/</loc>
     <lastmod>2020-05-30T00:00:00+00:00</lastmod>
   </url>
   
@@ -77,7 +87,17 @@
   </url>
   
   <url>
+    <loc>/tags/strings/</loc>
+    <lastmod>2020-05-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/tags/</loc>
+    <lastmod>2020-05-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/text/</loc>
     <lastmod>2020-05-30T00:00:00+00:00</lastmod>
   </url>
   

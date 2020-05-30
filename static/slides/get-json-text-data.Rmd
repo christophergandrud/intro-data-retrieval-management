@@ -1,0 +1,15 @@
+---
+title: "Get JSON and Text as Data"
+author: "Christopher Gandrud"
+institute: "HU DYNAMICS"
+date: "2020-05-30 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    css: [robot, metropolis-fonts]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+bibliography: main.bib
+---

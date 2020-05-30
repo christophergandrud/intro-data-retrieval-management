@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Get HTML and JSON Data</title>
+    <title>Get and Parse HTML Data</title>
     <meta charset="utf-8" />
     <meta name="author" content="Christopher Gandrud" />
     <script src="libs/header-attrs-2.1/header-attrs.js"></script>
@@ -12,7 +12,7 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Get HTML and JSON Data
+# Get and Parse HTML Data
 ### Christopher Gandrud
 ### HU DYNAMICS
 ### 2020-05-30 (updated: 2020-05-30)
@@ -26,7 +26,11 @@ class: center, middle, inverse, title-slide
 
 - HTTP verbs (GET, POST, HEAD, PUT) and httr
 
-- Parse HTML
+- Parse HTML tables
+
+- String manipulation
+
+- Cleaning grouped data
 
 - Parse JSON (nested data formats)
 
@@ -98,6 +102,12 @@ problems).
 
 ---
 
+# Inspect a webpage's source from Chrome
+
+&lt;img src="img/how-to-developer-tools.gif" style="display: block; margin: auto;" /&gt;
+
+---
+
 class: inverse, center, middle
 
 # 😏 Behind the scenes: how to programmatically communicate with the world wide web
@@ -158,6 +168,10 @@ https://en.wikipedia.org/wiki/URL
 ---
 
 # [The full schema](https://en.wikipedia.org/wiki/URL#Syntax)!
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
 
 &lt;img src="img/URI_syntax_diagram.svg" style="display: block; margin: auto;" /&gt;
 
@@ -237,9 +251,13 @@ class: inverse, center, middle
 
 # Introduction to HTML
 
-HTML: Hypertext Markup Language
+---
 
-Markup language: machine readable annotations of a text. Annotations give instructions to a compiler to format the document.
+# HTML
+
+- HTML: Hypertext Markup Language
+
+- Markup language: machine readable annotations of a text. Annotations give instructions to a compiler to format the document.
 
 ---
 
@@ -251,7 +269,7 @@ Markup language: machine readable annotations of a text. Annotations give instru
 &lt;/head&gt;
 
 &lt;body&gt;
-    &lt;h1&gt;A title&lt;/h1&gt;
+    &lt;h1&gt;A level 1 header&lt;/h1&gt;
 
     &lt;p&gt;This is a paragraph.&lt;/p&gt;
 &lt;/body&gt;
@@ -281,13 +299,755 @@ Markup language: machine readable annotations of a text. Annotations give instru
 &lt;/footer&gt;
 ```
 
-`&lt;head&gt; &lt;/head&gt;` is the head **tag**, 
+## Tags
+
+`&lt;head&gt; &lt;/head&gt;` is the *head* **tag**. 
+
+Tags need to be opened (e.g. `&lt;head&gt;`) and closed (e.g. `&lt;/head&gt;`).
 
 ---
 
-# Inspect a webpage's source from Chrome
+# Some HTML tags
 
-&lt;img src="img/how-to-developer-tools.gif" style="display: block; margin: auto;" /&gt;
+| Tag       | Defines          |
+| :-------- | ---------------- |
+| `h1`      | Header level 1   |
+| `h2`      | Header level 2   |
+| `p`       | Paragraph        |
+| `img`     | Image            |
+| `table`   | Table element    |
+| `tr`      | Table row        |
+| `th`      | Table header row |
+| `td`      | Table data cell  |
+| `caption` | Table caption    |
+
+
+[All the tags](https://www.w3schools.com/TAGS/default.ASP)
+
+---
+
+class: inverse, center, middle
+background-color: #FB3579
+
+## HTML Tables
+
+---
+
+# HTML Tables
+
+Are structured data that can be:
+
+1. Requested from a host
+
+2. Parsed by R (rvest)
+
+3. Converted to a data frame for analysis &amp; storage
+
+---
+
+# Example HTML Table
+
+&lt;img src="img/table-output.png" width="400px" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Example HTML table
+
+```html
+&lt;body&gt;
+   &lt;table id="alien-table"&gt;
+       &lt;caption&gt;Alien football stars&lt;/caption&gt;
+       &lt;tr&gt;
+           &lt;th scope="col"&gt;Player&lt;/th&gt;
+           &lt;th scope="col"&gt;Gloobles&lt;/th&gt;
+           &lt;th scope="col"&gt;Za'taak&lt;/th&gt;
+       &lt;/tr&gt;
+       &lt;tr&gt;
+           &lt;th scope="row"&gt;TR-7&lt;/th&gt;
+           &lt;td&gt;7&lt;/td&gt;
+           &lt;td&gt;4,569&lt;/td&gt;
+       &lt;/tr&gt;
+       &lt;tr&gt;
+           &lt;th scope="row"&gt;Khiresh Odo&lt;/th&gt;
+           &lt;td&gt;7&lt;/td&gt;
+           &lt;td&gt;7,223&lt;/td&gt;
+       &lt;/tr&gt;
+       &lt;tr&gt;
+           &lt;th scope="row"&gt;Mia Oolong&lt;/th&gt;
+           &lt;td&gt;9&lt;/td&gt;
+           &lt;td&gt;6,219&lt;/td&gt;
+       &lt;/tr&gt;
+   &lt;/table&gt;
+&lt;/body&gt;
+```
+
+Example from [Mozilla Developer Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Element)
+
+---
+
+# Tag IDs
+
+Tags can include an `id`, e.g. 
+
+```html
+   &lt;table id="alien-table"&gt;
+```
+
+These are really helpful to look forward to for web scraping.
+
+---
+
+# Nested nodes
+
+Notice how the tags are nested within each other. This is highlighted by the (not necessary) indentation:
+
+```html
+&lt;body&gt;
+   &lt;table id="alien-table"&gt;
+       &lt;caption&gt;Alien football stars&lt;/caption&gt;
+       &lt;tr&gt;
+           &lt;th scope="col"&gt;Player&lt;/th&gt;
+```
+
+## Nested structure
+
+```
+body
+|__ table
+    |__ caption
+    |__ tr
+        |__ th
+```
+
+Each element of the nested structure is sometimes called a "node".
+
+---
+
+class: inverse, center, middle
+background-color: #FF8C03
+
+# Let's start scraping
+
+---
+
+#  Key steps:
+
+1. **Look at** the HTML for the webpage you want to scrape (e.g. use Inspect 
+Element in Chrome).
+
+2. **Request** a URL with `read_html` (rvest) or `GET` (httr).
+
+3. **Extract** the specific content nodes from the request with `html_nodes`.
+
+4. **Convert** the nodes to your desired R object type.
+
+5. **Clean** content (there are many tools for this suited to a variety of
+problems).
+
+---
+
+# Web scraping example
+
+Scrape [BBC's MP's Expenses table](http://news.bbc.co.uk/2/hi/uk_news/politics/8044207.stm).
+
+HTML markup marks tables using `&lt;table&gt;` tags.
+
+We can use these to extract tabular information and convert it into data frames.
+
+In particular, we want the table tag with the **id** `expenses_table`. This
+will be the *node* that we want to extract.
+
+---
+
+# Inspect
+
+&lt;img src="img/expenses-table.gif" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Web scraping example
+
+
+```r
+library(rvest)
+library(dplyr)
+
+URL &lt;- 'http://news.bbc.co.uk/2/hi/uk_news/politics/8044207.stm'
+
+expenses_table &lt;- URL %&gt;% read_html() %&gt;% # GET and parse webpage
+                    html_nodes('#expenses_table') %&gt;% # Extract node
+                    html_table() %&gt;% 
+                    as.data.frame # Convert table to data frame
+```
+
+---
+
+# Web scraping example
+
+Now we need to clean the `expenses_table` data frame.
+
+
+```r
+head(expenses_table)[, 1:3]
+```
+
+```
+##                      MP Party                                  Seat
+## 1      Abbott, Ms Diane   LAB       Hackney North &amp; Stoke Newington
+## 2       Adams, Mr Gerry    SF                          West Belfast
+## 3         Afriyie, Adam   CON                               Windsor
+## 4          Ainger, Nick   LAB Carmarthen West &amp; Pembrokeshire South
+## 5   Ainsworth, Mr Peter   CON                           Surrey East
+## 6 Ainsworth, Rt Hon Bob   LAB                   Coventry North East
+```
+
+---
+
+# For example, Standardise names
+
+
+```r
+library(janitor)
+expenses_table &lt;- clean_names(expenses_table)
+
+names(expenses_table)
+```
+
+```
+##  [1] "mp"                  "party"               "seat"               
+##  [4] "x2nd_home_allowance" "london_supple_ment"  "office"             
+##  [7] "staffing"            "central_stationery"  "stationery_postage" 
+## [10] "it_provision"        "staff_cover_other"   "communications"     
+## [13] "travel"              "total"
+```
+
+---
+
+# Processing strings
+
+A (frustratingly) large proportion of time web scraping and doing data
+cleaning generally is taken up with **processing strings**.
+
+**Key tools** for processing strings:
+
+- knowing your encoding and `iconv` function in base R
+
+- `grep`, `gsub`, and related functions in base R
+
+- Regular expressions
+
+- [stringr](http://journal.r-project.org/archive/2010-2/RJournal_2010-2_Wickham.pdf) package
+
+---
+
+# Character encoding: Motivation
+
+Sometimes when you load text into R you will get weird symbols like �
+([the replacement character](http://en.wikipedia.org/wiki/Specials_(Unicode_block)#Replacement_character))
+or other strange things will happen to the text.
+
+NOTE: remember to always check your data when you import it!
+
+This often happens when R is using the **wrong character encoding**.
+
+---
+
+# Character encoding
+
+All characters in a computer are **encoded** using some standardised system.
+
+R can recognise [latin1](http://en.wikipedia.org/wiki/Latin-1_Supplement_(Unicode_block))
+and [UTF-8](http://en.wikipedia.org/wiki/UTF-8).
+
+- latin1 is fairly limited (mostly to the latin alphabet)
+
+- UTF-8 covers a much wider range of characters in many languages
+
+You may need to use the `iconv` function to convert a text to UTF-8 before
+trying to process it.
+
+See also [Wiki Books R Programming/Text Processing](https://en.wikibooks.org/wiki/R_Programming/Text_Processing)
+
+---
+
+# `grep`, `gsub`, and related functions
+
+&lt;br&gt;
+&lt;br&gt;
+
+R (and many programming languages) have functions for **identifying** and
+**manipulating** strings.
+
+---
+
+# Terminology
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+grep stands for: **G**lobally search a **R**egular **E**xpression and
+**P**rint
+
+---
+
+# Matching
+
+You can use `grep` and `grepl` to find patterns in a vector.
+
+
+```r
+pets &lt;- c('cats', 'dogs', 'a big snake')
+
+grep(pattern = 'cat', x = pets)
+```
+
+```
+## [1] 1
+```
+
+```r
+grepl(pattern = 'cat', pets)
+```
+
+```
+## [1]  TRUE FALSE FALSE
+```
+
+```r
+# Subset vector
+pets[grep('cats', pets)]
+```
+
+```
+## [1] "cats"
+```
+
+---
+
+# `agrep`
+You can do approximate (fuzzy) string matching with `agrep`.
+
+
+```r
+agrep(pattern = "lasy", x = "1 lazy 2")
+```
+
+```
+## [1] 1
+```
+
+---
+
+# Manipulation
+
+Use `gsub` to substitute strings.
+
+
+```r
+gsub(pattern = 'big', replacement = 'small', x = pets)
+```
+
+```
+## [1] "cats"          "dogs"          "a small snake"
+```
+
+---
+
+# Regular expressions
+
+[Regular expressions](http://en.wikipedia.org/wiki/Regular_expression) are a
+powerful tool for finding and manipulating strings.
+
+They are special characters that can be used to search for text.
+
+For example:
+
+- find characters at only the beginning or end of a string
+
+- find characters that follow or are preceded by a particular character
+
+- find only the first or last occurrence of a character in a string
+
+Many more possibilities.
+
+---
+
+# Regular expressions examples
+
+Examples (modified from [Robin Lovelace](http://www.r-bloggers.com/regular-expressions-in-r-vs-rstudio/)).
+
+
+```r
+base &lt;- c("cat16_24", "25_34cat", "35_44catch",
+          "45_54Cat", "55_4fat$", 'colour', 'color')
+
+## Find only all 'cat' regardles of case
+grep('cat', base, ignore.case = T)
+```
+
+```
+## [1] 1 2 3 4
+```
+
+---
+
+# Regular expressions examples
+
+
+```r
+# Find only 'cat' at the end of the string with $
+grep('cat$', base)
+```
+
+```
+## [1] 2
+```
+
+```r
+# Find only 'cat' at the beginning of the string with ^
+grep('^cat', base)
+```
+
+```
+## [1] 1
+```
+
+---
+
+# Regular expressions examples
+
+
+```r
+# Find zero or one of the preceding character with ?
+grep('colou?r', base)
+```
+
+```
+## [1] 6 7
+```
+
+```r
+# Find one or more of the preceding character with +
+grep('colou+r', base)
+```
+
+```
+## [1] 6
+```
+
+```r
+# Find '$' with the escape character \
+grep('\\$', base)
+```
+
+```
+## [1] 5
+```
+
+---
+
+# Regular expressions examples
+
+
+```r
+# Find string with any single character between 'c' and 'l' with .
+grep('c.l', base)
+```
+
+```
+## [1] 6 7
+```
+
+```r
+# Find a range of numbers with [ - ]
+grep('[1-3]', base)
+```
+
+```
+## [1] 1 2 3
+```
+
+```r
+# Find capital letters
+grep('[A-Z]', base)
+```
+
+```
+## [1] 4
+```
+
+---
+
+# Simple regular expressions cheatsheet
+
+| Character | Use                                       |
+| --------- | ----------------------------------------- |
+| `$`       | characters at the end of the string       |
+| `^`       | characters at the beginning of the string |
+| `?`       | zero or one of the preceding character    |
+| `*`       | zero or more of the preceding character   |
+| `+`       | one or more of the preceding character    |
+| `\`       | escape character use to find strings that are expressions |
+| `.`       | any single character                      |
+| `[ - ]`   | a range of characters                     |
+
+---
+
+# String processing with stringr
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+The stringr package has many helpful functions that make dealing with strings a
+bit **easier**.
+
+---
+
+# stringr examples
+
+Remove leading and trailing **whitespace** (this can be a real problem when creating
+consistent variable values):
+
+
+```r
+library(stringr)
+str_trim(' hello   ')
+```
+
+```
+## [1] "hello"
+```
+
+---
+
+# stringr examples
+
+**Split** strings (really useful for turning 1 variable into 2):
+
+
+```r
+trees &lt;- c('Jomon Sugi', 'Huon Pine')
+str_split_fixed(trees, pattern = ' ', n = 2)
+```
+
+```
+##      [,1]    [,2]  
+## [1,] "Jomon" "Sugi"
+## [2,] "Huon"  "Pine"
+```
+
+---
+
+# More data transformations with dplyr
+
+Set up for examples
+
+
+```r
+# Create fake grouped data
+library(randomNames)
+library(dplyr)
+library(tidyr)
+
+people &lt;- randomNames(n = 1000)
+people &lt;- sort(rep(people, 4))
+year &lt;- rep(2010:2013, 1000)
+trend_income &lt;- c(30000, 31000, 32000, 33000)
+
+income &lt;-  replicate(trend_income + rnorm(4, sd = 20000),
+                     n = 1000) %&gt;%
+            data.frame() %&gt;%
+            gather(obs, value, X1:X1000)
+
+income$value[income$value &lt; 0] &lt;- 0
+data &lt;- data.frame(people, year, income = income$value)
+```
+
+---
+
+# dplyr
+
+
+```r
+head(data)
+```
+
+```
+##            people year   income
+## 1    Abenes, Jiho 2010 63359.65
+## 2    Abenes, Jiho 2011 39200.29
+## 3    Abenes, Jiho 2012 50081.14
+## 4    Abenes, Jiho 2013 43294.25
+## 5 Abeyta, Jasmine 2010 48621.87
+## 6 Abeyta, Jasmine 2011 46284.91
+```
+
+---
+
+# Simple dplyr
+
+Select rows
+
+
+```r
+higher_income &lt;- filter(data, income &gt; 60000)
+head(higher_income)
+```
+
+```
+##            people year   income
+## 1    Abenes, Jiho 2010 63359.65
+## 2  Adams, Bridget 2011 66418.98
+## 3  Adams, Bridget 2013 62844.84
+## 4   Adams, Damian 2010 72375.92
+## 5    Adams, Devin 2010 73924.24
+## 6 Aguilar, Darian 2012 63271.46
+```
+
+---
+
+# Simple dplyr
+
+Select columns
+
+
+```r
+people_income &lt;- select(data, people, income)
+# OR
+people_income &lt;- select(data, -year)
+head(people_income)
+```
+
+```
+##            people   income
+## 1    Abenes, Jiho 63359.65
+## 2    Abenes, Jiho 39200.29
+## 3    Abenes, Jiho 50081.14
+## 4    Abenes, Jiho 43294.25
+## 5 Abeyta, Jasmine 48621.87
+## 6 Abeyta, Jasmine 46284.91
+```
+
+---
+
+# dplyr with grouped data
+
+Tell dplyr what the groups are in the data with `group_by`.
+
+
+```r
+group_data &lt;- group_by(data, people)
+head(group_data)[1:5, ]
+```
+
+```
+## # A tibble: 5 x 3
+## # Groups:   people [2]
+##   people           year income
+##   &lt;chr&gt;           &lt;int&gt;  &lt;dbl&gt;
+## 1 Abenes, Jiho     2010 63360.
+## 2 Abenes, Jiho     2011 39200.
+## 3 Abenes, Jiho     2012 50081.
+## 4 Abenes, Jiho     2013 43294.
+## 5 Abeyta, Jasmine  2010 48622.
+```
+
+Note: the following functions work on **non-grouped data** as well.
+
+---
+
+# dplyr with grouped data
+
+Now that we have declared the data as grouped, we can do operations on each group.
+
+For example, we can extract the highest and lowest income years for each person:
+
+
+```r
+min_max_income &lt;- summarize(group_data,
+                            min_income = min(income),
+                            max_income = max(income))
+head(min_max_income)[1:3, ]
+```
+
+```
+## # A tibble: 3 x 3
+##   people          min_income max_income
+##   &lt;chr&gt;                &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Abenes, Jiho        39200.     63360.
+## 2 Abeyta, Jasmine     25457.     48622.
+## 3 Abo, Aleena         12250.     55588.
+```
+
+---
+
+# dplyr with grouped data
+
+We can sort the data using `arrange`.
+
+
+```r
+# Sort highest income for each person in ascending order
+ascending &lt;- arrange(min_max_income, max_income)
+head(ascending)[1:3, ]
+```
+
+```
+## # A tibble: 3 x 3
+##   people             min_income max_income
+##   &lt;chr&gt;                   &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Royer, Jessica             0       8477.
+## 2 al-Mohamed, Kamaal      1249.      9299.
+## 3 Hill, Mangei               0      13060.
+```
+
+---
+
+# dplyr with grouped data
+
+Add `desc` to sort in descending order
+
+
+```r
+descending &lt;- arrange(min_max_income, desc(max_income))
+head(descending)[1:3, ]
+```
+
+```
+## # A tibble: 3 x 3
+##   people              min_income max_income
+##   &lt;chr&gt;                    &lt;dbl&gt;      &lt;dbl&gt;
+## 1 el-Rahman, Khaleefa     17426.     92136.
+## 2 Berggren, Stephanie     10342.     92117.
+## 3 al-Iqbal, Turki         14149.     91767.
+```
+
+---
+
+# dplyr with grouped data
+
+`summarize` creates a new data frame with the summarised data.
+
+We can use `mutate` to add new columns to the original data frame.
+
+
+```r
+data &lt;- mutate(group_data,
+                min_income = min(income),
+                max_income = max(income))
+head(data)[1:3, ]
+```
+
+```
+## # A tibble: 3 x 5
+## # Groups:   people [1]
+##   people        year income min_income max_income
+##   &lt;chr&gt;        &lt;int&gt;  &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Abenes, Jiho  2010 63360.     39200.     63360.
+## 2 Abenes, Jiho  2011 39200.     39200.     63360.
+## 3 Abenes, Jiho  2012 50081.     39200.     63360.
+```
 
 ---
 
@@ -295,6 +1055,11 @@ class: inverse, center, middle
 background-color: #FF8C03
 
 # 🥅 Practice
+
+**Scrape** and **clean** the Medal Table from
+&lt;http://www.bbc.com/sport/winter-olympics/2014/medals/countries&gt;.
+
+Also, sort by total medals in **descending order**.
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

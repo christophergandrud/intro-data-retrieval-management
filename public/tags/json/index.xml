@@ -12,14 +12,13 @@
     
     
     <item>
-      <title>GET HTML and JSON data</title>
-      <link>/post/get-json-and-html/</link>
+      <title>Nested JSON and Text as Data</title>
+      <link>/post/nested-json-and-text-as-data/</link>
       <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post/get-json-and-html/</guid>
-      <description>  📝 Lesson Preview  HTTP verbs (GET, POST, HEAD, PUT) and httr
- Parse HTML tables
- Parse JSON (nested data formats)
+      <guid>/post/nested-json-and-text-as-data/</guid>
+      <description>  📝 Lesson Preview  Parse JSON (nested data formats)
+ Text as data
    📣 Lecture slides   </description>
     </item>
     

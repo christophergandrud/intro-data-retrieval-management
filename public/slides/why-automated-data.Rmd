@@ -172,6 +172,16 @@ ggplot(returns_to_scale, aes(x, y)) +
 
 # 🏭 Industry 
 
+<br>
+<br>
+<br>
+
+> "It's not interesting if it doesn't scale." -- Jim Freeman
+
+---
+
+# 🏭 Industry 
+
 So, data science being able to automate data retrieval and management are highly valued. E.g. on [PayScale](https://www.payscale.com/research/DE/Job=Data_Scientist/Salary):
 
 ```{r pay-by-experience, echo=FALSE}
@@ -364,7 +374,7 @@ You might think you can simply replace peoples' names with a random number, but 
 
 > I conducted an example re-identification study by showing how newspaper stories about hospital visits in Washington State leads to identifying the matching health record 43% of the time ([Sweeney 2015](https://techscience.org/a/2015092903/))
 
-Sweeney's insights has led to new areas of data management like [differential privacy](https://www.johndcook.com/blog/2018/11/06/what-is-differential-privacy/). 
+Sweeney's insights led to new areas of data management like [differential privacy](https://www.johndcook.com/blog/2018/11/06/what-is-differential-privacy/). 
 
 ---
 
@@ -431,7 +441,7 @@ the data subjects' rights pursuant to Articles 12 to 222
 
 # 👀 Course preview: from structured to unstructured data
 
-```{dot struct-to-unstruct, echo=FALSE, cache=TRUE}
+```{dot struct-to-unstruct, echo=FALSE, cache=TRUE, fig.width=10, fig.retina=2, fig.align='center'}
 digraph stricttpimstruct {
     graph [layout = dot, rankdir = LR, overlap = true, fontsize = 30];
     edge [arrowsize = 0.5];
@@ -453,6 +463,13 @@ digraph stricttpimstruct {
 ---
 
 class: inverse, center, middle
+background-color: #FB3579
+
+## We are only scratching the surface of what is possible (and needed). Aim: you know where to start.
+
+---
+
+class: inverse, center, middle
 background-color: #FF8C03
 
 # 🥅 With a partner
@@ -466,4 +483,4 @@ background-color: #FF8C03
 
 # 🥅 With a partner
 
-What are the privacy and protection considerations you should make with the ~3 data sets you identified?
+What are the **data privacy and protection** considerations you should make with the ~3 data sets you identified?

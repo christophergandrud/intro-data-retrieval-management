@@ -1,5 +1,5 @@
 ---
-title: GET HTML and JSON data
+title: GET and Parse HTML data
 author: 'Christopher '
 date: '2020-05-30'
 weight: 7
@@ -8,7 +8,7 @@ categories: []
 tags: []
 Categories: []
 Description: ''
-Tags: [R, programming, GET, HTML, JSON, data retrieval]
+Tags: [R, programming, GET, HTML, data retrieval, strings, dplyr]
 ---
 
 ## 📝 Lesson Preview
@@ -17,7 +17,9 @@ Tags: [R, programming, GET, HTML, JSON, data retrieval]
 
 - Parse HTML tables
 
-- Parse JSON (nested data formats)
+- String manipulation
+
+- Cleaning grouped data
 
 ## 📣 Lecture slides
 

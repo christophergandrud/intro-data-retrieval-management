@@ -11,3 +11,5 @@ stringr
 forcats
 jsonlite
 httr
+xml2
+rvest
