@@ -1,7 +1,8 @@
 ---
-title: GET JSON and HTML
+title: GET HTML and JSON data
 author: 'Christopher '
 date: '2020-05-30'
+weight: 7
 slug: get-json-and-html
 categories: []
 tags: []
@@ -12,11 +13,11 @@ Tags: [R, programming, GET, HTML, JSON, data retrieval]
 
 ## 📝 Lesson Preview
 
-- HTTP verbs (GET, POST, HEAD, PUT)
+- HTTP verbs (GET, POST, HEAD, PUT) and httr
+
+- Parse HTML tables
 
 - Parse JSON (nested data formats)
-
-- Parse HTML
 
 ## 📣 Lecture slides
 

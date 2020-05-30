@@ -65,18 +65,6 @@ numeric_vector &amp;lt;- c(2.</description>
     </item>
     
     <item>
-      <title>GET JSON and HTML</title>
-      <link>/post/get-json-and-html/</link>
-      <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/post/get-json-and-html/</guid>
-      <description>  📝 Lesson Preview  HTTP verbs (GET, POST, HEAD, PUT)
- Parse JSON (nested data formats)
- Parse HTML
-   📣 Lecture slides   </description>
-    </item>
-    
-    <item>
       <title>File Organisation and Tidy Data Structures</title>
       <link>/post/tidy-data-structures/</link>
       <pubDate>Fri, 22 May 2020 00:00:00 +0000</pubDate>
@@ -97,6 +85,18 @@ numeric_vector &amp;lt;- c(2.</description>
       <description>  📝 Lesson Preview  What is public data?
  APIs
  Retrieving and cleaning (tabular) public data
+   📣 Lecture slides   </description>
+    </item>
+    
+    <item>
+      <title>GET HTML and JSON data</title>
+      <link>/post/get-json-and-html/</link>
+      <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/get-json-and-html/</guid>
+      <description>  📝 Lesson Preview  HTTP verbs (GET, POST, HEAD, PUT) and httr
+ Parse HTML tables
+ Parse JSON (nested data formats)
    📣 Lecture slides   </description>
     </item>
     

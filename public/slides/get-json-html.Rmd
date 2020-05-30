@@ -1,5 +1,5 @@
 ---
-title: "Get JSON and HTML Data"
+title: "Get HTML and JSON Data"
 author: "Christopher Gandrud"
 institute: "HU DYNAMICS"
 date: "2020-05-30 (updated: `r Sys.Date()`)"
@@ -17,25 +17,279 @@ bibliography: main.bib
 ```{r setup, include=FALSE}
 library(xfun)
 pkg_attach2("tidyverse", "jsonlite")
+knitr::opts_chunk$set(fig.align = 'center')
 ```
 
 # 📝 Lesson Preview
 
 - HTTP verbs (GET, POST, HEAD, PUT) and httr
 
+- Parse HTML
+
 - Parse JSON (nested data formats)
 
-- Parse HTML
+---
+
+class: inverse, center, middle
+background-color: #FFC400
+
+# Now we are entering the world of more complex and less structured data
+
+---
+
+# Caveat about Web Scraping
+
+- We are only scratching the surface of web scraping
+
+- I just want you to know that these things are possible, so that you know where to look in future work.
+
+---
+
+# 👩‍💻 Web scraping
+
+[Web scraping](https://en.wikipedia.org/wiki/Web_scraping) simply means gathering data from websites.
+
+Last lesson we learned a particular form of web scraping: downloading tabular and often tidy structured data files/data APIs.
+
+You can also download information that is not as well structured for statistical analysis:
+
+- HTML tables
+
+- Text on websites
+
+- Information that requires you to navigate through web forms
+
+To really master web scraping you need a good knowledge of HTTP and HTML.
+
+---
+
+# The most basic tools for web scraping in R:
+
+- [rvest](https://github.com/hadley/rvest): scraping + parsing
+
+    + [Parsing](http://en.wikipedia.org/wiki/Parsing): the analysis of HTML
+    (and other) markup so that each element is syntactically related in a
+    **parse tree**.
+
+- [httr](https://github.com/r-lib/httr): gather data from APIs + simple parsing
+
+- [jsonlite](https://cran.r-project.org/web/packages/jsonlite/index.html): parse and create JSON
+
+- Also, [XML](http://cran.r-project.org/web/packages/XML/index.html)
+parsing
+
+---
+
+# Key steps:
+
+1. **Look at** the HTML for the webpage you want to scrape (e.g. use Inspect 
+Element in Chrome).
+
+2. **Request** a URL with `read_html` (rvest) or `GET` (httr).
+
+3. **Extract** the specific content nodes from the request with `html_nodes`.
+
+4. **Convert** the nodes to your desired R object type.
+
+5. **Clean** content (there are many tools for this suited to a variety of
+problems).
 
 ---
 
 class: inverse, center, middle
 
-# 😏 Behind the scenes: how to programmatically communicate with the internet
+# 😏 Behind the scenes: how to programmatically communicate with the world wide web
 
 ---
 
+# World's first web server
 
+```{r first-web-server, echo=FALSE, out.width="500px"}
+knitr::include_graphics("img/First_Web_Server.jpg")
+```
+
+Source: [wikipedia](https://en.wikipedia.org/wiki/Tim_Berners-Lee#/media/File:First_Web_Server.jpg)
+
+---
+
+# 👩‍HTTP: Hypertext Transfer Protocol
+
+Tim Berners-Lee proposed and implemented the Hypertext Transfer Protocol (HTTP).
+
+Allowed documents to be **linked** to each other. 
+
+Today HTTP defines **request** and **response** *methods*.
+
+```{dot http, echo=FALSE, fig.retina=10, cache=TRUE, fig.width=4}
+digraph http {
+    graph [layout = dot, rankdir = LR, overlap = true];
+    edge [arrowsize = 0.5];
+    node [shape = rectangle];
+
+    d1   [label = "Your Computer (client)"];
+    d2   [label = "Server (host)"];
+
+    d1 -> d2[label="Request"];
+    d2 -> d1[label="Response"]
+}
+```
+
+---
+
+# ‍HTTP Verbs
+
+HTTP **request** and **response** methods are often called "[HTTP verbs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)". The verbs include:
+
+| HTTP Verb | Action                               |
+| :-------- | ------------------------------------ |
+| `GET`     | Requests data from source            |
+| `HEAD`    | GETs only the head of the resource   |
+| `POST`    | Submit an entity to the server       |
+| `CONNECT` | Establishes a "tunnel" to the server |
+
+---
+
+# Uniform Resource Locators (URL)
+
+Resources are located with URLs. 
+
+You can think of these as (largely) file paths to the resource. For example:
+
+```R
+https://en.wikipedia.org/wiki/URL
+```
+
+- `https` - designates that it is an HTTPS (hypertext transfer protocol secure)
+
+- `en.wikipedia.org` - English wikipedia
+
+- `wiki` - it's a wiki page
+
+- `URL` - the specific resource
+
+---
+
+# [The full schema](https://en.wikipedia.org/wiki/URL#Syntax)!
+
+```{r full-schema, echo=FALSE}
+knitr::include_graphics("img/URI_syntax_diagram.svg")
+```
+
+---
+
+# R as your HTTP client
+
+Get the head of the URL Wikipedia page
+
+```{r, cache=TRUE}
+library(httr)
+
+url <- "https://en.wikipedia.org/wiki/URL"
+
+head_wiki_url <- HEAD(url)
+
+names(head_wiki_url)
+
+head_wiki_url
+```
+
+---
+
+# Note: HTTP is "stateless"
+
+Every HTTP request and response happens as-if no request or response has ever been made before.
+
+---
+
+# HTTP Status Codes
+
+After making an HTTP request, check the status code.
+
+```yaml
+Response [https://en.wikipedia.org/wiki/URL]
+  Date: 2020-05-30 11:57
+  Status: 200
+  Content-Type: text/html; charset=UTF-8
+<EMPTY BODY>
+```
+
+[HTTP status codes](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes) tell you the status of the HTTP request/response. Some include:
+
+| Code | Means        |
+| :--- | ------------ |
+| 200  | OK           |
+| 400  | Bad request  |
+| 401  | Unauthorized |
+| 404  | Not found    |
+
+---
+
+class: inverse, center, middle
+background-color: #FB3579
+
+# What is an HTML head?
+
+---
+
+class: inverse, center, middle
+
+# Introduction to HTML
+
+HTML: Hypertext Markup Language
+
+Markup language: machine readable annotations of a text. Annotations give instructions to a compiler to format the document.
+
+---
+
+# Simple HTMl document
+
+```html
+<head>
+    <base>http://fake.base.url</base>
+</head>
+
+<body>
+    <h1>A title</h1>
+
+    <p>This is a paragraph.</p>
+</body>
+
+<footer>
+    Christopher Gandrud.
+</footer>
+```
+
+---
+
+# Simple HTMl document
+
+```html
+<head>
+    <base>http://fake.base.url</base>
+</head>
+
+<body>
+    <h1>A level 1 header</h1>
+
+    <p>This is a paragraph.</p>
+</body>
+
+<footer>
+    Christopher Gandrud.
+</footer>
+```
+
+`<head> </head>` is the head **tag**. 
+
+---
+
+# Inspect a webpage's source from Chrome
+
+```{r inspect-source, echo=FALSE}
+knitr::include_graphics("img/how-to-developer-tools.gif")
+```
+
+---
 
 class: inverse, center, middle
 background-color: #FF8C03
