@@ -6,24 +6,51 @@
     <description>Recent content in Tags on Programming Methods for Data Retrieval &amp; Management</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 22 May 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 30 May 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>data management</title>
-      <link>/tags/data-management/</link>
-      <pubDate>Fri, 22 May 2020 00:00:00 +0000</pubDate>
+      <title>data retrieval</title>
+      <link>/tags/data-retrieval/</link>
+      <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/data-management/</guid>
+      <guid>/tags/data-retrieval/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>GET</title>
+      <link>/tags/get/</link>
+      <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/get/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>HTML</title>
+      <link>/tags/html/</link>
+      <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/html/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>JSON</title>
+      <link>/tags/json/</link>
+      <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/json/</guid>
       <description></description>
     </item>
     
     <item>
       <title>programming</title>
       <link>/tags/programming/</link>
-      <pubDate>Fri, 22 May 2020 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
       
       <guid>/tags/programming/</guid>
       <description></description>
@@ -32,9 +59,18 @@
     <item>
       <title>R</title>
       <link>/tags/r/</link>
-      <pubDate>Fri, 22 May 2020 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
       
       <guid>/tags/r/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>data management</title>
+      <link>/tags/data-management/</link>
+      <pubDate>Fri, 22 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/data-management/</guid>
       <description></description>
     </item>
     
@@ -107,24 +143,6 @@
       <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>/tags/loops/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>data retrieval</title>
-      <link>/tags/data-retrieval/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/data-retrieval/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>GET</title>
-      <link>/tags/get/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/get/</guid>
       <description></description>
     </item>
     

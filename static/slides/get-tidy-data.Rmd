@@ -28,8 +28,6 @@ pkg_attach2("tidyverse", "devtools", "repmis", "ggmap", "countrycode", "WDI",
 
 - APIs
 
-- HTTP verbs (GET, POST, HEAD, PUT)
-
 ---
 
 class: inverse, center, middle

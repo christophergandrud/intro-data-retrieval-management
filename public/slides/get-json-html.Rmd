@@ -1,0 +1,43 @@
+---
+title: "Get JSON and HTML Data"
+author: "Christopher Gandrud"
+institute: "HU DYNAMICS"
+date: "2020-05-30 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    css: [robot, metropolis-fonts]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+bibliography: main.bib
+---
+
+```{r setup, include=FALSE}
+library(xfun)
+pkg_attach2("tidyverse", "jsonlite")
+```
+
+# 📝 Lesson Preview
+
+- HTTP verbs (GET, POST, HEAD, PUT) and httr
+
+- Parse JSON (nested data formats)
+
+- Parse HTML
+
+---
+
+class: inverse, center, middle
+
+# 😏 Behind the scenes: how to programmatically communicate with the internet
+
+---
+
+
+
+class: inverse, center, middle
+background-color: #FF8C03
+
+# 🥅 Practice

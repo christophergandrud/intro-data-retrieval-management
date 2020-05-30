@@ -1,0 +1,25 @@
+---
+title: GET JSON and HTML
+author: 'Christopher '
+date: '2020-05-30'
+slug: get-json-and-html
+categories: []
+tags: []
+Categories: []
+Description: ''
+Tags: [R, programming, GET, HTML, JSON, data retrieval]
+---
+
+## 📝 Lesson Preview
+
+- HTTP verbs (GET, POST, HEAD, PUT)
+
+- Parse JSON (nested data formats)
+
+- Parse HTML
+
+## 📣 Lecture slides
+
+```{r echo=FALSE}
+knitr::include_url("https://brave-pasteur-c09ffa.netlify.app/slides/get-json-html")
+```

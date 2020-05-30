@@ -6,9 +6,22 @@
     <description>Recent content in data retrieval on Programming Methods for Data Retrieval &amp; Management</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Sat, 30 May 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/data-retrieval/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>GET JSON and HTML</title>
+      <link>/post/get-json-and-html/</link>
+      <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/get-json-and-html/</guid>
+      <description>  📝 Lesson Preview  HTTP verbs (GET, POST, HEAD, PUT)
+ Parse JSON (nested data formats)
+ Parse HTML
+   📣 Lecture slides   </description>
+    </item>
     
     <item>
       <title>GET Tidy Data</title>
@@ -18,7 +31,6 @@
       <guid>/post/get-tidy-data/</guid>
       <description>  📝 Lesson Preview  What is public data?
  APIs
- HTTP verbs (GET, POST, HEAD, PUT)
  Retrieving and cleaning (tabular) public data
    📣 Lecture slides   </description>
     </item>

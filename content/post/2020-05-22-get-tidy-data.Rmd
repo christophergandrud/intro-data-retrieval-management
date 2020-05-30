@@ -21,8 +21,6 @@ Tags: [R, programming, GET, tidy, data retrieval]
 
 - APIs
 
-- HTTP verbs (GET, POST, HEAD, PUT)
-
 - Retrieving and cleaning (tabular) public data
 
 ## 📣 Lecture slides
