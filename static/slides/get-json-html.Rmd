@@ -476,17 +476,19 @@ Tags need to be opened (e.g. `<head>`) and closed (e.g. `</head>`).
 
 # Some HTML tags
 
-| Tag       | Defines          |
-| :-------- | ---------------- |
-| `h1`      | Header level 1   |
-| `h2`      | Header level 2   |
-| `p`       | Paragraph        |
-| `img`     | Image            |
-| `table`   | Table element    |
-| `tr`      | Table row        |
-| `th`      | Table header row |
-| `td`      | Table data cell  |
-| `caption` | Table caption    |
+| Tag       | Defines                               |
+| :-------- | ------------------------------------- |
+| `h1`      | Header level 1                        |
+| `h2`      | Header level 2                        |
+| `p`       | Paragraph                             |
+| `img`     | Image                                 |
+| `table`   | Table element                         |
+| `tr`      | Table row                             |
+| `th`      | Table header row                      |
+| `td`      | Table data cell                       |
+| `caption` | Table caption                         |
+| `li`      | List item                             |
+| `a`       | Anchor, holds `href` element for URLs |
 
 
 [All the tags](https://www.w3schools.com/TAGS/default.ASP)
@@ -854,16 +856,16 @@ grep('[A-Z]', base)
 
 # Simple regular expressions cheatsheet
 
-| Character | Use                                       |
-| --------- | ----------------------------------------- |
-| `$`       | characters at the end of the string       |
-| `^`       | characters at the beginning of the string |
-| `?`       | zero or one of the preceding character    |
-| `*`       | zero or more of the preceding character   |
-| `+`       | one or more of the preceding character    |
+| Character | Use                                                       |
+| --------- | --------------------------------------------------------- |
+| `$`       | characters at the end of the string                       |
+| `^`       | characters at the beginning of the string                 |
+| `?`       | zero or one of the preceding character                    |
+| `*`       | zero or more of the preceding character                   |
+| `+`       | one or more of the preceding character                    |
 | `\`       | escape character use to find strings that are expressions |
-| `.`       | any single character                      |
-| `[ - ]`   | a range of characters                     |
+| `.`       | any single character                                      |
+| `[ - ]`   | a range of characters                                     |
 
 ---
 

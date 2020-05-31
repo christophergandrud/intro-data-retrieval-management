@@ -83,12 +83,717 @@ Use `locate_areas(file = url)` to find the areas.
 
 # Clean up
 
+
+```r
+all_tables_df &lt;- all_tables[[1]]
+head(all_tables_df)[, 1:4]
+```
+
+```
+##   RANK     COUNTRY SCORE CHANGE
+## 1    1     Iceland 1.072      
+## 2    2 New Zealand 1.221      
+## 3    3    Portugal 1.274     2
+## 4    4     Austria 1.291     1
+## 5    5     Denmark 1.316     1
+## 6    6      Canada 1.327      
+```
+
+Clean up in the lesson practice.
+
+---
+
+# Note: you can also extract text data from PDFs
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+
+```R
+tabularize::extract_text
+```
+
+---
+
+class: inverse, center, middle
+background-color: #FFC400
+
+# 📑 Text as data
+
+---
+
+# 📑 Text as data
+
+So far we have assumed that we want to get data into tidy data format, probably for a standard statistical analysis (e.g. linear regression). 
+
+But, we may want to conduct an analysis of the text itself, e.g. [Grimmer and Stewart (2013)](https://www.cambridge.org/core/journals/political-analysis/article/text-as-data-the-promise-and-pitfalls-of-automatic-content-analysis-methods-for-political-texts/F7AAC8B2909441603FEB25C156448F20), using **natural language processing** (NPL) methods. 
+
+Key tools include the [quanteda](https://github.com/quanteda/quanteda) and [tm](https://cran.r-project.org/web/packages/tm/tm.pdf) (text mining) packages. 
+
+---
+
+# Example
+
+Let's walk through parts of Munzert et al.'s (2016) example on classifying press releases from the British Government.
+
+Navigate to &lt;https://www.gov.uk/search/news-and-communications&gt;.
+
+&lt;img src="img/uk-gov-announcements.png" width="400px" height="400px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Checkout URL structure
+
+Imagine we want to study the Prime Minister's communications regarding COVID-19. 
+
+Understand the URL structure:
+
+&lt;img src="img/boris-news.png" width="200px" height="200px" style="display: block; margin: auto;" /&gt;
+
+&lt;https://www.gov.uk/search/news-and-communications?level_one_taxon=5b7b9532-a775-4bd2-a3aa-6ce380184b6c&amp;people%5B%5D=boris-johnson&amp;order=updated-newest&gt;
+
+---
+
+# Checkout URL structure for announcements
+
+
+&lt;img src="img/list-item.png" width="2752" style="display: block; margin: auto;" /&gt;
+
+Links to each announcement are stored in the `href` of anchor tags (`&lt;a&gt;`).
+
+---
+
+# Download the search page
+
+
+```r
+library(rvest)
+
+url &lt;- "https://www.gov.uk/search/news-and-communications?level_one_taxon=5b7b9532-a775-4bd2-a3aa-6ce380184b6c&amp;people%5B%5D=boris-johnson&amp;order=updated-newest"
+
+announce_page &lt;- read_html(url)
+
+announce_page
+```
+
+```
+## {html_document}
+## &lt;html lang="en"&gt;
+## [1] &lt;head&gt;\n&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8 ...
+## [2] &lt;body class=""&gt;\n    &lt;script&gt;document.body.className = ((document.body.cl ...
+```
+
+---
+
+# Extract the partial URLS with xpath
+
+**xpath** (XML Path Language) allows you to query nodes in an html document.
+
+&lt;img src="img/xpath-copy.gif" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Extract the partial URLs with xpath
+
+
+```r
+announce_page_href &lt;- html_nodes(announce_page,
+                        xpath = '//*[@id="js-results"]/div/ol/li[1]/a') %&gt;%
+                        html_attr('href') # we want the href element
+announce_page_href
+```
+
+```
+## [1] "/government/news/prime-minister-hails-resilience-of-shielders-as-restrictions-set-to-ease"
+```
+
+&lt;br&gt;
+&lt;br&gt;
+
+This only extracted the first href because we explicitly referenced the first list item (`li[1]`)
+---
+
+# 🔥 Wild cards
+
+Use the `*` wild card to match all of the list items. 
+
+
+```r
+announce_page_href &lt;- html_nodes(announce_page,
+                        xpath = '//*[@id="js-results"]/div/ol/li[*]/a') %&gt;%
+                        html_attr('href') # we want the href element
+
+announce_page_href
+```
+
+```
+##  [1] "/government/news/prime-minister-hails-resilience-of-shielders-as-restrictions-set-to-ease"     
+##  [2] "/government/news/pm-six-people-can-meet-outside-under-new-measures-to-ease-lockdown"           
+##  [3] "/government/speeches/pm-press-conference-statement-on-the-five-tests-28-may-2020"              
+##  [4] "/government/news/prime-minister-sets-out-timeline-for-retail-to-reopen-in-june"                
+##  [5] "/government/speeches/pm-press-conference-statement-25-may-2020"                                
+##  [6] "/government/speeches/pm-press-conference-statement-24-may-2020"                                
+##  [7] "/government/news/pm-confirms-schools-colleges-and-nurseries-on-track-to-begin-phased-reopening"
+##  [8] "/government/speeches/prime-ministers-article-in-the-mail-on-sunday-17-may-2020"                
+##  [9] "/government/speeches/pm-address-to-the-nation-on-coronavirus-10-may-2020"                      
+## [10] "/government/news/prime-ministers-statement-on-coronavirus-covid-19-30-april-2020"              
+## [11] "/government/news/pm-call-with-president-trump-27-march-2020"                                   
+## [12] "/government/speeches/pm-video-message-on-coronavirus-27-march-2020"                            
+## [13] "/government/speeches/pm-statement-on-coronavirus-25-march-2020"                                
+## [14] "/government/speeches/pm-address-to-the-nation-on-coronavirus-23-march-2020"                    
+## [15] "/government/speeches/pm-statement-on-coronavirus-22-march-2020"                                
+## [16] "/government/speeches/pm-mothers-day-words-22-march-2020"                                       
+## [17] "/government/speeches/pm-statement-on-coronavirus-18-march-2020"                                
+## [18] "/government/news/new-government-structures-to-coordinate-response-to-coronavirus"              
+## [19] "/government/speeches/pm-statement-on-coronavirus-16-march-2020"                                
+## [20] "/government/news/prime-minister-to-lead-cross-government-drive-to-defeat-coronavirus"
+```
+
+---
+
+# Multiple pages
+
+There were 29 search results, but we only have:
+
+
+```r
+length(announce_page_href)
+```
+
+```
+## [1] 20
+```
+
+We are missing the additional pages.
+
+Notice URL `page` reference: &lt;https://www.gov.uk/search/news-and-communications?level_one_taxon=5b7b9532-a775-4bd2-a3aa-6ce380184b6c&amp;order=updated-newest&amp;page=2&amp;people%5B%5D=boris-johnson&gt;
+
+---
+
+# While loops to download multiple pages
+
+
+```r
+library(roperators) # use infix operator %+=%
+
+all_href &lt;- character() # initialise all results object
+tmp_href &lt;- 1 # initalise temp object
+i &lt;- 0 # initalise counter
+while (length(tmp_href) &gt; 0 ) {
+  i %+=% 1
+  url &lt;- paste0("https://www.gov.uk/search/news-and-communications?",
+                "level_one_taxon=5b7b9532-a775-4bd2-a3aa-6ce380184b6c&amp;",
+                "order=updated-newest&amp;page=", 
+                as.character(i), 
+                "&amp;people%5B%5D=boris-johnson")
+
+  tmp_href &lt;- read_html(url) %&gt;%
+              html_nodes(xpath = '//*[@id="js-results"]/div/ol/li[*]/a') %&gt;%
+                         html_attr('href')
+  
+  all_href &lt;- c(all_href, tmp_href)
+}
+```
+
+---
+
+# While loops to download multiple pages
+
+
+```r
+length(all_href)
+```
+
+```
+## [1] 29
+```
+
+```r
+all_href
+```
+
+```
+##  [1] "/government/news/prime-minister-hails-resilience-of-shielders-as-restrictions-set-to-ease"     
+##  [2] "/government/news/pm-six-people-can-meet-outside-under-new-measures-to-ease-lockdown"           
+##  [3] "/government/speeches/pm-press-conference-statement-on-the-five-tests-28-may-2020"              
+##  [4] "/government/news/prime-minister-sets-out-timeline-for-retail-to-reopen-in-june"                
+##  [5] "/government/speeches/pm-press-conference-statement-25-may-2020"                                
+##  [6] "/government/speeches/pm-press-conference-statement-24-may-2020"                                
+##  [7] "/government/news/pm-confirms-schools-colleges-and-nurseries-on-track-to-begin-phased-reopening"
+##  [8] "/government/speeches/prime-ministers-article-in-the-mail-on-sunday-17-may-2020"                
+##  [9] "/government/speeches/pm-address-to-the-nation-on-coronavirus-10-may-2020"                      
+## [10] "/government/news/prime-ministers-statement-on-coronavirus-covid-19-30-april-2020"              
+## [11] "/government/news/pm-call-with-president-trump-27-march-2020"                                   
+## [12] "/government/speeches/pm-video-message-on-coronavirus-27-march-2020"                            
+## [13] "/government/speeches/pm-statement-on-coronavirus-25-march-2020"                                
+## [14] "/government/speeches/pm-address-to-the-nation-on-coronavirus-23-march-2020"                    
+## [15] "/government/speeches/pm-statement-on-coronavirus-22-march-2020"                                
+## [16] "/government/speeches/pm-mothers-day-words-22-march-2020"                                       
+## [17] "/government/speeches/pm-statement-on-coronavirus-18-march-2020"                                
+## [18] "/government/news/new-government-structures-to-coordinate-response-to-coronavirus"              
+## [19] "/government/speeches/pm-statement-on-coronavirus-16-march-2020"                                
+## [20] "/government/news/prime-minister-to-lead-cross-government-drive-to-defeat-coronavirus"          
+## [21] "/government/news/pm-call-with-crown-prince-mohammed-bin-salman-15-march-2020"                  
+## [22] "/government/news/pm-call-with-prime-minister-abe-15-march-2020"                                
+## [23] "/government/news/pm-call-with-president-trump-14-march-2020"                                   
+## [24] "/government/news/pm-call-with-prime-minister-of-australia-scott-morrison-14-march-2020"        
+## [25] "/government/speeches/pm-statement-on-coronavirus-12-march-2020"                                
+## [26] "/government/speeches/pm-statement-on-coronavirus-9-march-2020"                                 
+## [27] "/government/news/pm-announces-new-funding-in-fight-against-spread-of-coronavirus"              
+## [28] "/government/news/sick-pay-from-day-one-for-those-affected-by-coronavirus"                      
+## [29] "/government/news/pm-to-chair-cobr-meeting-on-the-coronavirus-outbreak"
+```
+---
+
+# Get text from one each page
+
+
+```r
+url_one &lt;- paste0("https://www.gov.uk", all_href[1])
+
+url_one
+```
+
+```
+## [1] "https://www.gov.uk/government/news/prime-minister-hails-resilience-of-shielders-as-restrictions-set-to-ease"
+```
+
+---
+
+# Get text from one each page
+
+&lt;img src="img/one-announce-xpath.gif" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Get text from one each page
+
+
+```r
+one_announcement &lt;- read_html(url_one) %&gt;%
+          html_nodes(xpath = '//*[@id="content"]/div[3]/div[1]/div[1]/div') %&gt;%
+          html_text()
+
+one_announcement
+```
+
+```
+## [1] "\n      \n\n\n    2.2 million people shielding in England to be able to spend time outdoors from tomorrow (Monday 1 June)\n  \n  \n    Guidance to be updated to allow interaction outside with their household from tomorrow\n  \n  \n    Unprecedented package of support for those shielding from coronavirus is also set to continue\n  \n\n\nExtremely vulnerable people who have been “shielding” in England can now safely spend time outdoors, the Communities Secretary will confirm today (Sunday 31 May).\n\nThe 2.2 million clinically extremely vulnerable people will be able to go outside with members of their household, while continuing to follow social distancing guidelines.\n\nThose who live alone can meet outside with one other person from another household.\n\nThe updated guidance provides a much-needed boost to those most at risk who have been staying inside their homes to protect themselves and the NHS.\n\nThis includes many who have not had any face-to-face contact since they were first advised to shield.\n\nThe government’s unprecedented package of support for those shielding from coronavirus is also set to continue, including the delivery of food or medicines, phone calls and support from volunteers.\n\nSpeaking at the government’s daily press conference later today, the Communities Secretary is expected to set out a plan to review shielding guidance at regular points in the coming weeks.\n\nAt each review point for the social distancing measures, we will also assess whether it is possible for the shielding guidance to be eased further, based on the latest scientific advice. The next review will take place later this month.\n\nPrime Minister Boris Johnson said:\n\n\n  I want to thank everyone who has followed the shielding guidance – it is because of your patience and sacrifice that thousands of lives have been saved.\n\n  I do not underestimate just how difficult it has been for you, staying at home for the last 10 weeks, and I want to pay tribute to your resilience.\n\n  I also want to recognise the hundreds of thousands of extraordinary volunteers who have supported you in shielding.\n\n  Whether through delivering medicines and shopping, or simply by checking in on those isolating, they should feel deeply proud of the part they have played in this collective effort.\n\n  We have been looking at how we can make life easier for our most vulnerable, so today I am happy to confirm that those who are shielding will be able to spend time outside with someone else, observing social distance guidelines.\n\n  I will do what I can, in line with the scientific advice, to continue making life easier for you over the coming weeks and months.\n\n\nCommunities Secretary Rt Hon Robert Jenrick MP said:\n\n\n  Those shielding from coronavirus have made huge sacrifices over recent months to protect both themselves and the NHS – they deserve our thanks and our support for their efforts.\n\n  Incidence rates of coronavirus are now significantly lower than before these measures were put in place. That’s why we are focused on finding the right balance between continuing to protect those at the greatest clinical risk, whilst easing restrictions on their daily lives to make the difficult situation more bearable – particularly enabling the contact with loved ones they and we all seek.\n\n  We will now be providing regular updates to the shielded to guide them through the next phase and we hope, to better and less restrictive times. In the meantime we will continue to provide the support that the shielded in our communities need.\n\n\nHealth Secretary Matt Hancock said:\n\n\n  The resilience and commitment people have shown throughout this unprecedented period has been nothing short of phenomenal, and none more so than those who have shielded in their homes.\n\n  I want to take this opportunity to thank the NHS, GPs, all those who volunteered, community pharmacists and all those involved in providing much-needed support and guidance for patients required to shield over the past 10 weeks.\n\n  Thanks to the sacrifices made across the country, which have protected the NHS and saved lives, it’s now time to begin lifting restrictions, step by step, and while we must all stay alert, we can now start to resume a sense of normality.\n\n\nTo date support for those being shielded includes:\n\n\n    Over 2.25 million boxes of essential food have now been delivered by wholesalers to those at highest risk across England, with more than 300,000 boxes being distributed every week.\n  \n  \n    Up to 200,000 calls a day have been made to the shielded to confirm their support needs, and councils are helping to support them in other ways – including organising regular calls from volunteers to those isolated.\n  \n  \n    In addition to those delivered by volunteers, there have been over 400,000 free medicine deliveries provided by community pharmacies in April to those who have been advised to shield.\n  \n  \n    Support from an army of over 500,000 NHS volunteers have helped support those shielding as well as others with telephone calls to individuals who are at risk of loneliness as a consequence of self-isolation.\n  \nAs the government moves to the next phase of its response to the coronavirus crisis, the latest clinical advice shows a much lower incidence rate in the general population.\n\nThis means the average chance of catching the virus is now down from 1/40 to 1/1000, delivering greater reassurance that it is safe to cautiously reflect this in the guidance for those who have been advised to shield.\n\nThe importance of following social distancing guidelines for anyone shielding is still paramount, and therefore while outside people who are shielding should remain at a 2-metre distance from others.\n\nThose being shielded still remain at risk and are advised to only leave the house once a day. They should not go to work or the shops and should avoid crowded places where they can’t social distance.\n\nFurther information\n\nThe updated guidance for those who are shielding will be published on Sunday afternoon in advance of the measures coming into force from Monday.\n\nThere are around 2.2 million people in England with underlying severe health conditions who must be protected and have been asked to stay at home. These are people of all ages – with specific medical conditions identified by the NHS – who are less able to fight off the virus. (See the full list of conditions.)\n\nThere are a number of ways that those who are shielding can access food and other essentials:\n\n\n    Make use of the supermarket priority delivery slots that are available for this group. When a clinically extremely vulnerable person registers online as needing support with food, their data is shared with supermarkets. This means if they make an online order with a supermarket (as both a new or existing customer), they will be eligible for a priority slot.\n  \n  \n    If a person meets the criteria to get support from the NHS Volunteer Responders programme, they can call 0808 196 3646 to be linked with a volunteer who can do a food shop for them. A carer or family member can also do this on their behalf.\n  \n  \n    If you need urgent help and have no other means of support, contact your local authority to find out what support services are available in their area.\n  \n  \n    Use the many commercial options now available for accessing food, including telephone ordering, food box delivery, prepared meal delivery and other non-supermarket food delivery providers. A list has been shared with local authorities and charities.\n  \nIf someone who is shielding doesn’t need the free government food box anymore, including because they have started to get online supermarket deliveries, they should re-register through the gov.uk website as no longer needing a food delivery. Alternatively, they can inform their delivery driver at the door that you no longer require these food parcels.\n\nPeople in the shielding group should continue to access the NHS services they need during this time. This may be delivered in a different way or in a different place than they are used to, for example via an online consultation, but if they do need to go to hospital or attend another health facility for planned care, extra planning and protection will be put in place.\n\nAn NHS Medicine Delivery Service is available from community pharmacies and dispensing doctors. It ensures the delivery of medicines to shielded patients where family, friends or volunteers cannot collect them.\n\nIf a person meets the criteria to get support from the NHS Volunteer Responders programme, they can call 0808 196 3646 to be linked with a volunteer who can help them is a range of different ways. A carer or family member can also call the programme on their behalf.\n\nMental health support\n\nFollow the advice that works for you in the guidance on how to look after your mental health and wellbeing during coronavirus (COVID-19).\n\nThe Every Mind Matters page on anxiety and NHS mental wellbeing audio guides provide further information on how to manage anxiety.\n\n\n  \n    Media enquiries\n    \n    \n    \n      \n      \n        \n          Email\n          newsdesk@communities.gov.uk\n        \n      \n      \n      \n        \n          Please use this number if you are a journalist wishing to speak to Press Office\n          0303 444 1209\n        \n      \n      \n    \n    \n    \n  \n\n\n\n  \n    Office address and general enquiries\n    \n    \n      \n2 Marsham Street\n\nLondonSW1P 4DF\n\n\n    \n    \n      \n      \n      \n        \n          Contact form\n          https://forms.communit...\n        \n      \n      \n        \n          General enquiries:  please use this number if you are a member of the public\n          030 3444 0000\n        \n      \n      \n    \n    \n      If your enquiry is related to COVID-19 please check our guidance page first before you contact us - https://www.gov.uk/guidance/coronavirus-covid-19-guidance-for-local-government.If you still need to contact us please use the contact form above to get in touch, because of coronavirus (COVID-19). If you send it by post it will not receive a reply within normal timescale.\n    \n    \n  \n\n\n\n  \n    Social media - MHCLG\n    \n    \n    \n    \n      Twitter - https://twitter.com/mhclgFlickr - http://www.flickr.com/photos/mhclgLinkedIn - http://www.linkedin.com/company/mhclg\n    \n    \n  \n\n\n"
+```
+
+---
+
+# Get text from all pages
+
+
+```r
+all_texts &lt;- data.frame()
+for (i in seq(all_href)) {
+  url_one &lt;- paste0("https://www.gov.uk", all_href[i])
+  message(url_one)
+  
+  text &lt;- read_html(url_one) %&gt;%
+           html_nodes(xpath = '//*[@id="content"]/div[3]/div[1]/div[1]/div') %&gt;%
+           html_text()
+  tmp_df &lt;- data.frame(url = all_href[i], text = text)
+  all_texts &lt;- bind_rows(all_texts, tmp_df)
+}
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-hails-resilience-of-shielders-as-restrictions-set-to-ease
+```
+
+```
+## https://www.gov.uk/government/news/pm-six-people-can-meet-outside-under-new-measures-to-ease-lockdown
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-press-conference-statement-on-the-five-tests-28-may-2020
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-sets-out-timeline-for-retail-to-reopen-in-june
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-press-conference-statement-25-may-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-press-conference-statement-24-may-2020
+```
+
+```
+## https://www.gov.uk/government/news/pm-confirms-schools-colleges-and-nurseries-on-track-to-begin-phased-reopening
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-article-in-the-mail-on-sunday-17-may-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-address-to-the-nation-on-coronavirus-10-may-2020
+```
+
+```
+## https://www.gov.uk/government/news/prime-ministers-statement-on-coronavirus-covid-19-30-april-2020
+```
+
+```
+## https://www.gov.uk/government/news/pm-call-with-president-trump-27-march-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-video-message-on-coronavirus-27-march-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-on-coronavirus-25-march-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-address-to-the-nation-on-coronavirus-23-march-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-on-coronavirus-22-march-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-mothers-day-words-22-march-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-on-coronavirus-18-march-2020
+```
+
+```
+## https://www.gov.uk/government/news/new-government-structures-to-coordinate-response-to-coronavirus
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-on-coronavirus-16-march-2020
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-to-lead-cross-government-drive-to-defeat-coronavirus
+```
+
+```
+## https://www.gov.uk/government/news/pm-call-with-crown-prince-mohammed-bin-salman-15-march-2020
+```
+
+```
+## https://www.gov.uk/government/news/pm-call-with-prime-minister-abe-15-march-2020
+```
+
+```
+## https://www.gov.uk/government/news/pm-call-with-president-trump-14-march-2020
+```
+
+```
+## https://www.gov.uk/government/news/pm-call-with-prime-minister-of-australia-scott-morrison-14-march-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-on-coronavirus-12-march-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-on-coronavirus-9-march-2020
+```
+
+```
+## https://www.gov.uk/government/news/pm-announces-new-funding-in-fight-against-spread-of-coronavirus
+```
+
+```
+## https://www.gov.uk/government/news/sick-pay-from-day-one-for-those-affected-by-coronavirus
+```
+
+```
+## https://www.gov.uk/government/news/pm-to-chair-cobr-meeting-on-the-coronavirus-outbreak
+```
+
+```r
+nrow(all_texts)
+```
+
+```
+## [1] 43
+```
+
+---
+
+# Simple analysis
+
+Convert to a corpus object
+
+
+```r
+library(quanteda)
+announce_corpus &lt;- corpus(all_texts)
+
+summary(announce_corpus)
+```
+
+```
+## Corpus consisting of 43 documents, showing 43 documents:
+## 
+##    Text Types Tokens Sentences
+##   text1   603   1725        58
+##   text2   413   1085        35
+##   text3    18     18         1
+##   text4   664   2280        91
+##   text5   402    919        24
+##   text6    18     18         1
+##   text7   410    986        35
+##   text8    18     18         1
+##   text9   476   1242        44
+##  text10   337    782        23
+##  text11     6      6         1
+##  text12   602   1554        73
+##  text13    18     18         1
+##  text14   655   2187       101
+##  text15   465   1172         6
+##  text16    36     50         3
+##  text17    18     18         1
+##  text18   171    366        21
+##  text19    18     18         1
+##  text20   234    491        27
+##  text21    18     18         1
+##  text22   385    983        48
+##  text23    18     18         1
+##  text24   300    729        33
+##  text25     6      6         1
+##  text26   284    647        29
+##  text27    18     18         1
+##  text28   406   1175        51
+##  text29   181    376         8
+##  text30    18     18         1
+##  text31   405   1165        42
+##  text32   265    592        14
+##  text33    65     97         4
+##  text34    71    124         5
+##  text35    87    133         5
+##  text36    75    117         4
+##  text37    18     18         1
+##  text38   409   1170        49
+##  text39    18     18         1
+##  text40   266    577        21
+##  text41   504   1398        46
+##  text42   163    270        11
+##  text43   214    406        14
+##                                                                                             url
+##       /government/news/prime-minister-hails-resilience-of-shielders-as-restrictions-set-to-ease
+##             /government/news/pm-six-people-can-meet-outside-under-new-measures-to-ease-lockdown
+##                /government/speeches/pm-press-conference-statement-on-the-five-tests-28-may-2020
+##                /government/speeches/pm-press-conference-statement-on-the-five-tests-28-may-2020
+##                  /government/news/prime-minister-sets-out-timeline-for-retail-to-reopen-in-june
+##                                  /government/speeches/pm-press-conference-statement-25-may-2020
+##                                  /government/speeches/pm-press-conference-statement-25-may-2020
+##                                  /government/speeches/pm-press-conference-statement-24-may-2020
+##                                  /government/speeches/pm-press-conference-statement-24-may-2020
+##  /government/news/pm-confirms-schools-colleges-and-nurseries-on-track-to-begin-phased-reopening
+##                  /government/speeches/prime-ministers-article-in-the-mail-on-sunday-17-may-2020
+##                  /government/speeches/prime-ministers-article-in-the-mail-on-sunday-17-may-2020
+##                        /government/speeches/pm-address-to-the-nation-on-coronavirus-10-may-2020
+##                        /government/speeches/pm-address-to-the-nation-on-coronavirus-10-may-2020
+##                /government/news/prime-ministers-statement-on-coronavirus-covid-19-30-april-2020
+##                                     /government/news/pm-call-with-president-trump-27-march-2020
+##                              /government/speeches/pm-video-message-on-coronavirus-27-march-2020
+##                              /government/speeches/pm-video-message-on-coronavirus-27-march-2020
+##                                  /government/speeches/pm-statement-on-coronavirus-25-march-2020
+##                                  /government/speeches/pm-statement-on-coronavirus-25-march-2020
+##                      /government/speeches/pm-address-to-the-nation-on-coronavirus-23-march-2020
+##                      /government/speeches/pm-address-to-the-nation-on-coronavirus-23-march-2020
+##                                  /government/speeches/pm-statement-on-coronavirus-22-march-2020
+##                                  /government/speeches/pm-statement-on-coronavirus-22-march-2020
+##                                         /government/speeches/pm-mothers-day-words-22-march-2020
+##                                         /government/speeches/pm-mothers-day-words-22-march-2020
+##                                  /government/speeches/pm-statement-on-coronavirus-18-march-2020
+##                                  /government/speeches/pm-statement-on-coronavirus-18-march-2020
+##                /government/news/new-government-structures-to-coordinate-response-to-coronavirus
+##                                  /government/speeches/pm-statement-on-coronavirus-16-march-2020
+##                                  /government/speeches/pm-statement-on-coronavirus-16-march-2020
+##            /government/news/prime-minister-to-lead-cross-government-drive-to-defeat-coronavirus
+##                    /government/news/pm-call-with-crown-prince-mohammed-bin-salman-15-march-2020
+##                                  /government/news/pm-call-with-prime-minister-abe-15-march-2020
+##                                     /government/news/pm-call-with-president-trump-14-march-2020
+##          /government/news/pm-call-with-prime-minister-of-australia-scott-morrison-14-march-2020
+##                                  /government/speeches/pm-statement-on-coronavirus-12-march-2020
+##                                  /government/speeches/pm-statement-on-coronavirus-12-march-2020
+##                                   /government/speeches/pm-statement-on-coronavirus-9-march-2020
+##                                   /government/speeches/pm-statement-on-coronavirus-9-march-2020
+##                /government/news/pm-announces-new-funding-in-fight-against-spread-of-coronavirus
+##                        /government/news/sick-pay-from-day-one-for-those-affected-by-coronavirus
+##                           /government/news/pm-to-chair-cobr-meeting-on-the-coronavirus-outbreak
+```
+
+---
+
+# A problem
+
+None of the documents should have only one sentence.
+
+🐛 We need to debug.
+
+
+```r
+knitr::include_graphics("img/govspeach.png")
+```
+
+&lt;img src="img/govspeach.png" width="3309" style="display: block; margin: auto;" /&gt;
+
+---
+
+# xpath [contains](https://developer.mozilla.org/en-US/docs/Web/XPath/Functions/contains)
+
+
+```r
+all_texts &lt;- data.frame()
+for (i in seq(all_href)) {
+  url_one &lt;- paste0("https://www.gov.uk", all_href[i])
+  # message(url_one)
+  full_html &lt;- read_html(url_one)
+  
+  text &lt;-  full_html %&gt;% 
+    html_nodes(xpath = 
+      paste0('//*[@id="content"]/div[3]/div[1]',
+             '/div[1]/div[contains(@data-module, "govspeak")]')) %&gt;% 
+    html_text()
+  
+  tmp_df &lt;- data.frame(url = all_href[i], text = text)
+  all_texts &lt;- bind_rows(all_texts, tmp_df)
+}
+
+announce_corpus &lt;- corpus(all_texts)
+
+summary(announce_corpus)
+```
+
+```
+## Corpus consisting of 29 documents, showing 29 documents:
+## 
+##    Text Types Tokens Sentences
+##   text1   603   1725        58
+##   text2   413   1085        35
+##   text3   664   2280        91
+##   text4   402    919        24
+##   text5   410    986        35
+##   text6   476   1242        44
+##   text7   337    782        23
+##   text8   602   1554        73
+##   text9   655   2187       101
+##  text10   465   1172         6
+##  text11    36     50         3
+##  text12   171    366        21
+##  text13   234    491        27
+##  text14   385    983        48
+##  text15   300    729        33
+##  text16   284    647        29
+##  text17   406   1175        51
+##  text18   181    376         8
+##  text19   405   1165        42
+##  text20   265    592        14
+##  text21    65     97         4
+##  text22    71    124         5
+##  text23    87    133         5
+##  text24    75    117         4
+##  text25   409   1170        49
+##  text26   266    577        21
+##  text27   504   1398        46
+##  text28   163    270        11
+##  text29   214    406        14
+##                                                                                             url
+##       /government/news/prime-minister-hails-resilience-of-shielders-as-restrictions-set-to-ease
+##             /government/news/pm-six-people-can-meet-outside-under-new-measures-to-ease-lockdown
+##                /government/speeches/pm-press-conference-statement-on-the-five-tests-28-may-2020
+##                  /government/news/prime-minister-sets-out-timeline-for-retail-to-reopen-in-june
+##                                  /government/speeches/pm-press-conference-statement-25-may-2020
+##                                  /government/speeches/pm-press-conference-statement-24-may-2020
+##  /government/news/pm-confirms-schools-colleges-and-nurseries-on-track-to-begin-phased-reopening
+##                  /government/speeches/prime-ministers-article-in-the-mail-on-sunday-17-may-2020
+##                        /government/speeches/pm-address-to-the-nation-on-coronavirus-10-may-2020
+##                /government/news/prime-ministers-statement-on-coronavirus-covid-19-30-april-2020
+##                                     /government/news/pm-call-with-president-trump-27-march-2020
+##                              /government/speeches/pm-video-message-on-coronavirus-27-march-2020
+##                                  /government/speeches/pm-statement-on-coronavirus-25-march-2020
+##                      /government/speeches/pm-address-to-the-nation-on-coronavirus-23-march-2020
+##                                  /government/speeches/pm-statement-on-coronavirus-22-march-2020
+##                                         /government/speeches/pm-mothers-day-words-22-march-2020
+##                                  /government/speeches/pm-statement-on-coronavirus-18-march-2020
+##                /government/news/new-government-structures-to-coordinate-response-to-coronavirus
+##                                  /government/speeches/pm-statement-on-coronavirus-16-march-2020
+##            /government/news/prime-minister-to-lead-cross-government-drive-to-defeat-coronavirus
+##                    /government/news/pm-call-with-crown-prince-mohammed-bin-salman-15-march-2020
+##                                  /government/news/pm-call-with-prime-minister-abe-15-march-2020
+##                                     /government/news/pm-call-with-president-trump-14-march-2020
+##          /government/news/pm-call-with-prime-minister-of-australia-scott-morrison-14-march-2020
+##                                  /government/speeches/pm-statement-on-coronavirus-12-march-2020
+##                                   /government/speeches/pm-statement-on-coronavirus-9-march-2020
+##                /government/news/pm-announces-new-funding-in-fight-against-spread-of-coronavirus
+##                        /government/news/sick-pay-from-day-one-for-those-affected-by-coronavirus
+##                           /government/news/pm-to-chair-cobr-meeting-on-the-coronavirus-outbreak
+```
+
+---
+
+# Create a document-term matrix
+
+
+```r
+announce_dtm &lt;- dfm(announce_corpus, 
+                    remove = stopwords("english"), 
+                    stem = TRUE, remove_punct = TRUE) 
+announce_dtm
+```
+
+```
+## Document-feature matrix of: 29 documents, 1,835 features (87.7% sparse) and 1 docvar.
+##        features
+## docs    2.2 million peopl shield england abl spend time outdoor tomorrow
+##   text1   3       4     8     28       4   4     3    6       2        2
+##   text2   0       0     9      2       3   6     1    2       5        0
+##   text3   0       0    17      2       4   6     0    4       3        0
+##   text4   0       1     2      0       2   4     0    0       3        0
+##   text5   0       0     6      0       1   1     1    6       5        0
+##   text6   0       0     7      0       0   1     0    2       1        0
+## [ reached max_ndoc ... 23 more documents, reached max_nfeat ... 1,825 more features ]
+```
+
+---
+
+
+```r
+textplot_wordcloud(announce_dtm, min_count = 10)
+```
+
+&lt;img src="pdf-and-text-as-data_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
+
 ---
 
 class: inverse, center, middle
 background-color: #FF8C03
 
 # 🥅 Practice
+
+Scrape and clean up table from &lt;http://visionofhumanity.org/app/uploads/2019/07/GPI-2019web.pdf&gt;
+
+---
+
+class: inverse, center, middle
+background-color: #FF8C03
+
+# 🥅 Extended Practice
+
+With a partner, find an online data source. 
+
+What research question might you answer with this data set?
+
+Scrape and clean it for analysis.
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
