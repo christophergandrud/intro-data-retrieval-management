@@ -20,9 +20,11 @@ Tags: [R, programming, GET, tidy, data retrieval]
 
 - What is public data?
 
+- Retrieving and cleaning (tabular) public data
+
 - APIs
 
-- Retrieving and cleaning (tabular) public data
+- Cleaning grouped data
 
 ## 📣 Lecture slides
 

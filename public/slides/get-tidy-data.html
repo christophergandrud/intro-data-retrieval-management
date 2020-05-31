@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Get Tidy Data</title>
+    <title>Get and Clean Tidy Data</title>
     <meta charset="utf-8" />
     <meta name="author" content="Christopher Gandrud" />
     <script src="libs/header-attrs-2.1/header-attrs.js"></script>
@@ -12,10 +12,10 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Get Tidy Data
+# Get and Clean Tidy Data
 ### Christopher Gandrud
 ### HU DYNAMICS
-### 2020-05-22 (updated: 2020-05-30)
+### 2020-05-22 (updated: 2020-05-31)
 
 ---
 
@@ -30,6 +30,8 @@ class: center, middle, inverse, title-slide
 
 - APIs
 
+- Cleaning grouped data
+
 ---
 
 class: inverse, center, middle
@@ -37,7 +39,6 @@ class: inverse, center, middle
 # What is open public data?
 
 ---
-
 
 # What is open public data?
 
@@ -702,6 +703,216 @@ combined &lt;- DataCombine::MoveFront(Combined, 'country')
 (You should replace with `relocate() from dplyr when version 1.0.0 is released)
 
 ---
+
+# More data transformations with dplyr
+
+Set up for examples
+
+
+```r
+# Create fake grouped data
+library(randomNames)
+library(dplyr)
+library(tidyr)
+
+people &lt;- randomNames(n = 1000)
+people &lt;- sort(rep(people, 4))
+year &lt;- rep(2010:2013, 1000)
+trend_income &lt;- c(30000, 31000, 32000, 33000)
+
+income &lt;-  replicate(trend_income + rnorm(4, sd = 20000),
+                     n = 1000) %&gt;%
+            data.frame() %&gt;%
+            gather(obs, value, X1:X1000)
+
+income$value[income$value &lt; 0] &lt;- 0
+data &lt;- data.frame(people, year, income = income$value)
+```
+
+---
+
+# dplyr
+
+
+```r
+head(data)
+```
+
+```
+##                     people year     income
+## 1             Abeyta, Jose 2010   510.1569
+## 2             Abeyta, Jose 2011 39916.2826
+## 3             Abeyta, Jose 2012     0.0000
+## 4             Abeyta, Jose 2013 11640.9783
+## 5 Acevedo Mercado, Claudia 2010  6075.3632
+## 6 Acevedo Mercado, Claudia 2011 56905.4570
+```
+
+---
+
+# Simple dplyr
+
+Select rows
+
+
+```r
+higher_income &lt;- filter(data, income &gt; 60000)
+head(higher_income)
+```
+
+```
+##               people year   income
+## 1     Adams, Antwann 2011 65660.69
+## 2       Adams, Chase 2012 62474.11
+## 3     Adelman, Mason 2013 66330.25
+## 4      Adu, D Marcco 2011 69002.75
+## 5 Aguilar, Alejandra 2011 73520.79
+## 6   Aguirre, Brandon 2011 63498.11
+```
+
+---
+
+# Simple dplyr
+
+Select columns
+
+
+```r
+people_income &lt;- select(data, people, income)
+# OR
+people_income &lt;- select(data, -year)
+head(people_income)
+```
+
+```
+##                     people     income
+## 1             Abeyta, Jose   510.1569
+## 2             Abeyta, Jose 39916.2826
+## 3             Abeyta, Jose     0.0000
+## 4             Abeyta, Jose 11640.9783
+## 5 Acevedo Mercado, Claudia  6075.3632
+## 6 Acevedo Mercado, Claudia 56905.4570
+```
+
+---
+
+# dplyr with grouped data
+
+Tell dplyr what the groups are in the data with `group_by`.
+
+
+```r
+group_data &lt;- group_by(data, people)
+head(group_data)[1:5, ]
+```
+
+```
+## # A tibble: 5 x 3
+## # Groups:   people [2]
+##   people                    year income
+##   &lt;chr&gt;                    &lt;int&gt;  &lt;dbl&gt;
+## 1 Abeyta, Jose              2010   510.
+## 2 Abeyta, Jose              2011 39916.
+## 3 Abeyta, Jose              2012     0 
+## 4 Abeyta, Jose              2013 11641.
+## 5 Acevedo Mercado, Claudia  2010  6075.
+```
+
+Note: the following functions work on **non-grouped data** as well.
+
+---
+
+# dplyr with grouped data
+
+Now that we have declared the data as grouped, we can do operations on each group.
+
+For example, we can extract the highest and lowest income years for each person:
+
+
+```r
+min_max_income &lt;- summarize(group_data,
+                            min_income = min(income),
+                            max_income = max(income))
+head(min_max_income)[1:3, ]
+```
+
+```
+## # A tibble: 3 x 3
+##   people                   min_income max_income
+##   &lt;chr&gt;                         &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Abeyta, Jose                     0      39916.
+## 2 Acevedo Mercado, Claudia      6075.     56905.
+## 3 Acosta, David                    0      47042.
+```
+
+---
+
+# dplyr with grouped data
+
+We can sort the data using `arrange`.
+
+
+```r
+# Sort highest income for each person in ascending order
+ascending &lt;- arrange(min_max_income, max_income)
+head(ascending)[1:3, ]
+```
+
+```
+## # A tibble: 3 x 3
+##   people           min_income max_income
+##   &lt;chr&gt;                 &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Quidachay, Srish      3374.     10822.
+## 2 Brull, Nicholas          0      15788.
+## 3 Barola, Jobe          8434.     16105.
+```
+
+---
+
+# dplyr with grouped data
+
+Add `desc` to sort in descending order
+
+
+```r
+descending &lt;- arrange(min_max_income, desc(max_income))
+head(descending)[1:3, ]
+```
+
+```
+## # A tibble: 3 x 3
+##   people          min_income max_income
+##   &lt;chr&gt;                &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Johnson, Keaira     26851.    110179.
+## 2 Wu, Nikhil              0     104998.
+## 3 Vue, Meng           30281.     99085.
+```
+
+---
+
+# dplyr with grouped data
+
+`summarize` creates a new data frame with the summarised data.
+
+We can use `mutate` to add new columns to the original data frame.
+
+
+```r
+data &lt;- mutate(group_data,
+                min_income = min(income),
+                max_income = max(income))
+head(data)[1:3, ]
+```
+
+```
+## # A tibble: 3 x 5
+## # Groups:   people [1]
+##   people        year income min_income max_income
+##   &lt;chr&gt;        &lt;int&gt;  &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Abeyta, Jose  2010   510.          0     39916.
+## 2 Abeyta, Jose  2011 39916.          0     39916.
+## 3 Abeyta, Jose  2012     0           0     39916.
+```
 
 class: inverse, center, middle
 background-color: #FF8C03
