@@ -13,13 +13,13 @@ Tags: [R, programming, GET, HTML, data retrieval, strings, dplyr]
 
 ## 📝 Lesson Preview
 
+- Parse JSON (nested data formats)
+
 - HTTP verbs (GET, POST, HEAD, PUT) and httr
 
 - Parse HTML tables
 
 - String manipulation
-
-- Cleaning grouped data
 
 ## 📣 Lecture slides
 

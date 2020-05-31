@@ -24,13 +24,222 @@ class: center, middle, inverse, title-slide
 
 # 📝 Lesson Preview
 
+- Parse JSON (nested data formats)
+
 - HTTP verbs (GET, POST, HEAD, PUT) and httr
 
 - Parse HTML tables
 
 - String manipulation
 
-- Parse JSON (nested data formats)
+---
+
+class: inverse, center, middle
+background-color: #FFC400
+
+# JSON: A common nested data format on the web
+
+---
+
+# JSON
+
+JSON -- JavaScript Object Notation
+
+JavaScript is a widely used programming language for the web. JSON follows a similar syntax.
+
+JSON is intended to be more human readable than another common internet data format [XML](https://en.wikipedia.org/wiki/XML).
+
+---
+
+# 🔑 JSON syntax
+
+Simple objects are key-value pairs separated by a colon (`:`) and enclosed in curly brackets (`{}`). 
+
+For example:
+
+```json
+{"firstName": "John"}
+```
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+Example data from [Wikipedia](https://en.wikipedia.org/wiki/JSON#Example).
+
+---
+
+# 🔑 JSON syntax
+
+Curly brackets can enclose multiple key-value pairs, separated by commas (`,`):
+
+```json
+{
+  "firstName": "John",
+  "lastName": "Smith"
+}
+```
+
+---
+
+# JSON syntax
+
+Objects can be **nested** inside of each other:
+
+```json
+{
+  "firstName": "John",
+  "lastName": "Smith",
+  "isAlive": true,
+  "age": 27,
+  "address": {
+    "streetAddress": "21 2nd Street",
+    "city": "New York",
+    "state": "NY",
+    "postalCode": "10021-3100"
+  }
+```
+
+There are multiple key-value pairs nested in `address`. 
+
+```
+firstName
+lastName
+isAlive
+age
+address
+|____ streetAddress
+|____ city
+|____ state
+|____ postalCode
+```
+
+---
+
+# JSON syntax
+
+**Indentation** is not required, but helps us see the nesting structure.
+
+```json
+{
+  "firstName": "John",
+  "lastName": "Smith",
+  "isAlive": true,
+  "age": 27,
+  "address": {
+    "streetAddress": "21 2nd Street",
+    "city": "New York",
+    "state": "NY",
+    "postalCode": "10021-3100"
+  }
+```
+
+---
+
+# JSON syntax
+
+Square brackets (`[]`) enclose **arrays**. Arrays are **ordered** sequence of key-value pairs.
+
+```json
+{
+  "firstName": "John",
+  "lastName": "Smith",
+  "isAlive": true,
+  "age": 27,
+  "address": {
+    "streetAddress": "21 2nd Street",
+    "city": "New York",
+    "state": "NY",
+    "postalCode": "10021-3100"
+  },
+  "phoneNumbers": [
+    {
+      "type": "home",
+      "number": "212 555-1234"
+    },
+    {
+      "type": "office",
+      "number": "646 555-4567"
+    }
+  ]
+}
+```
+
+---
+
+class: inverse, center, middle
+background-color: #FB3579
+
+## Quiz: what R data structure is most similar to a JSON nested data structure?
+
+---
+
+# JSON to R
+
+Use the `jsonlite` package to read JSON data and convert it to **lists** and (if needed) data frames.
+
+---
+
+# JSON to R
+
+
+```r
+# Note: the data is stored in the data directory relative to the source code
+library(jsonlite)
+
+json_example &lt;- fromJSON("data/json-simple-example.json")
+
+class(json_example)
+```
+
+```
+## [1] "list"
+```
+
+
+```r
+head(json_example)
+```
+
+```
+## $firstName
+## [1] "John"
+## 
+## $lastName
+## [1] "Smith"
+## 
+## $isAlive
+## [1] TRUE
+## 
+## $age
+## [1] 27
+## 
+## $address
+## $address$streetAddress
+## [1] "21 2nd Street"
+## 
+## $address$city
+## [1] "New York"
+## 
+## $address$state
+## [1] "NY"
+## 
+## $address$postalCode
+## [1] "10021-3100"
+## 
+## 
+## $phoneNumbers
+##     type       number
+## 1   home 212 555-1234
+## 2 office 646 555-4567
+```
+
+--- 
+
+# JSON to R
+
+Now use your R data manipulation tools to convert the parse JSON data to the R format you need for your analysis. 
+
 
 ---
 
@@ -846,6 +1055,15 @@ background-color: #FF8C03
 &lt;http://www.bbc.com/sport/winter-olympics/2014/medals/countries&gt;.
 
 Also, sort by total medals in **descending order**.
+
+---
+
+class: inverse, center, middle
+background-color: #FF8C03
+
+# 🥅 Practice
+
+Extract
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
