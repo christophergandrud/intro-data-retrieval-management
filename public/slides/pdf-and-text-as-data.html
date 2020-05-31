@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Get JSON and Text as Data</title>
+    <title>Parse PDFs and Text as Data</title>
     <meta charset="utf-8" />
     <meta name="author" content="Christopher Gandrud" />
-    <script src="libs/header-attrs-2.1/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.2/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/robot.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
   </head>
@@ -12,14 +12,83 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Get JSON and Text as Data
+# Parse PDFs and Text as Data
 ### Christopher Gandrud
 ### HU DYNAMICS
-### 2020-05-30 (updated: 2020-05-30)
+### 2020-05-30 (updated: 2020-05-31)
 
 ---
 
 
+
+
+## 📝 Lesson Preview
+
+- Scraping tables in PDFs
+
+- Text as data
+
+---
+
+class: inverse, center, middle
+background-color: #FFC400
+
+# Scraping tables in PDFs
+
+---
+
+class: inverse, center, middle
+background-color: #FB3579
+
+## "Please send the data in a PDF" -- noone ever
+
+---
+
+# Table in a PDF
+
+&lt;img src="img/peace-table.png" width="400px" height="300px" style="display: block; margin: auto;" /&gt;
+
+PDF at: &lt;http://visionofhumanity.org/app/uploads/2019/07/GPI-2019web.pdf&gt;
+
+Example modified from [Ketan Deshpande](https://medium.com/@ketanrd.009/how-to-extract-pdf-tables-in-r-e994c0fe4e28)
+
+---
+
+# parse PDF in R
+
+Use the [tabulizer](https://github.com/ropensci/tabulizer) package to parse PDFs in R.
+
+⚠️ This requires [rJava](https://cran.r-project.org/web/packages/rJava/index.html), which can be a real pain to install. See [tabulizer README](https://github.com/ropensci/tabulizer/README.md)
+
+---
+
+# Download PDF and extract table
+
+
+```r
+library(tabulizer)
+
+url &lt;- "http://visionofhumanity.org/app/uploads/2019/07/GPI-2019web.pdf"
+
+all_tables &lt;- extract_tables(file = url,
+                             pages = 10, # tenth page of the PDF
+                             output = "data.frame") 
+```
+
+By default, `extract_tables` guesses where the tables are on the page. Use `guess = FALSE` and `areas` argument to specify the areas of the page to extract the table from.
+
+Use `locate_areas(file = url)` to find the areas.
+
+---
+
+# Clean up
+
+---
+
+class: inverse, center, middle
+background-color: #FF8C03
+
+# 🥅 Practice
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

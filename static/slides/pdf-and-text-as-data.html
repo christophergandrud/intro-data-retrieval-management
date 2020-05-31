@@ -20,6 +20,75 @@ class: center, middle, inverse, title-slide
 ---
 
 
+
+
+## 📝 Lesson Preview
+
+- Scraping tables in PDFs
+
+- Text as data
+
+---
+
+class: inverse, center, middle
+background-color: #FFC400
+
+# Scraping tables in PDFs
+
+---
+
+class: inverse, center, middle
+background-color: #FB3579
+
+## "Please send the data in a PDF" -- noone ever
+
+---
+
+# Table in a PDF
+
+&lt;img src="img/peace-table.png" width="400px" height="300px" style="display: block; margin: auto;" /&gt;
+
+PDF at: &lt;http://visionofhumanity.org/app/uploads/2019/07/GPI-2019web.pdf&gt;
+
+Example modified from [Ketan Deshpande](https://medium.com/@ketanrd.009/how-to-extract-pdf-tables-in-r-e994c0fe4e28)
+
+---
+
+# parse PDF in R
+
+Use the [tabulizer](https://github.com/ropensci/tabulizer) package to parse PDFs in R.
+
+⚠️ This requires [rJava](https://cran.r-project.org/web/packages/rJava/index.html), which can be a real pain to install. See [tabulizer README](https://github.com/ropensci/tabulizer/README.md)
+
+---
+
+# Download PDF and extract table
+
+
+```r
+library(tabulizer)
+
+url &lt;- "http://visionofhumanity.org/app/uploads/2019/07/GPI-2019web.pdf"
+
+all_tables &lt;- extract_tables(file = url,
+                             pages = 10, # tenth page of the PDF
+                             output = "data.frame") 
+```
+
+By default, `extract_tables` guesses where the tables are on the page. Use `guess = FALSE` and `areas` argument to specify the areas of the page to extract the table from.
+
+Use `locate_areas(file = url)` to find the areas.
+
+---
+
+# Clean up
+
+---
+
+class: inverse, center, middle
+background-color: #FF8C03
+
+# 🥅 Practice
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

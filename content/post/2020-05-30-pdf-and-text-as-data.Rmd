@@ -1,5 +1,5 @@
 ---
-title: Nested JSON and Text as Data
+title: Parse PDFs and Text as Data
 author: 'Christopher Gandrud'
 date: '2020-05-30'
 slug: nested-json-and-text-as-data
@@ -8,17 +8,17 @@ categories: []
 tags: []
 Categories: []
 Description: ''
-Tags: [JSON, HTML, Text, R, Data Retrieval]
+Tags: [PDF, HTML, Text, R, Data Retrieval]
 ---
 
 ## 📝 Lesson Preview
 
-- Parse JSON (nested data formats)
+- Scraping tables in PDFs
 
 - Text as data
 
 ## 📣 Lecture slides
 
 ```{r echo=FALSE}
-knitr::include_url("https://brave-pasteur-c09ffa.netlify.app/slides/get-json-text-data")
+knitr::include_url("https://brave-pasteur-c09ffa.netlify.app/slides/pdf-and-text-as-data")
 ```

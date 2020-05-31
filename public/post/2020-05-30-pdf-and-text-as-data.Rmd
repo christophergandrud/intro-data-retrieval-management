@@ -13,12 +13,12 @@ Tags: [PDF, HTML, Text, R, Data Retrieval]
 
 ## 📝 Lesson Preview
 
-- Parse tables in PDFs
+- Scraping tables in PDFs
 
 - Text as data
 
 ## 📣 Lecture slides
 
 ```{r echo=FALSE}
-knitr::include_url("https://brave-pasteur-c09ffa.netlify.app/slides/get-json-text-data")
+knitr::include_url("https://brave-pasteur-c09ffa.netlify.app/slides/pdf-and-text-as-data")
 ```

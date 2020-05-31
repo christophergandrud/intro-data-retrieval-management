@@ -1,5 +1,5 @@
 ---
-title: "Get JSON and Text as Data"
+title: "Parse PDFs and Text as Data"
 author: "Christopher Gandrud"
 institute: "HU DYNAMICS"
 date: "2020-05-30 (updated: `r Sys.Date()`)"

@@ -1,0 +1,89 @@
+---
+title: "Parse PDFs and Text as Data"
+author: "Christopher Gandrud"
+institute: "HU DYNAMICS"
+date: "2020-05-30 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    css: [robot, metropolis-fonts]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+bibliography: main.bib
+---
+
+```{r setup, include=FALSE}
+library(xfun)
+pkg_attach2("tabulizer", "tidyverse")
+```
+
+## 📝 Lesson Preview
+
+- Scraping tables in PDFs
+
+- Text as data
+
+---
+
+class: inverse, center, middle
+background-color: #FFC400
+
+# Scraping tables in PDFs
+
+---
+
+class: inverse, center, middle
+background-color: #FB3579
+
+## "Please send the data in a PDF" -- noone ever
+
+---
+
+# Table in a PDF
+
+```{r peace-table, echo=FALSE, out.height="300px", out.width="400px", fig.align='center'}
+knitr::include_graphics("img/peace-table.png")
+```
+
+PDF at: <http://visionofhumanity.org/app/uploads/2019/07/GPI-2019web.pdf>
+
+Example modified from [Ketan Deshpande](https://medium.com/@ketanrd.009/how-to-extract-pdf-tables-in-r-e994c0fe4e28)
+
+---
+
+# parse PDF in R
+
+Use the [tabulizer](https://github.com/ropensci/tabulizer) package to parse PDFs in R.
+
+⚠️ This requires [rJava](https://cran.r-project.org/web/packages/rJava/index.html), which can be a real pain to install. See [tabulizer README](https://github.com/ropensci/tabulizer/README.md)
+
+---
+
+# Download PDF and extract table
+
+```{r download-pdf, cache=TRUE, warning=FALSE, message=FALSE}
+library(tabulizer)
+
+url <- "http://visionofhumanity.org/app/uploads/2019/07/GPI-2019web.pdf"
+
+all_tables <- extract_tables(file = url,
+                             pages = 10, # tenth page of the PDF
+                             output = "data.frame") 
+```
+
+By default, `extract_tables` guesses where the tables are on the page. Use `guess = FALSE` and `areas` argument to specify the areas of the page to extract the table from.
+
+Use `locate_areas(file = url)` to find the areas.
+
+---
+
+# Clean up
+
+---
+
+class: inverse, center, middle
+background-color: #FF8C03
+
+# 🥅 Practice
