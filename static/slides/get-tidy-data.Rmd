@@ -619,11 +619,11 @@ combined <- dplyr::rename(combined, new_year = year)
 
 And reorder variables
 
-```{r, eval=FALSE}
-combined <- DataCombine::MoveFront(Combined, 'country')
-```
+```{r}
+combined <- dplyr::relocate(combined, country)
 
-(You should replace with `relocate() from dplyr when version 1.0.0 is released)
+combined
+```
 
 ---
 
