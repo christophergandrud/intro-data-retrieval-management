@@ -38,7 +38,7 @@ background-color: #FFC400
 class: inverse, center, middle
 background-color: #FB3579
 
-## "Please send the data in a PDF" -- noone ever
+## "Please send the data in a PDF" -- no one ever
 
 ---
 
@@ -58,7 +58,7 @@ Example modified from [Ketan Deshpande](https://medium.com/@ketanrd.009/how-to-e
 
 Use the [tabulizer](https://github.com/ropensci/tabulizer) package to parse PDFs in R.
 
-⚠️ This requires [rJava](https://cran.r-project.org/web/packages/rJava/index.html), which can be a real pain to install. See [tabulizer README](https://github.com/ropensci/tabulizer/README.md)
+⚠️ This requires [rJava](https://cran.r-project.org/web/packages/rJava/index.html), which can be a real pain to install. See [tabulizer README](https://github.com/ropensci/tabulizer/README.md).
 
 ---
 
@@ -123,7 +123,7 @@ Key tools include the [quanteda](https://github.com/quanteda/quanteda) and [tm](
 
 # Example
 
-Let's walk through parts of Munzert et al.'s (2016) example on classifying press releases from the British Government.
+Let's scrape COVID-19 press releases from the British Government.
 
 Navigate to <https://www.gov.uk/search/news-and-communications>.
 
@@ -299,8 +299,8 @@ for (i in seq(all_href)) {
   message(url_one)
   
   text <- read_html(url_one) %>%
-           html_nodes(xpath = '//*[@id="content"]/div[3]/div[1]/div[1]/div') %>%
-           html_text()
+      html_nodes(xpath = '//*[@id="content"]/div[3]/div[1]/div[1]/div') %>%
+      html_text()
   tmp_df <- data.frame(url = all_href[i], text = text)
   all_texts <- bind_rows(all_texts, tmp_df)
 }
@@ -335,7 +335,7 @@ knitr::include_graphics("img/govspeach.png")
 
 ---
 
-# xpath [contains](https://developer.mozilla.org/en-US/docs/Web/XPath/Functions/contains)
+# xpath [contains](https://developer.mozilla.org/en-US/docs/Web/XPath/Functions/contains) function
 
 ```{r}
 all_texts <- data.frame()

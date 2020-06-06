@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # Get and Parse HTML Data
 ### Christopher Gandrud
 ### HU DYNAMICS
-### 2020-05-30 (updated: 2020-05-31)
+### 2020-05-30 (updated: 2020-06-06)
 
 ---
 
@@ -65,7 +65,7 @@ For example:
 &lt;br&gt;
 &lt;br&gt;
 
-Example data from [Wikipedia](https://en.wikipedia.org/wiki/JSON#Example).
+(following example data from [Wikipedia](https://en.wikipedia.org/wiki/JSON#Example))
 
 ---
 
@@ -238,7 +238,11 @@ head(json_example)
 
 # JSON to R
 
-Use your R data manipulation tools to convert the parse JSON data to the R format you need for your analysis. 
+Use your R data manipulation tools to download, parse and transform JSON data to the R format you need for your analysis. 
+
+
+Example data available here: &lt;https://brave-pasteur-c09ffa.netlify.app/slides/data/json-simple-example.json&gt; 
+
 
 ---
 
@@ -259,7 +263,7 @@ background-color: #FFC400
 
 # 👩‍💻 Web scraping
 
-[Web scraping](https://en.wikipedia.org/wiki/Web_scraping) simply means gathering data from websites.
+[Web scraping](https://en.wikipedia.org/wiki/Web_scraping) simply means programmatically gathering data from websites.
 
 Last lesson we learned a particular form of web scraping: downloading tabular and often tidy structured data files/data APIs.
 
@@ -373,7 +377,7 @@ https://en.wikipedia.org/wiki/URL
 
 ---
 
-# [The full schema](https://en.wikipedia.org/wiki/URL#Syntax)!
+# [The full HTTP schema](https://en.wikipedia.org/wiki/URL#Syntax)!
 
 &lt;br&gt;
 &lt;br&gt;
@@ -425,7 +429,7 @@ Every HTTP request and response happens as-if no request or response has ever be
 
 # HTTP Status Codes
 
-After making an HTTP request, check the status code.
+After making a HTTP request, check the status code.
 
 ```yaml
 Response [https://en.wikipedia.org/wiki/URL]
@@ -449,7 +453,7 @@ Response [https://en.wikipedia.org/wiki/URL]
 class: inverse, center, middle
 background-color: #FB3579
 
-# What is an HTML head?
+# What is a HTML head?
 
 ---
 
@@ -1020,7 +1024,8 @@ consistent variable values):
 
 ```r
 library(stringr)
-str_trim(' hello   ') 
+
+str_trim(' hello   ')
 ```
 
 ```

@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # Parse PDFs and Text as Data
 ### Christopher Gandrud
 ### HU DYNAMICS
-### 2020-05-30 (updated: 2020-05-31)
+### 2020-05-30 (updated: 2020-06-06)
 
 ---
 
@@ -40,7 +40,7 @@ background-color: #FFC400
 class: inverse, center, middle
 background-color: #FB3579
 
-## "Please send the data in a PDF" -- noone ever
+## "Please send the data in a PDF" -- no one ever
 
 ---
 
@@ -58,7 +58,7 @@ Example modified from [Ketan Deshpande](https://medium.com/@ketanrd.009/how-to-e
 
 Use the [tabulizer](https://github.com/ropensci/tabulizer) package to parse PDFs in R.
 
-⚠️ This requires [rJava](https://cran.r-project.org/web/packages/rJava/index.html), which can be a real pain to install. See [tabulizer README](https://github.com/ropensci/tabulizer/README.md)
+⚠️ This requires [rJava](https://cran.r-project.org/web/packages/rJava/index.html), which can be a real pain to install. See [tabulizer README](https://github.com/ropensci/tabulizer/README.md).
 
 ---
 
@@ -135,7 +135,7 @@ Key tools include the [quanteda](https://github.com/quanteda/quanteda) and [tm](
 
 # Example
 
-Let's walk through parts of Munzert et al.'s (2016) example on classifying press releases from the British Government.
+Let's scrape COVID-19 press releases from the British Government.
 
 Navigate to &lt;https://www.gov.uk/search/news-and-communications&gt;.
 
@@ -205,7 +205,7 @@ announce_page_href
 ```
 
 ```
-## [1] "/government/news/prime-minister-hails-resilience-of-shielders-as-restrictions-set-to-ease"
+## [1] "/government/speeches/pm-statement-at-the-coronavirus-press-conference-3-june-2020"
 ```
 
 &lt;br&gt;
@@ -228,26 +228,26 @@ announce_page_href
 ```
 
 ```
-##  [1] "/government/news/prime-minister-hails-resilience-of-shielders-as-restrictions-set-to-ease"     
-##  [2] "/government/news/pm-six-people-can-meet-outside-under-new-measures-to-ease-lockdown"           
-##  [3] "/government/speeches/pm-press-conference-statement-on-the-five-tests-28-may-2020"              
-##  [4] "/government/news/prime-minister-sets-out-timeline-for-retail-to-reopen-in-june"                
-##  [5] "/government/speeches/pm-press-conference-statement-25-may-2020"                                
-##  [6] "/government/speeches/pm-press-conference-statement-24-may-2020"                                
-##  [7] "/government/news/pm-confirms-schools-colleges-and-nurseries-on-track-to-begin-phased-reopening"
-##  [8] "/government/speeches/prime-ministers-article-in-the-mail-on-sunday-17-may-2020"                
-##  [9] "/government/speeches/pm-address-to-the-nation-on-coronavirus-10-may-2020"                      
-## [10] "/government/news/prime-ministers-statement-on-coronavirus-covid-19-30-april-2020"              
-## [11] "/government/news/pm-call-with-president-trump-27-march-2020"                                   
-## [12] "/government/speeches/pm-video-message-on-coronavirus-27-march-2020"                            
-## [13] "/government/speeches/pm-statement-on-coronavirus-25-march-2020"                                
-## [14] "/government/speeches/pm-address-to-the-nation-on-coronavirus-23-march-2020"                    
-## [15] "/government/speeches/pm-statement-on-coronavirus-22-march-2020"                                
-## [16] "/government/speeches/pm-mothers-day-words-22-march-2020"                                       
-## [17] "/government/speeches/pm-statement-on-coronavirus-18-march-2020"                                
-## [18] "/government/news/new-government-structures-to-coordinate-response-to-coronavirus"              
-## [19] "/government/speeches/pm-statement-on-coronavirus-16-march-2020"                                
-## [20] "/government/news/prime-minister-to-lead-cross-government-drive-to-defeat-coronavirus"
+##  [1] "/government/speeches/pm-statement-at-the-coronavirus-press-conference-3-june-2020"             
+##  [2] "/government/news/prime-minister-hails-resilience-of-shielders-as-restrictions-set-to-ease"     
+##  [3] "/government/news/pm-six-people-can-meet-outside-under-new-measures-to-ease-lockdown"           
+##  [4] "/government/speeches/pm-press-conference-statement-on-the-five-tests-28-may-2020"              
+##  [5] "/government/news/prime-minister-sets-out-timeline-for-retail-to-reopen-in-june"                
+##  [6] "/government/speeches/pm-press-conference-statement-25-may-2020"                                
+##  [7] "/government/speeches/pm-press-conference-statement-24-may-2020"                                
+##  [8] "/government/news/pm-confirms-schools-colleges-and-nurseries-on-track-to-begin-phased-reopening"
+##  [9] "/government/speeches/prime-ministers-article-in-the-mail-on-sunday-17-may-2020"                
+## [10] "/government/speeches/pm-address-to-the-nation-on-coronavirus-10-may-2020"                      
+## [11] "/government/news/prime-ministers-statement-on-coronavirus-covid-19-30-april-2020"              
+## [12] "/government/news/pm-call-with-president-trump-27-march-2020"                                   
+## [13] "/government/speeches/pm-video-message-on-coronavirus-27-march-2020"                            
+## [14] "/government/speeches/pm-statement-on-coronavirus-25-march-2020"                                
+## [15] "/government/speeches/pm-address-to-the-nation-on-coronavirus-23-march-2020"                    
+## [16] "/government/speeches/pm-statement-on-coronavirus-22-march-2020"                                
+## [17] "/government/speeches/pm-mothers-day-words-22-march-2020"                                       
+## [18] "/government/speeches/pm-statement-on-coronavirus-18-march-2020"                                
+## [19] "/government/news/new-government-structures-to-coordinate-response-to-coronavirus"              
+## [20] "/government/speeches/pm-statement-on-coronavirus-16-march-2020"
 ```
 
 ---
@@ -306,7 +306,7 @@ length(all_href)
 ```
 
 ```
-## [1] 29
+## [1] 30
 ```
 
 ```r
@@ -314,35 +314,36 @@ all_href
 ```
 
 ```
-##  [1] "/government/news/prime-minister-hails-resilience-of-shielders-as-restrictions-set-to-ease"     
-##  [2] "/government/news/pm-six-people-can-meet-outside-under-new-measures-to-ease-lockdown"           
-##  [3] "/government/speeches/pm-press-conference-statement-on-the-five-tests-28-may-2020"              
-##  [4] "/government/news/prime-minister-sets-out-timeline-for-retail-to-reopen-in-june"                
-##  [5] "/government/speeches/pm-press-conference-statement-25-may-2020"                                
-##  [6] "/government/speeches/pm-press-conference-statement-24-may-2020"                                
-##  [7] "/government/news/pm-confirms-schools-colleges-and-nurseries-on-track-to-begin-phased-reopening"
-##  [8] "/government/speeches/prime-ministers-article-in-the-mail-on-sunday-17-may-2020"                
-##  [9] "/government/speeches/pm-address-to-the-nation-on-coronavirus-10-may-2020"                      
-## [10] "/government/news/prime-ministers-statement-on-coronavirus-covid-19-30-april-2020"              
-## [11] "/government/news/pm-call-with-president-trump-27-march-2020"                                   
-## [12] "/government/speeches/pm-video-message-on-coronavirus-27-march-2020"                            
-## [13] "/government/speeches/pm-statement-on-coronavirus-25-march-2020"                                
-## [14] "/government/speeches/pm-address-to-the-nation-on-coronavirus-23-march-2020"                    
-## [15] "/government/speeches/pm-statement-on-coronavirus-22-march-2020"                                
-## [16] "/government/speeches/pm-mothers-day-words-22-march-2020"                                       
-## [17] "/government/speeches/pm-statement-on-coronavirus-18-march-2020"                                
-## [18] "/government/news/new-government-structures-to-coordinate-response-to-coronavirus"              
-## [19] "/government/speeches/pm-statement-on-coronavirus-16-march-2020"                                
-## [20] "/government/news/prime-minister-to-lead-cross-government-drive-to-defeat-coronavirus"          
-## [21] "/government/news/pm-call-with-crown-prince-mohammed-bin-salman-15-march-2020"                  
-## [22] "/government/news/pm-call-with-prime-minister-abe-15-march-2020"                                
-## [23] "/government/news/pm-call-with-president-trump-14-march-2020"                                   
-## [24] "/government/news/pm-call-with-prime-minister-of-australia-scott-morrison-14-march-2020"        
-## [25] "/government/speeches/pm-statement-on-coronavirus-12-march-2020"                                
-## [26] "/government/speeches/pm-statement-on-coronavirus-9-march-2020"                                 
-## [27] "/government/news/pm-announces-new-funding-in-fight-against-spread-of-coronavirus"              
-## [28] "/government/news/sick-pay-from-day-one-for-those-affected-by-coronavirus"                      
-## [29] "/government/news/pm-to-chair-cobr-meeting-on-the-coronavirus-outbreak"
+##  [1] "/government/speeches/pm-statement-at-the-coronavirus-press-conference-3-june-2020"             
+##  [2] "/government/news/prime-minister-hails-resilience-of-shielders-as-restrictions-set-to-ease"     
+##  [3] "/government/news/pm-six-people-can-meet-outside-under-new-measures-to-ease-lockdown"           
+##  [4] "/government/speeches/pm-press-conference-statement-on-the-five-tests-28-may-2020"              
+##  [5] "/government/news/prime-minister-sets-out-timeline-for-retail-to-reopen-in-june"                
+##  [6] "/government/speeches/pm-press-conference-statement-25-may-2020"                                
+##  [7] "/government/speeches/pm-press-conference-statement-24-may-2020"                                
+##  [8] "/government/news/pm-confirms-schools-colleges-and-nurseries-on-track-to-begin-phased-reopening"
+##  [9] "/government/speeches/prime-ministers-article-in-the-mail-on-sunday-17-may-2020"                
+## [10] "/government/speeches/pm-address-to-the-nation-on-coronavirus-10-may-2020"                      
+## [11] "/government/news/prime-ministers-statement-on-coronavirus-covid-19-30-april-2020"              
+## [12] "/government/news/pm-call-with-president-trump-27-march-2020"                                   
+## [13] "/government/speeches/pm-video-message-on-coronavirus-27-march-2020"                            
+## [14] "/government/speeches/pm-statement-on-coronavirus-25-march-2020"                                
+## [15] "/government/speeches/pm-address-to-the-nation-on-coronavirus-23-march-2020"                    
+## [16] "/government/speeches/pm-statement-on-coronavirus-22-march-2020"                                
+## [17] "/government/speeches/pm-mothers-day-words-22-march-2020"                                       
+## [18] "/government/speeches/pm-statement-on-coronavirus-18-march-2020"                                
+## [19] "/government/news/new-government-structures-to-coordinate-response-to-coronavirus"              
+## [20] "/government/speeches/pm-statement-on-coronavirus-16-march-2020"                                
+## [21] "/government/news/prime-minister-to-lead-cross-government-drive-to-defeat-coronavirus"          
+## [22] "/government/news/pm-call-with-crown-prince-mohammed-bin-salman-15-march-2020"                  
+## [23] "/government/news/pm-call-with-prime-minister-abe-15-march-2020"                                
+## [24] "/government/news/pm-call-with-president-trump-14-march-2020"                                   
+## [25] "/government/news/pm-call-with-prime-minister-of-australia-scott-morrison-14-march-2020"        
+## [26] "/government/speeches/pm-statement-on-coronavirus-12-march-2020"                                
+## [27] "/government/speeches/pm-statement-on-coronavirus-9-march-2020"                                 
+## [28] "/government/news/pm-announces-new-funding-in-fight-against-spread-of-coronavirus"              
+## [29] "/government/news/sick-pay-from-day-one-for-those-affected-by-coronavirus"                      
+## [30] "/government/news/pm-to-chair-cobr-meeting-on-the-coronavirus-outbreak"
 ```
 ---
 
@@ -356,7 +357,7 @@ url_one
 ```
 
 ```
-## [1] "https://www.gov.uk/government/news/prime-minister-hails-resilience-of-shielders-as-restrictions-set-to-ease"
+## [1] "https://www.gov.uk/government/speeches/pm-statement-at-the-coronavirus-press-conference-3-june-2020"
 ```
 
 ---
@@ -394,11 +395,15 @@ for (i in seq(all_href)) {
   message(url_one)
   
   text &lt;- read_html(url_one) %&gt;%
-           html_nodes(xpath = '//*[@id="content"]/div[3]/div[1]/div[1]/div') %&gt;%
-           html_text()
+      html_nodes(xpath = '//*[@id="content"]/div[3]/div[1]/div[1]/div') %&gt;%
+      html_text()
   tmp_df &lt;- data.frame(url = all_href[i], text = text)
   all_texts &lt;- bind_rows(all_texts, tmp_df)
 }
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-the-coronavirus-press-conference-3-june-2020
 ```
 
 ```
@@ -522,7 +527,7 @@ nrow(all_texts)
 ```
 
 ```
-## [1] 43
+## [1] 45
 ```
 
 ---
@@ -540,53 +545,57 @@ summary(announce_corpus)
 ```
 
 ```
-## Corpus consisting of 43 documents, showing 43 documents:
+## Corpus consisting of 45 documents, showing 45 documents:
 ## 
 ##    Text Types Tokens Sentences
-##   text1   603   1725        58
-##   text2   413   1085        35
-##   text3    18     18         1
-##   text4   664   2280        91
-##   text5   402    919        24
-##   text6    18     18         1
-##   text7   410    986        35
+##   text1    18     18         1
+##   text2   530   1403        57
+##   text3   592   1681        57
+##   text4   413   1085        35
+##   text5    18     18         1
+##   text6   672   2300        92
+##   text7   402    919        24
 ##   text8    18     18         1
-##   text9   476   1242        44
-##  text10   337    782        23
-##  text11     6      6         1
-##  text12   602   1554        73
-##  text13    18     18         1
-##  text14   655   2187       101
-##  text15   465   1172         6
-##  text16    36     50         3
-##  text17    18     18         1
-##  text18   171    366        21
+##   text9   410    986        35
+##  text10    18     18         1
+##  text11   476   1242        44
+##  text12   337    782        23
+##  text13     6      6         1
+##  text14   602   1554        73
+##  text15    18     18         1
+##  text16   655   2187       101
+##  text17   465   1172         6
+##  text18    36     50         3
 ##  text19    18     18         1
-##  text20   234    491        27
+##  text20   171    366        21
 ##  text21    18     18         1
-##  text22   385    983        48
+##  text22   234    491        27
 ##  text23    18     18         1
-##  text24   300    729        33
-##  text25     6      6         1
-##  text26   284    647        29
-##  text27    18     18         1
-##  text28   406   1175        51
-##  text29   181    376         8
-##  text30    18     18         1
-##  text31   405   1165        42
-##  text32   265    592        14
-##  text33    65     97         4
-##  text34    71    124         5
-##  text35    87    133         5
-##  text36    75    117         4
-##  text37    18     18         1
-##  text38   409   1170        49
+##  text24   385    983        48
+##  text25    18     18         1
+##  text26   300    729        33
+##  text27     6      6         1
+##  text28   284    647        29
+##  text29    18     18         1
+##  text30   406   1175        51
+##  text31   181    376         8
+##  text32    18     18         1
+##  text33   405   1165        42
+##  text34   265    592        14
+##  text35    65     97         4
+##  text36    71    124         5
+##  text37    87    133         5
+##  text38    75    117         4
 ##  text39    18     18         1
-##  text40   266    577        21
-##  text41   504   1398        46
-##  text42   163    270        11
-##  text43   214    406        14
+##  text40   409   1170        49
+##  text41    18     18         1
+##  text42   266    577        21
+##  text43   504   1398        46
+##  text44   163    270        11
+##  text45   214    406        14
 ##                                                                                             url
+##               /government/speeches/pm-statement-at-the-coronavirus-press-conference-3-june-2020
+##               /government/speeches/pm-statement-at-the-coronavirus-press-conference-3-june-2020
 ##       /government/news/prime-minister-hails-resilience-of-shielders-as-restrictions-set-to-ease
 ##             /government/news/pm-six-people-can-meet-outside-under-new-measures-to-ease-lockdown
 ##                /government/speeches/pm-press-conference-statement-on-the-five-tests-28-may-2020
@@ -649,7 +658,7 @@ knitr::include_graphics("img/govspeach.png")
 
 ---
 
-# xpath [contains](https://developer.mozilla.org/en-US/docs/Web/XPath/Functions/contains)
+# xpath [contains](https://developer.mozilla.org/en-US/docs/Web/XPath/Functions/contains) function
 
 
 ```r
@@ -675,39 +684,41 @@ summary(announce_corpus)
 ```
 
 ```
-## Corpus consisting of 29 documents, showing 29 documents:
+## Corpus consisting of 30 documents, showing 30 documents:
 ## 
 ##    Text Types Tokens Sentences
-##   text1   603   1725        58
-##   text2   413   1085        35
-##   text3   664   2280        91
-##   text4   402    919        24
-##   text5   410    986        35
-##   text6   476   1242        44
-##   text7   337    782        23
-##   text8   602   1554        73
-##   text9   655   2187       101
-##  text10   465   1172         6
-##  text11    36     50         3
-##  text12   171    366        21
-##  text13   234    491        27
-##  text14   385    983        48
-##  text15   300    729        33
-##  text16   284    647        29
-##  text17   406   1175        51
-##  text18   181    376         8
-##  text19   405   1165        42
-##  text20   265    592        14
-##  text21    65     97         4
-##  text22    71    124         5
-##  text23    87    133         5
-##  text24    75    117         4
-##  text25   409   1170        49
-##  text26   266    577        21
-##  text27   504   1398        46
-##  text28   163    270        11
-##  text29   214    406        14
+##   text1   530   1403        57
+##   text2   592   1681        57
+##   text3   413   1085        35
+##   text4   672   2300        92
+##   text5   402    919        24
+##   text6   410    986        35
+##   text7   476   1242        44
+##   text8   337    782        23
+##   text9   602   1554        73
+##  text10   655   2187       101
+##  text11   465   1172         6
+##  text12    36     50         3
+##  text13   171    366        21
+##  text14   234    491        27
+##  text15   385    983        48
+##  text16   300    729        33
+##  text17   284    647        29
+##  text18   406   1175        51
+##  text19   181    376         8
+##  text20   405   1165        42
+##  text21   265    592        14
+##  text22    65     97         4
+##  text23    71    124         5
+##  text24    87    133         5
+##  text25    75    117         4
+##  text26   409   1170        49
+##  text27   266    577        21
+##  text28   504   1398        46
+##  text29   163    270        11
+##  text30   214    406        14
 ##                                                                                             url
+##               /government/speeches/pm-statement-at-the-coronavirus-press-conference-3-june-2020
 ##       /government/news/prime-minister-hails-resilience-of-shielders-as-restrictions-set-to-ease
 ##             /government/news/pm-six-people-can-meet-outside-under-new-measures-to-ease-lockdown
 ##                /government/speeches/pm-press-conference-statement-on-the-five-tests-28-may-2020
@@ -752,16 +763,16 @@ announce_dtm
 ```
 
 ```
-## Document-feature matrix of: 29 documents, 1,835 features (87.7% sparse) and 1 docvar.
+## Document-feature matrix of: 30 documents, 1,888 features (87.9% sparse) and 1 docvar.
 ##        features
-## docs    2.2 million peopl shield england abl spend time outdoor tomorrow
-##   text1   3       4     8     28       4   4     3    6       2        2
-##   text2   0       0     9      2       3   6     1    2       5        0
-##   text3   0       0    17      2       4   6     0    4       3        0
-##   text4   0       1     2      0       2   4     0    0       3        0
-##   text5   0       0     6      0       1   1     1    6       5        0
-##   text6   0       0     7      0       0   1     0    2       1        0
-## [ reached max_ndoc ... 23 more documents, reached max_nfeat ... 1,825 more features ]
+## docs    first let run latest data coronavirus respons 4,786,219 test now
+##   text1     4   2   1      1    1          10       1         1   12   7
+##   text2     2   0   0      2    1           7       1         0    0   7
+##   text3     0   0   0      0    2           0       0         0    7   1
+##   text4     7   1   0      2    6           8       1         0   26  13
+##   text5     0   0   1      0    0           0       1         0    1   0
+##   text6     0   0   0      1    1           3       0         0    7   5
+## [ reached max_ndoc ... 24 more documents, reached max_nfeat ... 1,878 more features ]
 ```
 
 ---
