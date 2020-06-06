@@ -260,11 +260,11 @@ mclapply(three_list, mean, mc.cores = 3)
 
 ## 🥅 Exercises
 
-- Create a new function to transform summarise numeric vectors in a method of your choosing.
+- Create a new function to summarise numeric vectors in a method of your choosing (explore R's built in statistical capabilities).
 
-- Create a data frame with numeric and character columns. Then, for each column find the standard deviation (`sd()`) if it is numeric and return the `message()` "This column has characters" if it is a character type column.
+- Create a data frame with numeric and character columns. Then, for each column find the standard deviation (`sd()`) if it is numeric and return the `message()` `"This column has characters"` if it is a character type column.
 
-- `ncar()` counts the number of characters in a string Create a list of character vectors with strings of different lengths. In parallel, count the number of characters in each vector.
+- `nchar()` counts the number of characters in a string. Create a list of character vectors with strings of different lengths. In parallel, count the number of characters in each vector.
 
 ## Additional Materials
 

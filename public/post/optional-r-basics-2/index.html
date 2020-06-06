@@ -252,21 +252,21 @@ detectCores()</code></pre>
 <p>Let’s compute the mean of each vector in the list in parallel:</p>
 <pre class="r"><code>mclapply(three_list, mean, mc.cores = 3)</code></pre>
 <pre><code>## $A
-## [1] 0.923703
+## [1] 1.019575
 ## 
 ## $B
-## [1] 2.062576
+## [1] 1.886576
 ## 
 ## $C
-## [1] 4.996077</code></pre>
+## [1] 5.004532</code></pre>
 <p><code>mc.cores</code> sets the number of cores to use. Usually use 1 - the number of cores you have available.</p>
 </div>
 <div id="exercises" class="section level2">
 <h2>🥅 Exercises</h2>
 <ul>
-<li><p>Create a new function to transform summarise numeric vectors in a method of your choosing.</p></li>
-<li><p>Create a data frame with numeric and character columns. Then, for each column find the standard deviation (<code>sd()</code>) if it is numeric and return the <code>message()</code> “This column has characters” if it is a character type column.</p></li>
-<li><p><code>ncar()</code> counts the number of characters in a string Create a list of character vectors with strings of different lengths. In parallel, count the number of characters in each vector.</p></li>
+<li><p>Create a new function to summarise numeric vectors in a method of your choosing (explore R’s built in statistical capabilities).</p></li>
+<li><p>Create a data frame with numeric and character columns. Then, for each column find the standard deviation (<code>sd()</code>) if it is numeric and return the <code>message()</code> <code>"This column has characters"</code> if it is a character type column.</p></li>
+<li><p><code>nchar()</code> counts the number of characters in a string. Create a list of character vectors with strings of different lengths. In parallel, count the number of characters in each vector.</p></li>
 </ul>
 </div>
 <div id="additional-materials" class="section level2">

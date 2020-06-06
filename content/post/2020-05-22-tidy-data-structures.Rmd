@@ -17,7 +17,7 @@ bibliography: main.bib
 
 ## 📝 Lesson Preview
 
-- Why is file management is important?
+- Why is file management important?
 
 - What is tidy data?
 

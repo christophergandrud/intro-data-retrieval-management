@@ -157,7 +157,7 @@ mean(words)
 Trying to find the mean of our *words* object gives us a
 warning message and returns the value `r mean(words)`: not applicable. You can also
 think of `NA` as meaning "missing". To find out an object's type, use the `class()`
-function.[^chapter_3_types]\index{R function!class} For example:
+function. For example:
 
 ```{r Ch3ClassCommand, echo=TRUE}
 class(words)

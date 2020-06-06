@@ -47,7 +47,7 @@ class: inverse, center, middle
 - does the data task have **non-trivial** scope and complexity?
 
 
-.small[modified from Munzert (2015, xvi)]
+.small[modified from Munzert et al. (2015, xvi)
 
 ---
 
@@ -91,7 +91,7 @@ color: #24292F
 
 # Programmatic
 
-> a task done through computer program **code**, not manual.
+> a task done through computer program **code**. It is repeatable and not manual.
 
 ---
 
@@ -182,7 +182,7 @@ ggplot(returns_to_scale, aes(x, y)) +
 
 # 🏭 Industry 
 
-So, data science being able to automate data retrieval and management are highly valued. E.g. on [PayScale](https://www.payscale.com/research/DE/Job=Data_Scientist/Salary):
+So, being able to scale data science--automate data retrieval and management--is highly valued. E.g. on [PayScale](https://www.payscale.com/research/DE/Job=Data_Scientist/Salary):
 
 ```{r pay-by-experience, echo=FALSE}
 knitr::include_graphics("img/pay-by-experience.png")
@@ -354,7 +354,7 @@ Consider the needs for privacy and protecting persons' data.
 
 ⚠️ It is especially important for automated data retrieval and management to **build in** privacy and data protection. 
 
-⚠️ Automated data retrieval and management scale. If done poorly they can **scale privacy infringements**. 
+⚠️ Automated data retrieval and management scale. If done poorly, can **scale privacy infringements**. 
 
 ---
 
@@ -421,7 +421,7 @@ the data subjects' rights pursuant to Articles 12 to 222
 
 **👍 Do**
 
-- Follow your institution's data protection policies.
+- Follow your institution's **data protection policies**.
 
 - Clearly **document** all of the data you have, your justification for having it, how you maintain and delete it.
 
@@ -475,6 +475,8 @@ background-color: #FF8C03
 # 🥅 With a partner
 
 **Identify** ~three online data sets (in any format). What **research questions** could you explore with these data sets?
+
+What data privacy and protection challenges do you need to consider?
 
 ---
 

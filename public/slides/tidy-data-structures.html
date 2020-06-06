@@ -4,7 +4,7 @@
     <title>File Organisation and Tidy Data Structures</title>
     <meta charset="utf-8" />
     <meta name="author" content="Christopher Gandrud" />
-    <script src="libs/header-attrs-2.1/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.2/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/robot.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # File Organisation and Tidy Data Structures
 ### Christopher Gandrud
 ### HU DYNAMICS
-### 2020-06-12 (updated: 2020-05-22)
+### 2020-06-12 (updated: 2020-06-06)
 
 ---
 
@@ -24,7 +24,7 @@ class: center, middle, inverse, title-slide
 
 # 📝 Lesson Preview
 
-- Why is file management is important?
+- Why is file management important?
 
 - What is tidy data?
 
@@ -48,24 +48,24 @@ class: center, middle, inverse, title-slide
 
 # Importance of understanding files/file structures
 
-- This topic may seem kind of . . . dry.
+This topic may seem kind of . . . dry.
 
-- Why not just click and drag files with the GUI (Graphical User Interface)?
+Why not just click and drag files with the GUI (Graphical User Interface)?
 
 ---
 
 # Importance of understanding files/file structures
 
-- **Crucial for programmatic access and manipulation**: automated data collection and management is automated file manipulation.
+1. **Crucial for programmatic access and manipulation**: automated data collection and management _is_ automated file manipulation.
 
-- **Reproducibility**: other researchers only have your files. If they are **well
+2. **Reproducibility**: other researchers only have your files. If they are **well
     organised** and the **links** between the files are **explicitly stated**
     then they can better understand what you did.
 
     + Clearest way of explicitly stating links is **dynamically** using file
     paths in your source code.
 
-- **You**: well organised files will be easier for you to find/understand/use
+3. **You**: well organised files will be easier for you to find/understand/use
     in the future.
 
 ---
@@ -78,9 +78,7 @@ class: inverse, center, middle
 
 # 📄 Why text files?
 
-(Almost) all files are ultimately text files. 
-
-    + Note very large data is usually stored in binary file formats
+(Almost) all files are ultimately text files. Note very large data is usually stored in _binary_ file formats
 
 - E.g. a website is typically just a series of connected `.html`, `.js`,
 and `.css` files.
@@ -113,9 +111,9 @@ presentation markup (`.Rmd`).
 
 CSV (Comma Separated Values)
 
-- All columns are separated by commas `,`
+- All columns are separated by commas--`,`
 
-- All rows are separated by new lines
+- All rows are separated by new lines--`\n`
 
 ---
 
@@ -184,7 +182,7 @@ of the `C` partition.
 
 # 🚸 Sub (child) directories
 
-Sub (child) directories are denoted with a forwardslash `/` in Linux/Mac and a backslash `\` in Windows, e.g.:
+Sub (child) directories are denoted with a forward slash `/` in Linux/Mac and a back slash `\` in Windows, e.g.:
 
 ```sh
 # Linux/Mac
@@ -235,12 +233,18 @@ list.files()
 ```
 
 ```
-##  [1] "data"                       "get-tidy-data_cache"       
-##  [3] "get-tidy-data.html"         "get-tidy-data.Rmd"         
-##  [5] "img"                        "libs"                      
-##  [7] "main.bib"                   "tidy-data-structures_cache"
-##  [9] "tidy-data-structures.html"  "tidy-data-structures.Rmd"  
-## [11] "why-automated-data.html"    "why-automated-data.Rmd"
+##  [1] "code"                       "data"                      
+##  [3] "get-json-html_cache"        "get-json-html_files"       
+##  [5] "get-json-html.html"         "get-json-html.Rmd"         
+##  [7] "get-tidy-data_cache"        "get-tidy-data.html"        
+##  [9] "get-tidy-data.Rmd"          "img"                       
+## [11] "libs"                       "main.bib"                  
+## [13] "pdf-and-text-as-data_cache" "pdf-and-text-as-data_files"
+## [15] "pdf-and-text-as-data.html"  "pdf-and-text-as-data.Rmd"  
+## [17] "tidy-data-structures_cache" "tidy-data-structures.html" 
+## [19] "tidy-data-structures.Rmd"   "why-automated-data_cache"  
+## [21] "why-automated-data_files"   "why-automated-data.html"   
+## [23] "why-automated-data.Rmd"
 ```
 
 ```R
@@ -278,7 +282,7 @@ cd /
 
     + [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
 
-    + Easy to sort and parse
+    + Easy to sort, parse, and use for joins
 
 ---
 
@@ -310,9 +314,9 @@ Easier for your collaborators. Easier for you when you use another computer.
 They can create problems for programs that treat spaces as an indication that the
 path has ended.
 
-Alternatives:
+Alternatives to spaces:
 
-- 🥙`kebab-case` (e.g. `data-analysis.R`)
+- `kebab-case` (e.g. `data-analysis.R`)
 
 - `CamelCase` (ex. `DataAnalysis.R`)
 
@@ -325,7 +329,7 @@ Alternatives:
 There are a number of R commands to load files, depending on the file type.
 
 - Load Data: `read.table`, `read.csv` `read.dta` `xlsx::read.xlsx`,
-`rio::import`, `jsonlite::read_json`
+`rio::import`, `jsonlite::read_json`, `readr::read_csv`
 
 
 ```r
@@ -373,6 +377,8 @@ head(disprop)
 Not covered in this course, but you should always manage your source code with a tool like Git/GitHub. 
 
 See [here](https://cdn.rawgit.com/HertieDataScience/SyllabusAndLectures/8392513e7e826f5d7842bd437d9a415b808ef745/LectureSlides/Lecture3/Lecture3.html#26) for more details.
+
+Let me know if you are interested and I can give you an introduction if we have time.
 
 ---
 
@@ -555,6 +561,8 @@ background-color: #FF8C03
 # 🥅 Practice
 
 Using R or the terminal, create a new research project file structure with a file tree for storing your data management and analysis scripts, the data, and a paper writing up the results.
+
+Optional Advanced: Store this project on GitHub
 
 ---
 
