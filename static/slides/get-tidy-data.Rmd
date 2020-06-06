@@ -16,8 +16,7 @@ bibliography: main.bib
 
 ```{r setup, include=FALSE}
 library(xfun)
-pkg_attach2("tidyverse", "devtools", "repmis", "ggmap", "countrycode", "WDI",
-            "quantmod")
+pkg_attach2("tidyverse", "devtools", "repmis", "ggmap", "countrycode", "WDI", "quantmod", "lubridate")
 ```
 
 # 📝 Lesson Preview
@@ -238,7 +237,7 @@ Data maintainers (unfortunately) often change data sets with little or no docume
 
 Each download can be checked against the Hash
 
-```{r}
+```{r, cache=TRUE}
 main <- repmis::source_data(URL,
                 sha1 = '01cff579b689cea9ef9c98e433ce3122745cc5cb')
 ```
@@ -525,7 +524,7 @@ For example, `geocode` from
 [ggmap](http://journal.r-project.org/archive/2013-1/kahle-wickham.pdf) can be
 used to create latitude/longitudes for other geographic units:
 
-```{r, message=FALSE, eval=FALSE}
+```{r, eval=FALSE}
 places <- c('Bavaria', 'Seoul', '6 Parisier Platz, Berlin')
 ggmap::geocode(places, source = 'google')
 
@@ -582,12 +581,6 @@ head(combined, n = 3)
 
 # (Many) of the joins
 
-```r
-combined <- full_join(x = alt_energy, 
-                      y = uds,
-                      by = c('iso2c', 'year'))
-```
-
 
 | Name         | Description                                               |
 | ------------ | --------------------------------------------------------- |
@@ -595,10 +588,6 @@ combined <- full_join(x = alt_energy,
 | `inner_join` | Returns all rows where there is a match in both data sets |
 | `left_join`  | Returns all rows from x                                   |
 | `right_join` | Returns all rows from y                                   |
-
-
-<br>
-<br>
 
 Joins are a crucial part of Structure Query Language (**SQL**) work that is common in commercial data science for working with data bases
 
@@ -611,7 +600,7 @@ Always **check your data** after a merge to see if you did what you wanted to do
 You many want to do some post merge cleaning. For example assign new variable
 names:
 
-```{r}
+```{r, eval=FALSE}
 names(combined) <- c('iso2c', 'year', 'country',
                      'alt_energy_use',  'uds_median')
 ```
@@ -622,12 +611,14 @@ or
 combined <- dplyr::rename(combined, new_year = year)
 ```
 
-And reorder variables
+---
+
+# Reorder variables
 
 ```{r}
 combined <- dplyr::relocate(combined, country)
 
-combined
+head(combined)
 ```
 
 ---
@@ -672,6 +663,7 @@ Select rows
 
 ```{r}
 higher_income <- filter(data, income > 60000)
+
 head(higher_income)
 ```
 
@@ -683,8 +675,10 @@ Select columns
 
 ```{r}
 people_income <- select(data, people, income)
+
 # OR
 people_income <- select(data, -year)
+
 head(people_income)
 ```
 
@@ -696,6 +690,7 @@ Tell dplyr what the groups are in the data with `group_by`.
 
 ```{r}
 group_data <- group_by(data, people)
+
 head(group_data)[1:5, ]
 ```
 
@@ -713,6 +708,7 @@ For example, we can extract the highest and lowest income years for each person:
 min_max_income <- summarize(group_data,
                             min_income = min(income),
                             max_income = max(income))
+
 head(min_max_income)[1:3, ]
 ```
 
@@ -725,6 +721,7 @@ We can sort the data using `arrange`.
 ```{r}
 # Sort highest income for each person in ascending order
 ascending <- arrange(min_max_income, max_income)
+
 head(ascending)[1:3, ]
 ```
 
@@ -736,6 +733,7 @@ Add `desc` to sort in descending order
 
 ```{r}
 descending <- arrange(min_max_income, desc(max_income))
+
 head(descending)[1:3, ]
 ```
 
@@ -751,8 +749,11 @@ We can use `mutate` to add new columns to the original data frame.
 data <- mutate(group_data,
                 min_income = min(income),
                 max_income = max(income))
+
 head(data)[1:3, ]
 ```
+
+---
 
 class: inverse, center, middle
 background-color: #FF8C03
