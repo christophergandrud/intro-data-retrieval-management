@@ -354,7 +354,11 @@ vector_df_list[[2]]$numeric_vector
 
 - Create a **list** of three **data frames** with any numeric and string content you want. 
 
-- [RStudio Primers](https://rstudio.cloud/learn/primers/1.2)
+  + Select the first column of the third data frame.
+  
+  + For a numeric vector in your list, find the variance.
+
+- [RStudio Primers](https://rstudio.cloud/learn/primers/1.2) (objects through lists).
 
 ## 📚 References
 
