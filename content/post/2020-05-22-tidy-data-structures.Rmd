@@ -21,7 +21,7 @@ bibliography: main.bib
 
 - What is tidy data?
 
-- Manipulating and joining tidy data
+- Manipulating tidy data (1)
 
 ## 📣 Lecture slides
 

@@ -24,7 +24,7 @@ pkg_attach2("tidyverse", "devtools", "rio", "WDI", "countrycode", "ggmap")
 
 - What is tidy data?
 
-- Manipulating and joining tidy data
+- Manipulating tidy data (1)
 
 ---
 
