@@ -47,7 +47,7 @@ class: inverse, center, middle
 - does the data task have **non-trivial** scope and complexity?
 
 
-.small[modified from Munzert et al. (2015, xvi)
+modified from Munzert et al. (2015, xvi)
 
 ---
 
@@ -441,7 +441,7 @@ the data subjects' rights pursuant to Articles 12 to 222
 
 # 👀 Course preview: from structured to unstructured data
 
-```{dot struct-to-unstruct, echo=FALSE, cache=TRUE, fig.width=10, fig.retina=2, fig.align='center'}
+```{dot struct-to-unstruct, echo=FALSE, fig.width=10, fig.retina=2, fig.align='center'}
 digraph stricttpimstruct {
     graph [layout = dot, rankdir = LR, overlap = true, fontsize = 30];
     edge [arrowsize = 0.5];
@@ -477,12 +477,3 @@ background-color: #FF8C03
 **Identify** ~three online data sets (in any format). What **research questions** could you explore with these data sets?
 
 What data privacy and protection challenges do you need to consider?
-
----
-
-class: inverse, center, middle
-background-color: #FF8C03
-
-# 🥅 With a partner
-
-What are the **data privacy and protection** considerations you should make with the ~3 data sets you identified?
