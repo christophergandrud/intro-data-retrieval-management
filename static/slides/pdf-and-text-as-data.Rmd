@@ -372,6 +372,8 @@ announce_dtm
 
 ---
 
+## The "mullet" of text analysis
+
 ```{r}
 textplot_wordcloud(announce_dtm, min_count = 10)
 ```
