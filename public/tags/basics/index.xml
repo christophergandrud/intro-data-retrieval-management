@@ -2,21 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>basics on Programming Methods for Data Retrieval &amp; Management</title>
-    <link>/tags/basics/</link>
+    <link>https://brave-pasteur-c09ffa.netlify.app/tags/basics/</link>
     <description>Recent content in basics on Programming Methods for Data Retrieval &amp; Management</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 26 Apr 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/basics/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 26 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://brave-pasteur-c09ffa.netlify.app/tags/basics/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[Optional] R Basics 1</title>
-      <link>/post/optional-r-basics-1/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/post/optional-r-basics-1/</link>
       <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post/optional-r-basics-1/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/post/optional-r-basics-1/</guid>
       <description>👋 Welcome Welcome to to the course! This is the first of 2 sets of exercises introducing you to the R programming language1 that we will use throughout the course.
 This and the next lesson are optional. Their intended for you if you are not that familiar with R, or you would like to practice your R basics before getting started.
  📝 Lesson Preview  Set up R and RStudio</description>
@@ -24,10 +20,10 @@ This and the next lesson are optional. Their intended for you if you are not tha
     
     <item>
       <title>[Optional] R Basics 2</title>
-      <link>/post/optional-r-basics-2/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/post/optional-r-basics-2/</link>
       <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post/optional-r-basics-2/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/post/optional-r-basics-2/</guid>
       <description>Lesson Preview  Functions
  Control Flow
  if statements

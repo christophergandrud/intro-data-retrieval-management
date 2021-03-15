@@ -1,0 +1,17 @@
+---
+title: '[Optional] Introduction to Simulation with R'
+author: Christopher Gandrud
+date: '2021-03-11'
+slug: optional-r-basics-3
+weight: 2
+categories:
+  - R
+  - install
+tags: [R, simulation, distributed, functions]
+Categories: []
+Description: ''
+Tags: [R, simulation, distributed, functions]
+bibliography: main.bib
+---
+
+> "What I cannot create, I do not understand" -- [Richard Feynman](https://archives.caltech.edu/pictures/1.10-29.jpg) 

@@ -16,25 +16,21 @@ Tags: [R, functions, if, loops, basics]
 
 ## Lesson Preview
 
-- [Functions](#functions-functions-intro)
+-   [Functions](#functions-functions-intro)
 
-- Control Flow
+-   Control Flow
 
-  + [`if` statements](#if)
+    -   [`if` statements](#if)
 
-  + [`for` loops](#loop-intro)
-  
-  +  [`apply()`](#apply-intro) 
+    -   [`for` loops](#loop-intro)
 
-- [Parallel computation](#parallel-intro)
+    -   [`apply()`](#apply-intro)
 
+-   [Parallel computation](#parallel-intro)
 
 ## Functions {#functions-intro}
 
-If objects are the nouns of the R language, functions
-are the verbs. They do things to objects. Let's use the `mean` function
-as an example. This function takes the mean of a numeric vector object.
-Remember our *numeric_vector* object from Lesson 1:
+If objects are the nouns of the R language, functions are the verbs. They do things to objects. Let's use the `mean` function as an example. This function takes the mean of a numeric vector object. Remember our *numeric_vector* object from Lesson 1:
 
 ```{r Shownumeric_vector, echo=TRUE}
 numeric_vector <- c(2.8, 2, 14.8)
@@ -48,47 +44,29 @@ To find the mean of this object, type:
 mean(x = numeric_vector)
 ```
 
-We use the assignment operator to place a function's output into an
-object. For example:
+We use the assignment operator to place a function's output into an object. For example:
 
 ```{r numeric_vector_meanAssign, echo=TRUE}
 numeric_vector_mean <- mean(x = numeric_vector)
 ```
 
-Notice that we typed the function's name then enclosed the object name in
-parentheses immediately afterwards. This is the basic syntax that all
-functions use, i.e. `FUNCTION(ARGUMENTS)`. Even if you don't want to explicitly
-include an argument, *you still need to type the parentheses after the function*.
+Notice that we typed the function's name then enclosed the object name in parentheses immediately afterwards. This is the basic syntax that all functions use, i.e. `FUNCTION(ARGUMENTS)`. Even if you don't want to explicitly include an argument, *you still need to type the parentheses after the function*.
 
 ### Arguments
 
-Arguments modify what functions do. In our most recent example, we gave
-the `mean` function one argument (`x = numeric_vector`) telling it that we
-wanted to find the mean of *numeric_vector*. Arguments use the
-`ARGUMENT_LABEL = VALUE` syntax. In this case, **x** is the argument
-label.
+Arguments modify what functions do. In our most recent example, we gave the `mean` function one argument (`x = numeric_vector`) telling it that we wanted to find the mean of *numeric_vector*. Arguments use the `ARGUMENT_LABEL = VALUE` syntax. In this case, **x** is the argument label.
 
-To find all of the arguments that a function can accept, look at the
-**Arguments** section of the function's help
-file. To access the help file, type: `?FUNCTION`. For example:
+To find all of the arguments that a function can accept, look at the **Arguments** section of the function's help file. To access the help file, type: `?FUNCTION`. For example:
 
 ```{r Ch3HelpMean, echo=TRUE, eval=FALSE, tidy=FALSE}
 ?mean
 ```
 
-The help file will also tell you the default values that the arguments
-are set to. You do not need to explicitly set an argument if
-you want to use its default value.
+The help file will also tell you the default values that the arguments are set to. You do not need to explicitly set an argument if you want to use its default value.
 
-You do need to be fairly precise with the syntax for your argument's
-values. Values for logical arguments must be written as `TRUE` or
-`FALSE`. Arguments that accept character strings require quotation
-marks.
+You do need to be fairly precise with the syntax for your argument's values. Values for logical arguments must be written as `TRUE` or `FALSE`. Arguments that accept character strings require quotation marks.
 
-Let's see how to use multiple arguments with the `round()` function. This
-function rounds a vector of numbers. We can use the `digits` argument to
-specify how many decimal places we want the numbers rounded to. To round
-the object *numeric_vector_mean* to one decimal place, type:
+Let's see how to use multiple arguments with the `round()` function. This function rounds a vector of numbers. We can use the `digits` argument to specify how many decimal places we want the numbers rounded to. To round the object *numeric_vector_mean* to one decimal place, type:
 
 ```{r Ch3Round, echo=TRUE}
 round(x = numeric_vector_mean, digits = 1)
@@ -96,31 +74,22 @@ round(x = numeric_vector_mean, digits = 1)
 
 Note that *arguments are always separated by commas*.
 
-Some arguments do not need to be explicitly labeled. For example, we
-could write:
+Some arguments do not need to be explicitly labeled. For example, we could write:
 
 ```{r Ch3ArgeNoLabel, echo=TRUE}
 # Find mean of numeric_vector
 mean(numeric_vector)
 ```
 
-R will do its best to figure out what you want and will only give up
-when it can't. This will generate an error message. However, to avoid
-any misunderstandings between yourself and R, it is good practice to
-label your argument values. This will also make your code easier for
-other people to read, i.e. it will be more reproducible.
+R will do its best to figure out what you want and will only give up when it can't. This will generate an error message. However, to avoid any misunderstandings between yourself and R, it is good practice to label your argument values. This will also make your code easier for other people to read, i.e. it will be more reproducible.
 
-You can stack functions inside of arguments. For example, have R find the
-mean of *numeric_vector* and round it to one decimal place:
+You can stack functions inside of arguments. For example, have R find the mean of *numeric_vector* and round it to one decimal place:
 
 ```{r Ch3StackedArgs, echo=TRUE}
 round(mean(numeric_vector), digits = 1)
 ```
 
-Stacking functions inside of each other can create code that is
-difficult to read. Another option that potentially makes more easily
-understandable code is piping\index{pipe} using the pipe function (`%>%`) that you
-can access from the *magrittr*  or *dplyr* packages. The basic idea behind the pipe function is that the output of one function is set as the first argument of the next. For example, to find the mean of *numeric_vector* and then round it to one decimal place use:
+Stacking functions inside of each other can create code that is difficult to read. Another option that potentially makes more easily understandable code is piping\index{pipe} using the pipe function (`%>%`) that you can access from the *magrittr* or *dplyr* packages. The basic idea behind the pipe function is that the output of one function is set as the first argument of the next. For example, to find the mean of *numeric_vector* and then round it to one decimal place use:
 
 ```{r Ch3Pipe, echo=TRUE}
 # Load magrittr package
@@ -134,7 +103,7 @@ mean(numeric_vector) %>%
 
 Functions are just objects. You can create your own functions with the `function()` function! Why would you create your own functions? If you ever find yourself repeating code with only minor variation, e.g. just changing the inputs, then it is time to create a function.
 
-For example imagine we want to repeatedly find vector means and the round them to one digit. We can create a new function called `mean_rounder()` to do this for us. 
+For example imagine we want to repeatedly find vector means and the round them to one digit. We can create a new function called `mean_rounder()` to do this for us.
 
 ```{r create-mean-rounder}
 mean_rounder <- function(x) {
@@ -147,9 +116,11 @@ mean_rounder(numeric_vector)
 
 Notice that the contents of the function are enclosed inside of curly brackets `{}`.
 
-When you make a function, remember to document it. You want to be able to use this function over and over. If it isn't well documented, this will be harder. 
+When you make a function, remember to document it. You want to be able to use this function over and over. If it isn't well documented, this will be harder.
 
-A common convention is to use `@param` to document function arguments:[^param]
+A common convention is to use `@param` to document function arguments:[^1]
+
+[^1]: This stands for "parameter", a more general programming term for "argument". If you want to go deep on documenting functions, see the [roxygen2](https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html) package.
 
 ```{r create-mean-rounder-document}
 # @param x a numeric vector to find the mean of
@@ -168,7 +139,7 @@ We can use conditional evaluation (like if statements) and loops to control the 
 
 ### If statements {#if}
 
-So we have seen functions that always (try to) do the same thing for any inputs. There are many cases when you want to do different things depending on the type of input. 
+So we have seen functions that always (try to) do the same thing for any inputs. There are many cases when you want to do different things depending on the type of input.
 
 For example, imagine we want to create a new binary `[0, 1]` variable from a vector. We want a new vector with a 0 if the original value was less than 5 and 1 if it is greater than or equal to 5. We can use `ifelse()`:
 
@@ -182,15 +153,15 @@ greater_than_5 <- ifelse(numeric_vector >= 5,
 greater_than_5
 ```
 
-The way we read this is if the value is greater than or equal to 5 (`yes`) then the new value is `1`, if not (`no`) then it is `0`. 
+The way we read this is if the value is greater than or equal to 5 (`yes`) then the new value is `1`, if not (`no`) then it is `0`.
 
 Note that `>=` is one of R's **logical operators**. See the additional material for a table of common [logical operators](#logical-operators) in R.
 
-For more complex if statements, use `if() {. . .} else()`. 
+For more complex if statements, use `if() {. . .} else()`.
 
 ### `for` loops {#loop-intro}
 
-Some times you want to do the same thing to each part of an object. We already saw an example with `ifelse()` which ran an if statement on each element of *numeric_vector*. 
+Some times you want to do the same thing to each part of an object. We already saw an example with `ifelse()` which ran an if statement on each element of *numeric_vector*.
 
 A general solution to iterating through elements of an object is the `for()` loop function. Here is an example using R's built in **swiss** data set:
 
@@ -210,7 +181,7 @@ for (i in 1:ncol(swiss)) {
 }
 ```
 
-The first line reads: "for each `i` in the vector 1 through the number of columns in the **swiss** data frame  . . . "
+The first line reads: "for each `i` in the vector 1 through the number of columns in the **swiss** data frame . . . "
 
 We then use `i` in the subscripts `[]` to select each column of **swiss** to find and print its mean.
 
@@ -224,11 +195,11 @@ For example, let's find the mean of each column in **swiss**:
 apply(swiss, MARGIN = 2, mean)
 ```
 
-For data frames and matrices, we need to specify whether we are applying the function to each row (`MARGIN = 1`) or each column (`MARGIN = 2`). 
+For data frames and matrices, we need to specify whether we are applying the function to each row (`MARGIN = 1`) or each column (`MARGIN = 2`).
 
 ## Advanced: Parallelisation {#parallel-intro}
 
-By default, all computation in R is done sequentially--one after the other. However, your computer likely has more processor cores and so can run computations in "parallel". 
+By default, all computation in R is done sequentially--one after the other. However, your computer likely has more processor cores and so can run computations in "parallel".
 
 To find the number of cores on your computer use:
 
@@ -237,7 +208,9 @@ library(parallel)
 detectCores()
 ```
 
-Not all computation can be done in parallel. Somethings have to be done in sequence, because the output of one operation is needed for the computation of the subsequent operations. However, pretty much anything that can be looped or applied can be done in parallel. This will often improve the speed of the computation.[^parcaveat]
+Not all computation can be done in parallel. Somethings have to be done in sequence, because the output of one operation is needed for the computation of the subsequent operations. However, pretty much anything that can be looped or applied can be done in parallel. This will often improve the speed of the computation.[^2]
+
+[^2]: It won't necessarily be faster as there is "overhead" for breaking up the operation into parallel computation. Also, while the computation time can go down, the enegery usage will be the same as in total the same computation will have happened.
 
 `mclapply()` from base R's *parallel* package works like `lapply` (list apply) for. Imagine we have a list with 3 numeric vectors:
 
@@ -255,34 +228,29 @@ Let's compute the mean of each vector in the list in parallel:
 mclapply(three_list, mean, mc.cores = 3)
 ```
 
-`mc.cores` sets the number of cores to use. Usually use 1 - the number of cores you have available. 
-
+`mc.cores` sets the number of cores to use. Usually use 1 - the number of cores you have available.
 
 ## 🥅 Exercises
 
-- Create a new function to summarise numeric vectors in a method of your choosing (explore R's built in statistical capabilities).
+-   Create a new function to summarise numeric vectors in a method of your choosing (explore R's built in statistical capabilities).
 
-- Create a data frame with numeric and character columns. Then, for each column find the standard deviation (`sd()`) if it is numeric and return the `message()` `"This column has characters"` if it is a character type column.
+-   Create a data frame with numeric and character columns. Then, for each column find the standard deviation (`sd()`) if it is numeric and return the `message()` `"This column has characters"` if it is a character type column.
 
-- `nchar()` counts the number of characters in a string. Create a list of character vectors with strings of different lengths. In parallel, count the number of characters in each vector.
+-   `nchar()` counts the number of characters in a string. Create a list of character vectors with strings of different lengths. In parallel, count the number of characters in each vector.
 
 ## Additional Materials
 
 ## (Some) Logical Operators {#logical-operators}
 
-| Logical Operator | Meaning |
-| ---------------- | ------- |
-| `&`              | and     |
-| `|` or           | or      |
-| `<`              | less than |
-| `>`              | greater than |
+| Logical Operator | Meaning                  |
+|------------------|--------------------------|
+| `&`              | and                      |
+| `|` or           | or                       |
+| `<`              | less than                |
+| `>`              | greater than             |
 | `>=`             | greater than or equal to |
-| `<=`             | less than or equal to |
-| `!=`             | not equal |
-| `isTRUE(x)`      | test if `x` is `TRUE` |
+| `<=`             | less than or equal to    |
+| `!=`             | not equal                |
+| `isTRUE(x)`      | test if `x` is `TRUE`    |
 
 ## 📚 References
-
-[^param]: This stands for "parameter", a more general programming term for "argument". If you want to go deep on documenting functions, see the [roxygen2](https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html) package.
-
-[^parcaveat]: It won't necessarily be faster as there is "overhead" for breaking up the operation into parallel computation. Also, while the computation time can go down, the enegery usage will be the same as in total the same computation will have happened. 

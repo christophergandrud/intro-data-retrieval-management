@@ -2,183 +2,179 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Programming Methods for Data Retrieval &amp; Management</title>
-    <link>/tags/</link>
+    <link>https://brave-pasteur-c09ffa.netlify.app/tags/</link>
     <description>Recent content in Tags on Programming Methods for Data Retrieval &amp; Management</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 30 May 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 30 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://brave-pasteur-c09ffa.netlify.app/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>data retrieval</title>
-      <link>/tags/data-retrieval/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/tags/data-retrieval/</link>
       <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/data-retrieval/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/data-retrieval/</guid>
       <description></description>
     </item>
     
     <item>
       <title>dplyr</title>
-      <link>/tags/dplyr/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/tags/dplyr/</link>
       <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/dplyr/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/dplyr/</guid>
       <description></description>
     </item>
     
     <item>
       <title>GET</title>
-      <link>/tags/get/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/tags/get/</link>
       <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/get/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/get/</guid>
       <description></description>
     </item>
     
     <item>
       <title>HTML</title>
-      <link>/tags/html/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/tags/html/</link>
       <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/html/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/html/</guid>
       <description></description>
     </item>
     
     <item>
       <title>PDF</title>
-      <link>/tags/pdf/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/tags/pdf/</link>
       <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/pdf/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/pdf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>programming</title>
-      <link>/tags/programming/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/tags/programming/</link>
       <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/programming/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/programming/</guid>
       <description></description>
     </item>
     
     <item>
       <title>R</title>
-      <link>/tags/r/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/tags/r/</link>
       <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/r/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/r/</guid>
       <description></description>
     </item>
     
     <item>
       <title>strings</title>
-      <link>/tags/strings/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/tags/strings/</link>
       <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/strings/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/strings/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Text</title>
-      <link>/tags/text/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/tags/text/</link>
       <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/text/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/text/</guid>
       <description></description>
     </item>
     
     <item>
       <title>data management</title>
-      <link>/tags/data-management/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/tags/data-management/</link>
       <pubDate>Fri, 22 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/data-management/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/data-management/</guid>
       <description></description>
     </item>
     
     <item>
       <title>automation</title>
-      <link>/tags/automation/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/tags/automation/</link>
       <pubDate>Sat, 02 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/automation/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/automation/</guid>
       <description></description>
     </item>
     
     <item>
       <title>GDPR</title>
-      <link>/tags/gdpr/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/tags/gdpr/</link>
       <pubDate>Sat, 02 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/gdpr/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/gdpr/</guid>
       <description></description>
     </item>
     
     <item>
       <title>reproducible research</title>
-      <link>/tags/reproducible-research/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/tags/reproducible-research/</link>
       <pubDate>Sat, 02 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/reproducible-research/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/reproducible-research/</guid>
       <description></description>
     </item>
     
     <item>
       <title>basics</title>
-      <link>/tags/basics/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/tags/basics/</link>
       <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/basics/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/basics/</guid>
       <description></description>
     </item>
     
     <item>
       <title>functions</title>
-      <link>/tags/functions/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/tags/functions/</link>
       <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/functions/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/functions/</guid>
       <description></description>
     </item>
     
     <item>
       <title>if</title>
-      <link>/tags/if/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/tags/if/</link>
       <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/if/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/if/</guid>
       <description></description>
     </item>
     
     <item>
       <title>install</title>
-      <link>/tags/install/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/tags/install/</link>
       <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/install/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/install/</guid>
       <description></description>
     </item>
     
     <item>
       <title>loops</title>
-      <link>/tags/loops/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/tags/loops/</link>
       <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/loops/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/loops/</guid>
       <description></description>
     </item>
     
     <item>
       <title>tidy</title>
-      <link>/tags/tidy/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/tags/tidy/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/tags/tidy/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/tidy/</guid>
       <description></description>
     </item>
     

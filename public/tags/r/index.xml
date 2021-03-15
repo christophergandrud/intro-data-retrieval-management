@@ -2,21 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>R on Programming Methods for Data Retrieval &amp; Management</title>
-    <link>/tags/r/</link>
+    <link>https://brave-pasteur-c09ffa.netlify.app/tags/r/</link>
     <description>Recent content in R on Programming Methods for Data Retrieval &amp; Management</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 30 May 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/r/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 30 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://brave-pasteur-c09ffa.netlify.app/tags/r/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[Optional] R Basics 1</title>
-      <link>/post/optional-r-basics-1/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/post/optional-r-basics-1/</link>
       <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post/optional-r-basics-1/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/post/optional-r-basics-1/</guid>
       <description>👋 Welcome Welcome to to the course! This is the first of 2 sets of exercises introducing you to the R programming language1 that we will use throughout the course.
 This and the next lesson are optional. Their intended for you if you are not that familiar with R, or you would like to practice your R basics before getting started.
  📝 Lesson Preview  Set up R and RStudio</description>
@@ -24,10 +20,10 @@ This and the next lesson are optional. Their intended for you if you are not tha
     
     <item>
       <title>[Optional] R Basics 2</title>
-      <link>/post/optional-r-basics-2/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/post/optional-r-basics-2/</link>
       <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post/optional-r-basics-2/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/post/optional-r-basics-2/</guid>
       <description>Lesson Preview  Functions
  Control Flow
  if statements
@@ -40,10 +36,10 @@ numeric_vector &amp;lt;- c(2.</description>
     
     <item>
       <title>File Organisation and Tidy Data Structures</title>
-      <link>/post/tidy-data-structures/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/post/tidy-data-structures/</link>
       <pubDate>Fri, 22 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post/tidy-data-structures/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/post/tidy-data-structures/</guid>
       <description>  📝 Lesson Preview  Why is file management important?
  What is tidy data?
  Manipulating tidy data (1)
@@ -52,10 +48,10 @@ numeric_vector &amp;lt;- c(2.</description>
     
     <item>
       <title>GET Tidy Data</title>
-      <link>/post/get-tidy-data/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/post/get-tidy-data/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/post/get-tidy-data/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/post/get-tidy-data/</guid>
       <description>  📝 Lesson Preview  What is public data?
  Retrieving and cleaning (tabular) public data
  APIs
@@ -65,10 +61,10 @@ numeric_vector &amp;lt;- c(2.</description>
     
     <item>
       <title>GET and Parse HTML data</title>
-      <link>/post/get-json-and-html/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/post/get-json-and-html/</link>
       <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post/get-json-and-html/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/post/get-json-and-html/</guid>
       <description>  📝 Lesson Preview  Parse JSON (nested data formats)
  HTTP verbs (GET, POST, HEAD, PUT) and httr
  Parse HTML tables
@@ -78,10 +74,10 @@ numeric_vector &amp;lt;- c(2.</description>
     
     <item>
       <title>Parse PDFs and Text as Data</title>
-      <link>/post/nested-json-and-text-as-data/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/post/nested-json-and-text-as-data/</link>
       <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post/nested-json-and-text-as-data/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/post/nested-json-and-text-as-data/</guid>
       <description>  📝 Lesson Preview  Scraping tables in PDFs
  Text as data
    📣 Lecture slides   </description>

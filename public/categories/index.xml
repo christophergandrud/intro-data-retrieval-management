@@ -2,13 +2,9 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Programming Methods for Data Retrieval &amp; Management</title>
-    <link>/categories/</link>
+    <link>https://brave-pasteur-c09ffa.netlify.app/categories/</link>
     <description>Recent content in Categories on Programming Methods for Data Retrieval &amp; Management</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    
-	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>en-us</language><atom:link href="https://brave-pasteur-c09ffa.netlify.app/categories/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

@@ -1,17 +1,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
       <title>Programming Methods for Data Retrieval &amp; Management on Programming Methods for Data Retrieval &amp; Management </title>
-    <link>/</link>
+    <link>https://brave-pasteur-c09ffa.netlify.app/</link>
     <language>en-us</language>
     <author>Alexander Ivanov</author>
     <updated>2020-05-30 00:00:00 &#43;0000 UTC</updated>
     
     <item>
       <title>Posts</title>
-      <link>/post/</link>
+      <link>https://brave-pasteur-c09ffa.netlify.app/post/</link>
       <pubDate>Sat, 30 May 2020 00:00:00 UTC</pubDate>
       <author>Alexander Ivanov</author>
-      <guid>/post/</guid>
+      <guid>https://brave-pasteur-c09ffa.netlify.app/post/</guid>
       <description></description>
     </item>
     
