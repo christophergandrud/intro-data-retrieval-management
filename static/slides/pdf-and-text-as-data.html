@@ -56,9 +56,11 @@ Example modified from [Ketan Deshpande](https://medium.com/@ketanrd.009/how-to-e
 
 # parse PDF in R
 
-Use the [pdftools](https://docs.ropensci.org/pdftools/) package to parse PDFs in R.
+Use the [tabulizer](https://github.com/ropensci/tabulizer) package to parse PDFs in R.
 
-⚠️ This package should be easier to install than [tabulizer](https://github.com/ropensci/tabulizer) which requires [rJava](https://cran.r-project.org/web/packages/rJava/index.html). This can be a real pain to install. See [tabulizer README](https://github.com/ropensci/tabulizer/README.md). However, tabulizer is more powerful for extracting tables from PDF docs.
+⚠️ This package requires [rJava](https://cran.r-project.org/web/packages/rJava/index.html). This can be a real pain to install. See [tabulizer README](https://github.com/ropensci/tabulizer/README.md). However, tabulizer is more powerful for extracting tables from PDF docs.
+
+If you can't get tabularizer to install, you can also use [pdftools](https://docs.ropensci.org/pdftools/) package to parse PDFs in R. This does not require rJava, but is less powerful for extracting tables from PDFs.
 
 ---
 
@@ -1326,86 +1328,6 @@ announce_dtm
 
 ```r
 textplot_wordcloud(announce_dtm, min_count = 10)
-```
-
-```
-## Warning in wordcloud(x, min_size, max_size, min_count, max_words, color, : power
-## could not be fit on page. It will not be plotted.
-```
-
-```
-## Warning in wordcloud(x, min_size, max_size, min_count, max_words, color, :
-## colleg could not be fit on page. It will not be plotted.
-```
-
-```
-## Warning in wordcloud(x, min_size, max_size, min_count, max_words, color, :
-## extraordinari could not be fit on page. It will not be plotted.
-```
-
-```
-## Warning in wordcloud(x, min_size, max_size, min_count, max_words, color, :
-## leisur could not be fit on page. It will not be plotted.
-```
-
-```
-## Warning in wordcloud(x, min_size, max_size, min_count, max_words, color, :
-## chancellor could not be fit on page. It will not be plotted.
-```
-
-```
-## Warning in wordcloud(x, min_size, max_size, min_count, max_words, color, :
-## recognis could not be fit on page. It will not be plotted.
-```
-
-```
-## Warning in wordcloud(x, min_size, max_size, min_count, max_words, color, :
-## worship could not be fit on page. It will not be plotted.
-```
-
-```
-## Warning in wordcloud(x, min_size, max_size, min_count, max_words, color, :
-## previous could not be fit on page. It will not be plotted.
-```
-
-```
-## Warning in wordcloud(x, min_size, max_size, min_count, max_words, color, :
-## biggest could not be fit on page. It will not be plotted.
-```
-
-```
-## Warning in wordcloud(x, min_size, max_size, min_count, max_words, color, :
-## secondari could not be fit on page. It will not be plotted.
-```
-
-```
-## Warning in wordcloud(x, min_size, max_size, min_count, max_words, color, :
-## discuss could not be fit on page. It will not be plotted.
-```
-
-```
-## Warning in wordcloud(x, min_size, max_size, min_count, max_words, color, :
-## absolut could not be fit on page. It will not be plotted.
-```
-
-```
-## Warning in wordcloud(x, min_size, max_size, min_count, max_words, color, :
-## everybodi could not be fit on page. It will not be plotted.
-```
-
-```
-## Warning in wordcloud(x, min_size, max_size, min_count, max_words, color, :
-## design could not be fit on page. It will not be plotted.
-```
-
-```
-## Warning in wordcloud(x, min_size, max_size, min_count, max_words, color, :
-## expert could not be fit on page. It will not be plotted.
-```
-
-```
-## Warning in wordcloud(x, min_size, max_size, min_count, max_words, color, :
-## guidelin could not be fit on page. It will not be plotted.
 ```
 
 &lt;img src="pdf-and-text-as-data_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;

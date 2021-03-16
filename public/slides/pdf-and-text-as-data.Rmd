@@ -57,9 +57,11 @@ Example modified from [Ketan Deshpande](https://medium.com/@ketanrd.009/how-to-e
 
 # parse PDF in R
 
-Use the [pdftools](https://docs.ropensci.org/pdftools/) package to parse PDFs in R.
+Use the [tabulizer](https://github.com/ropensci/tabulizer) package to parse PDFs in R.
 
-⚠️ This package should be easier to install than [tabulizer](https://github.com/ropensci/tabulizer) which requires [rJava](https://cran.r-project.org/web/packages/rJava/index.html). This can be a real pain to install. See [tabulizer README](https://github.com/ropensci/tabulizer/README.md). However, tabulizer is more powerful for extracting tables from PDF docs.
+⚠️ This package requires [rJava](https://cran.r-project.org/web/packages/rJava/index.html). This can be a real pain to install. See [tabulizer README](https://github.com/ropensci/tabulizer/README.md). However, tabulizer is more powerful for extracting tables from PDF docs.
+
+If you can't get tabularizer to install, you can also use [pdftools](https://docs.ropensci.org/pdftools/) package to parse PDFs in R. This does not require rJava, but is less powerful for extracting tables from PDFs.
 
 ---
 
@@ -375,7 +377,7 @@ announce_dtm
 
 ## The "mullet" of text analysis
 
-```{r}
+```{r, warning=FALSE}
 textplot_wordcloud(announce_dtm, min_count = 10)
 ```
 
