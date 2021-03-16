@@ -1,9 +1,9 @@
 ---
-title: '[Optional] Introduction to Simulation with R'
+title: '[Optional] Introduction to Computational Thinking & Simulation with R'
 author: Christopher Gandrud
 date: '2021-03-11'
 slug: optional-r-basics-3
-weight: 2
+weight: 4
 categories:
   - R
   - install
@@ -14,4 +14,54 @@ Tags: [R, simulation, distributed, functions]
 bibliography: main.bib
 ---
 
-> "What I cannot create, I do not understand" -- [Richard Feynman](https://archives.caltech.edu/pictures/1.10-29.jpg) 
+> "What I cannot create, I do not understand" -- [Richard Feynman](https://archives.caltech.edu/pictures/1.10-29.jpg)
+
+> "It is immoral to collect data before simulating the hypothesized data generating process." -- Andrew Gelman (what I remember of a comment to the Stanford Causal Inference Seminar in 2020)
+
+```{r}
+# Load required packages
+xfun::pkg_attach2("DiagrammeR")
+```
+
+## 📝 Lesson Preview
+
+-   [Why simulate?](#motivation)
+
+-   [Simple simulation workflow](#workflow)
+
+-   [Debugging in R](debugging-intro)
+
+## Motivation: Why simulate? {#motivation}
+
+We've covered many of the basics of programming in R. Let's bring many of these concepts together to help us better understand our research problems, even before we gather any data. Let's simulate some **data generating processes (DGP)**.
+
+A data generating process is the process that creates the data in a data set. These processes can include, for example, both the social processes that result in migration data and even unexpected (or undesired) issues in the sampling procedure like non-random study attrition.
+
+Wait, why are we talking about simulating data generating processes in an introduction to R course? There are two sets of reasons.
+
+First, computational generative modeling--simulating data generating processes with a computer--can be a key tool for @gelmanhillaki2021
+
+[TO COMPLETE]
+
+## Simple simulation workflow {#workflow}
+
+A typical simulation workflow looks something like this:
+
+```{r sim-workflow, echo=FALSE}
+DiagrammeR::mermaid("
+graph TB
+  A[Hypothesise DGP]-->B[Functions for 1 draw/analysis]
+  B-->C[Function for n draws]
+  B-- Debug -->B
+  C-->D[Plot simulations]
+  C-- Debug -->C 
+  D-- Debug -->D
+  D-- Iterate -->A
+")
+```
+
+### Example 1: Simple A/B Test Discrete probabilities
+
+## Debugging in R {#debugging-intro}
+
+The `browser()` function is critical for debugging functions and loops in R. When R is executing some code and hits `browser()` it stops the execution and begins an interactive `Browse` mode. This allows you to explore the objects in the current environment and run code. RStudio works really well with this function.

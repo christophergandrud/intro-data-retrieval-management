@@ -6,7 +6,43 @@
     <description>Recent content in Tags on Programming Methods for Data Retrieval &amp; Management</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 30 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://brave-pasteur-c09ffa.netlify.app/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 11 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://brave-pasteur-c09ffa.netlify.app/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>distributed</title>
+      <link>https://brave-pasteur-c09ffa.netlify.app/tags/distributed/</link>
+      <pubDate>Thu, 11 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/distributed/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>functions</title>
+      <link>https://brave-pasteur-c09ffa.netlify.app/tags/functions/</link>
+      <pubDate>Thu, 11 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/functions/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>R</title>
+      <link>https://brave-pasteur-c09ffa.netlify.app/tags/r/</link>
+      <pubDate>Thu, 11 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/r/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>simulation</title>
+      <link>https://brave-pasteur-c09ffa.netlify.app/tags/simulation/</link>
+      <pubDate>Thu, 11 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/simulation/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>data retrieval</title>
       <link>https://brave-pasteur-c09ffa.netlify.app/tags/data-retrieval/</link>
@@ -58,15 +94,6 @@
       <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
       
       <guid>https://brave-pasteur-c09ffa.netlify.app/tags/programming/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>R</title>
-      <link>https://brave-pasteur-c09ffa.netlify.app/tags/r/</link>
-      <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/r/</guid>
       <description></description>
     </item>
     
@@ -130,15 +157,6 @@
       <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>https://brave-pasteur-c09ffa.netlify.app/tags/basics/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>functions</title>
-      <link>https://brave-pasteur-c09ffa.netlify.app/tags/functions/</link>
-      <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://brave-pasteur-c09ffa.netlify.app/tags/functions/</guid>
       <description></description>
     </item>
     

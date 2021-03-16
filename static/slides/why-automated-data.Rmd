@@ -439,6 +439,10 @@ the data subjects' rights pursuant to Articles 12 to 222
 
 ---
 
+# ⚠️ How much effort should you give to automation?
+
+![xkcd](https://imgs.xkcd.com/comics/is_it_worth_the_time.png)
+
 # 👀 Course preview: from structured to unstructured data
 
 ```{dot struct-to-unstruct, echo=FALSE, fig.width=10, fig.retina=2, fig.align='center'}

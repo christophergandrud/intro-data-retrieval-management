@@ -6,7 +6,7 @@
     <description>Recent content in functions on Programming Methods for Data Retrieval &amp; Management</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 26 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://brave-pasteur-c09ffa.netlify.app/tags/functions/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 11 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://brave-pasteur-c09ffa.netlify.app/tags/functions/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[Optional] R Basics 2</title>
       <link>https://brave-pasteur-c09ffa.netlify.app/post/optional-r-basics-2/</link>
@@ -21,6 +21,16 @@
   Parallel computation
    Functions If objects are the nouns of the R language, functions are the verbs. They do things to objects. Let’s use the mean function as an example. This function takes the mean of a numeric vector object. Remember our numeric_vector object from Lesson 1:
 numeric_vector &amp;lt;- c(2.</description>
+    </item>
+    
+    <item>
+      <title>[Optional] Introduction to Simulation with R</title>
+      <link>https://brave-pasteur-c09ffa.netlify.app/post/optional-r-basics-3/</link>
+      <pubDate>Thu, 11 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://brave-pasteur-c09ffa.netlify.app/post/optional-r-basics-3/</guid>
+      <description>   “What I cannot create, I do not understand” – Richard Feynman
+ Motivation: Why simulate?  </description>
     </item>
     
   </channel>

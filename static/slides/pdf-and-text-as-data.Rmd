@@ -16,7 +16,8 @@ bibliography: main.bib
 
 ```{r setup, include=FALSE}
 library(xfun)
-pkg_attach2("tabulizer", "tidyverse", "rvest", "httr", "roperators", "quanteda")
+pkg_attach2("pdftools", "tidyverse", "rvest", "httr", "roperators", "quanteda",
+            "xml2")
 knitr::opts_chunk$set(fig.align = 'center')
 ```
 
@@ -38,7 +39,7 @@ background-color: #FFC400
 class: inverse, center, middle
 background-color: #FB3579
 
-## "Please send the data in a PDF" -- no one ever
+## "Please send the data in a PDF" -- *no one ever*
 
 ---
 
@@ -56,9 +57,9 @@ Example modified from [Ketan Deshpande](https://medium.com/@ketanrd.009/how-to-e
 
 # parse PDF in R
 
-Use the [tabulizer](https://github.com/ropensci/tabulizer) package to parse PDFs in R.
+Use the [pdftools](https://docs.ropensci.org/pdftools/) package to parse PDFs in R.
 
-⚠️ This requires [rJava](https://cran.r-project.org/web/packages/rJava/index.html), which can be a real pain to install. See [tabulizer README](https://github.com/ropensci/tabulizer/README.md).
+⚠️ This package should be easier to install than [tabulizer](https://github.com/ropensci/tabulizer) which requires [rJava](https://cran.r-project.org/web/packages/rJava/index.html). This can be a real pain to install. See [tabulizer README](https://github.com/ropensci/tabulizer/README.md). However, tabulizer is more powerful for extracting tables from PDF docs.
 
 ---
 
@@ -67,7 +68,7 @@ Use the [tabulizer](https://github.com/ropensci/tabulizer) package to parse PDFs
 ```{r download-pdf, cache=TRUE, warning=FALSE, message=FALSE}
 library(tabulizer)
 
-url <- "http://visionofhumanity.org/app/uploads/2019/07/GPI-2019web.pdf"
+url <- "https://www.visionofhumanity.org/wp-content/uploads/2020/10/GPI_2020_web.pdf"
 
 all_tables <- extract_tables(file = url,
                              pages = 10, # tenth page of the PDF
@@ -185,10 +186,10 @@ knitr::include_graphics("img/xpath-copy.gif")
 # Extract the partial URLs with xpath
 
 ```{r}
-announce_page_href <- html_nodes(announce_page,
-                        xpath = '//*[@id="js-results"]/div/ol/li[1]/a') %>%
+announce_page_href_1 <- html_elements(announce_page,
+                        xpath = '//*[@id="js-results"]/div/ul/li[1]/a') %>%
                         html_attr('href') # we want the href element
-announce_page_href
+announce_page_href_1
 ```
 
 <br>
@@ -202,10 +203,9 @@ This only extracted the first href because we explicitly referenced the first li
 Use the `*` wild card to match all of the list items. 
 
 ```{r}
-announce_page_href <- html_nodes(announce_page,
-                        xpath = '//*[@id="js-results"]/div/ol/li[*]/a') %>%
-                        html_attr('href') # we want the href element
-
+announce_page_href <- html_elements(announce_page,
+                                 xpath = '//*[@id="js-results"]/div/ul/li[*]/a') %>%
+  html_attr('href') # we want the href element
 announce_page_href
 ```
 
@@ -242,7 +242,7 @@ while (length(tmp_href) > 0 ) {
                 "&people%5B%5D=boris-johnson")
 
   tmp_href <- read_html(url) %>%
-              html_nodes(xpath = '//*[@id="js-results"]/div/ol/li[*]/a') %>%
+              html_elements(xpath = '//*[@id="js-results"]/div/ul/li[*]/a') %>%
                          html_attr('href')
   
   all_href <- c(all_href, tmp_href)
@@ -258,6 +258,7 @@ length(all_href)
 
 all_href
 ```
+
 ---
 
 # Get text from one each page

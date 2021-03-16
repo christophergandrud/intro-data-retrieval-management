@@ -6,16 +6,16 @@
     <description>Recent content in Posts on Programming Methods for Data Retrieval &amp; Management</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 30 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://brave-pasteur-c09ffa.netlify.app/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 15 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://brave-pasteur-c09ffa.netlify.app/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Syllabus</title>
       <link>https://brave-pasteur-c09ffa.netlify.app/post/syllabus/</link>
-      <pubDate>Wed, 06 May 2020 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Mar 2021 00:00:00 +0000</pubDate>
       
       <guid>https://brave-pasteur-c09ffa.netlify.app/post/syllabus/</guid>
       <description>[Core Methods: Data Science] Programming Methods for Data Retrieval &amp;amp; Management Instructor: Christopher Gandrud, PhD
 Email: christopher.gandrud@gmail.com
-Class: 9.00-17.00, 12-13 June 2020
+Class: TO UPDATE
 Location: Virtual
 📜 Course Description The rapid growth of the World Wide Web over the past two decades tremendously changed the way in which we share, collect and publish data. The web is full of data that are of great interest to scientists and businesses alike. Firms, public institutions and private users provide every imaginable type of information and new channels of communication generate vast amounts of data on human behaviour.</description>
     </item>
@@ -45,6 +45,16 @@ This and the next lesson are optional. Their intended for you if you are not tha
   Parallel computation
    Functions If objects are the nouns of the R language, functions are the verbs. They do things to objects. Let’s use the mean function as an example. This function takes the mean of a numeric vector object. Remember our numeric_vector object from Lesson 1:
 numeric_vector &amp;lt;- c(2.</description>
+    </item>
+    
+    <item>
+      <title>[Optional] Introduction to Simulation with R</title>
+      <link>https://brave-pasteur-c09ffa.netlify.app/post/optional-r-basics-3/</link>
+      <pubDate>Thu, 11 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://brave-pasteur-c09ffa.netlify.app/post/optional-r-basics-3/</guid>
+      <description>   “What I cannot create, I do not understand” – Richard Feynman
+ Motivation: Why simulate?  </description>
     </item>
     
     <item>

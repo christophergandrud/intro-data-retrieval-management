@@ -14,7 +14,7 @@ Description: ''
 Tags: [R, functions, if, loops, basics]
 ---
 
-## Lesson Preview
+## 📝 Lesson Preview
 
 -   [Functions](#functions-functions-intro)
 
