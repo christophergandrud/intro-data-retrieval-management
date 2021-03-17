@@ -1,7 +1,7 @@
 ---
 title: '[Optional] Introduction to Computational Thinking & Simulation with R'
 author: Christopher Gandrud
-date: '2021-03-11'
+date: '2021-03-17'
 slug: optional-r-basics-3
 weight: 4
 categories:
@@ -18,7 +18,7 @@ bibliography: main.bib
 
 > "It is immoral to collect data before simulating the hypothesized data generating process." -- Andrew Gelman (what I remember of a comment to the Stanford Causal Inference Seminar in 2020)
 
-```{r}
+```{r echo=FALSE}
 # Load required packages
 xfun::pkg_attach2("DiagrammeR")
 ```
@@ -28,6 +28,8 @@ xfun::pkg_attach2("DiagrammeR")
 -   [Why simulate?](#motivation)
 
 -   [Simple simulation workflow](#workflow)
+
+-   [Documenting Functions in R]
 
 -   [Debugging in R](debugging-intro)
 
@@ -39,9 +41,11 @@ A data generating process is the process that creates the data in a data set. Th
 
 Wait, why are we talking about simulating data generating processes in an introduction to R course? There are two sets of reasons.
 
-First, computational generative modeling--simulating data generating processes with a computer--can be a key tool for @gelmanhillaki2021
+First, computational generative modeling--simulating data generating processes with a computer--can be a key tool for understanding and evaluating the statistical methods you are using to understand a given data generating process [@gelmanhillaki2021, p. 76]. Will your chosen statistical model identify the effect you are interested, even if you completely understand the DGP? This is surprisingly often not the case, especially for non-trivial data generating processes. Simulation allows you to stress test your chosen models, with a given assumed DGP, and compare the appropriateness of different models for this DGP.
 
-[TO COMPLETE]
+In Gelman's strong view stated above, if your identification strategy can't recover effects in known--simulated data--you shouldn't waste time and money collecting real world data.
+
+The second reason we are covering statistical simulation, and most importantly for this class, is that simulation requires you to work your new skills as an R programmer. Because the DGP you are working with are probabilistic, you will need to repeat the simulations with the same data generating process to understand the statistical properties. This is called the [Monte Carlo Method](https://en.wikipedia.org/wiki/Monte_Carlo_method). So you will need to write functions, run them efficiently, e.g. sometimes in parallel, transform large amounts of data, and plot the results.
 
 ## Simple simulation workflow {#workflow}
 
@@ -50,8 +54,9 @@ A typical simulation workflow looks something like this:
 ```{r sim-workflow, echo=FALSE}
 DiagrammeR::mermaid("
 graph TB
-  A[Hypothesise DGP]-->B[Functions for 1 draw/analysis]
-  B-->C[Function for n draws]
+  A[Hypothesise DGP]-->AA[Identification strategies]
+  AA-->B[Functions for 1 draw & analysis]
+  B-->C[Function to repeat for n draws]
   B-- Debug -->B
   C-->D[Plot simulations]
   C-- Debug -->C 
@@ -60,8 +65,99 @@ graph TB
 ")
 ```
 
+We start by hypothesizing what the data generating process we care about might be. Then we propose one or candidate strategies to identify effects in this data generating process, e.g. regression, matching, difference in differences. We begin implementing the simulation fo this DGP-identification strategy by creating function(s) for simulating and analyzing the data for one simulation. Once we have the simulation correctly working for one draw, we create a function(s) to make $n$ draws. We then (usually) examine the results by plotting quantities of interest from the simulations, such as the distribution of some estimate or the error from some ground truth across simulations. Frequently, we learn something unexpected by the end either about our understanding of the data generating process or our candidate identification strategies. So we often need to repeat the process.
+
+Notice that most steps often involve some debugging. We'll dig debugging into that [below](#debugging-intro). But let's look at a simple ideal case.
+
 ### Example 1: Simple A/B Test Discrete probabilities
 
+Imagine that we want to run an A/B test--randomised control trial--a new treatment to the status quo control treatment. We are interested in the effect of the treatment on whether or not individuals in the study do some action--e.g. vote in an election.[^1]
+
+[^1]: This example is modified from @gelmanhillaki2021 [ Ch. 5, p.69-70].
+
+Let's start by hypothesizing what the data generating process could be. Imagine that based on prior research we know that their is a baseline probability of the action with the control of 0.1:
+
+$$y \sim \mathrm{Binomial}(0.1)$$ To simulate one draw from this binomial distribution in R use:
+
+```{r}
+y <- rbinom(n = 1, size = 1, prob = 0.1)
+y
+```
+
+Let's walk through this code. `rbinom()` is the function to randomly (`r`) draw from the binomial distribution (`binom`). `n` is the number of draws for this simulation, `size` is the "number of trials", basically it means that you want to the "success" outcome to be 1 and 0 otherwise. `prob` is the probability of "success".
+
+It's unlikely that we will run an A/B test with only one participant in the control group, let's go up to 20,000[^2] and plot the results.
+
+[^2]: We can express this in R using scientific notation, e.g. `2e4`.
+
+```{r}
+control <- rbinom(n = 2e4, size = 1, prob = 0.1)
+hist(control)
+```
+
+------------------------------------------------------------------------
+
+### Side note: Histograms with ggplot2
+
+[ggplot2](https://ggplot2.tidyverse.org/) is a very powerful way to create graphics in R. Here is an example of how you would create a histogram with ggplot2.
+
+```{r}
+# ggplot2 is a member of the "tidyverse" set of packages
+xfun::pkg_attach2("tidyverse")
+
+# I personally enjoy the simplicity of the linedraw theme
+theme_set(theme_linedraw())
+
+# ggplot cannot accept a vector, like hist. 
+# Instead you need to convert to a data frame or the tidyverse equivalent "tibble"
+control_tbl <- as_tibble(control)
+
+# Plot and change the x-axis label
+ggplot(control_tbl, aes(value)) + # as_tibble names the column "value" by default
+  geom_histogram() + 
+  xlab("\nControl Outcome") # \n adds a line break before the label
+```
+
+------------------------------------------------------------------------
+
+Ok, we've simulated one run of the control group. Now let's think about the treatment group. Imagine we anticipate that a realistic effect of the treatment--again based on prior knowledge--is a relative improvement of 1%. Let's
+
+We can begin filling in our function to run the simulation one time:
+
+```{r}
+one_sim = function(n = 1000, prob = 0.2) {
+  
+}
+```
+
+## Documenting Functions in R {#documenting}
+
 ## Debugging in R {#debugging-intro}
+
+Debugging is the process of finding and resolving discrepancies between a program's specification and its implementation. For example, I want a ggplot2 to plot multiple time series on the same plot as separate lines, but it plots them all as one--very jagged and confusing line. I use a debugging process to find the cause of and correct this discrepancy.
+
+The reason we are covering debugging now, is that statistical simulations are more complex processes and debugging them is more complicated and crucial.
+
+[![](https://upload.wikimedia.org/wikipedia/commons/f/ff/First_Computer_Bug%252C_1945.jpg "An actual computer bug (source Wikipedia)")](https://en.wikipedia.org/wiki/Debugging)
+
+### Being mindful of your feelings
+
+We'll cover the the technical debugging tools available in R. But I first want to first mention a crucial part of effective (and less stressful) debugging: *being mindful of your feelings about the bug*.
+
+A bug is frustrating because we are experiencing an, initially unclear, disassociation between who we think the world should work and how it is working. It's as if we want to put a plate in the cupboard, but each time we try this it flies out. Frustration inclines us to look for the cause of a bug in--almost always--the wrong place: "the stupid computer is broken".
+
+The best way to resolve bugs, as we'll see, is to create testable hypotheses about what could be causing the bug. "The stupid computer is broken" is vague and so not a testable hypothesis.
+
+So, it is crucial that when you find a bug, to take a step back and ask:
+
+> how does this bug make me feel?
+
+If the answer is "angry, I want to throw my computer out the window", your best next step is to *take a break*. Grab a tea or whatever. Then, with a piece of paper (or some other tool that gets you away from the temptation to just begin slamming out code on your keyboard) write down hypotheses about the cause of the bug and ways to test these.
+
+Unlike social phenomena, most computer bugs are deterministic. The cause of a bug will always cause the bug. So your chances of definitively finding the bug are high with the following process and tools.
+
+### Clear, testable program specifications 
+
+### Tools for testing and dissecting
 
 The `browser()` function is critical for debugging functions and loops in R. When R is executing some code and hits `browser()` it stops the execution and begins an interactive `Browse` mode. This allows you to explore the objects in the current environment and run code. RStudio works really well with this function.

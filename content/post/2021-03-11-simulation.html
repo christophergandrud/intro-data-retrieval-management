@@ -1,7 +1,7 @@
 ---
-title: '[Optional] Introduction to Simulation with R'
+title: '[Optional] Introduction to Computational Thinking & Simulation with R'
 author: Christopher Gandrud
-date: '2021-03-11'
+date: '2021-03-17'
 slug: optional-r-basics-3
 weight: 4
 categories:
@@ -15,11 +15,125 @@ bibliography: main.bib
 ---
 
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/rmarkdown-libs/d3/d3.min.js"></script>
+<script src="/rmarkdown-libs/dagre/dagre-d3.min.js"></script>
+<link href="/rmarkdown-libs/mermaid/dist/mermaid.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/mermaid/dist/mermaid.slim.min.js"></script>
+<link href="/rmarkdown-libs/DiagrammeR-styles/styles.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/chromatography/chromatography.js"></script>
+<script src="/rmarkdown-libs/DiagrammeR-binding/DiagrammeR.js"></script>
 
 
 <blockquote>
 <p>“What I cannot create, I do not understand” – <a href="https://archives.caltech.edu/pictures/1.10-29.jpg">Richard Feynman</a></p>
 </blockquote>
-<div id="motivation-why-simulate" class="section level2">
+<blockquote>
+<p>“It is immoral to collect data before simulating the hypothesized data generating process.” – Andrew Gelman (what I remember of a comment to the Stanford Causal Inference Seminar in 2020)</p>
+</blockquote>
+<div id="lesson-preview" class="section level2">
+<h2>📝 Lesson Preview</h2>
+<ul>
+<li><p><a href="#motivation">Why simulate?</a></p></li>
+<li><p><a href="#workflow">Simple simulation workflow</a></p></li>
+<li><p><a href="#documenting">Documenting Functions in R</a></p></li>
+<li><p><a href="debugging-intro">Debugging in R</a></p></li>
+</ul>
+</div>
+<div id="motivation" class="section level2">
 <h2>Motivation: Why simulate?</h2>
+<p>We’ve covered many of the basics of programming in R. Let’s bring many of these concepts together to help us better understand our research problems, even before we gather any data. Let’s simulate some <strong>data generating processes (DGP)</strong>.</p>
+<p>A data generating process is the process that creates the data in a data set. These processes can include, for example, both the social processes that result in migration data and even unexpected (or undesired) issues in the sampling procedure like non-random study attrition.</p>
+<p>Wait, why are we talking about simulating data generating processes in an introduction to R course? There are two sets of reasons.</p>
+<p>First, computational generative modeling–simulating data generating processes with a computer–can be a key tool for understanding and evaluating the statistical methods you are using to understand a given data generating process <span class="citation">(<a href="#ref-gelmanhillaki2021" role="doc-biblioref">Gelman, Hill, and Vehtari 2021, 76</a>)</span>. Will your chosen statistical model identify the effect you are interested, even if you completely understand the DGP? This is surprisingly often not the case, especially for non-trivial data generating processes. Simulation allows you to stress test your chosen models, with a given assumed DGP, and compare the appropriateness of different models for this DGP.</p>
+<p>In Gelman’s strong view stated above, if your identification strategy can’t recover effects in known–simulated data–you shouldn’t waste time and money collecting real world data.</p>
+<p>The second reason we are covering statistical simulation, and most importantly for this class, is that simulation requires you to work your new skills as an R programmer. Because the DGP you are working with are probabilistic, you will need to repeat the simulations with the same data generating process to understand the statistical properties. This is called the <a href="https://en.wikipedia.org/wiki/Monte_Carlo_method">Monte Carlo Method</a>. So you will need to write functions, run them efficiently, e.g. sometimes in parallel, transform large amounts of data, and plot the results.</p>
+</div>
+<div id="workflow" class="section level2">
+<h2>Simple simulation workflow</h2>
+<p>A typical simulation workflow looks something like this:</p>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"diagram":"\ngraph TB\n  A[Hypothesise DGP]-->AA[Identification strategies]\n  AA-->B[Functions for 1 draw & analysis]\n  B-->C[Function to repeat for n draws]\n  B-- Debug -->B\n  C-->D[Plot simulations]\n  C-- Debug -->C \n  D-- Debug -->D\n  D-- Iterate -->A\n"},"evals":[],"jsHooks":[]}</script>
+<p>We start by hypothesizing what the data generating process we care about might be. Then we propose one or candidate strategies to identify effects in this data generating process, e.g. regression, matching, difference in differences. We begin implementing the simulation fo this DGP-identification strategy by creating function(s) for simulating and analyzing the data for one simulation. Once we have the simulation correctly working for one draw, we create a function(s) to make <span class="math inline">\(n\)</span> draws. We then (usually) examine the results by plotting quantities of interest from the simulations, such as the distribution of some estimate or the error from some ground truth across simulations. Frequently, we learn something unexpected by the end either about our understanding of the data generating process or our candidate identification strategies. So we often need to repeat the process.</p>
+<p>Notice that most steps often involve some debugging. We’ll dig debugging into that <a href="#debugging-intro">below</a>. But let’s look at a simple ideal case.</p>
+<div id="example-1-simple-ab-test-discrete-probabilities" class="section level3">
+<h3>Example 1: Simple A/B Test Discrete probabilities</h3>
+<p>Imagine that we want to run an A/B test–randomised control trial–a new treatment to the status quo control treatment. We are interested in the effect of the treatment on whether or not individuals in the study do some action–e.g. vote in an election.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<p>Let’s start by hypothesizing what the data generating process could be. Imagine that based on prior research we know that their is a baseline probability of the action with the control of 0.1:</p>
+<p><span class="math display">\[y \sim \mathrm{Binomial}(0.1)\]</span> To simulate one draw from this binomial distribution in R use:</p>
+<pre class="r"><code>y &lt;- rbinom(n = 1, size = 1, prob = 0.1)
+y</code></pre>
+<pre><code>## [1] 1</code></pre>
+<p>Let’s walk through this code. <code>rbinom()</code> is the function to randomly (<code>r</code>) draw from the binomial distribution (<code>binom</code>). <code>n</code> is the number of draws for this simulation, <code>size</code> is the “number of trials,” basically it means that you want to the “success” outcome to be 1 and 0 otherwise. <code>prob</code> is the probability of “success.”</p>
+<p>It’s unlikely that we will run an A/B test with only one participant in the control group, let’s go up to 20,000<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> and plot the results.</p>
+<pre class="r"><code>control &lt;- rbinom(n = 2e4, size = 1, prob = 0.1)
+hist(control)</code></pre>
+<p><img src="/post/2021-03-11-simulation_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<hr />
+</div>
+<div id="side-note-histograms-with-ggplot2" class="section level3">
+<h3>Side note: Histograms with ggplot2</h3>
+<p><a href="https://ggplot2.tidyverse.org/">ggplot2</a> is a very powerful way to create graphics in R. Here is an example of how you would create a histogram with ggplot2.</p>
+<pre class="r"><code># ggplot2 is a member of the &quot;tidyverse&quot; set of packages
+xfun::pkg_attach2(&quot;tidyverse&quot;)
+
+# I personally enjoy the simplicity of the linedraw theme
+theme_set(theme_linedraw())
+
+# ggplot cannot accept a vector, like hist. 
+# Instead you need to convert to a data frame or the tidyverse equivalent &quot;tibble&quot;
+control_tbl &lt;- as_tibble(control)
+
+# Plot and change the x-axis label
+ggplot(control_tbl, aes(value)) + # as_tibble names the column &quot;value&quot; by default
+  geom_histogram() + 
+  xlab(&quot;\nControl Outcome&quot;) # \n adds a line break before the label</code></pre>
+<p><img src="/post/2021-03-11-simulation_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<hr />
+<p>Ok, we’ve simulated one run of the control group. Now let’s think about the treatment group. Imagine we anticipate that a realistic effect of the treatment–again based on prior knowledge–is a relative improvement of 1%. Let’s</p>
+<p>We can begin filling in our function to run the simulation one time:</p>
+<pre class="r"><code>one_sim = function(n = 1000, prob = 0.2) {
+  
+}</code></pre>
+</div>
+</div>
+<div id="documenting" class="section level2">
+<h2>Documenting Functions in R</h2>
+</div>
+<div id="debugging-intro" class="section level2">
+<h2>Debugging in R</h2>
+<p>Debugging is the process of finding and resolving discrepancies between a program’s specification and its implementation. For example, I want a ggplot2 to plot multiple time series on the same plot as separate lines, but it plots them all as one–very jagged and confusing line. I use a debugging process to find the cause of and correct this discrepancy.</p>
+<p>The reason we are covering debugging now, is that statistical simulations are more complex processes and debugging them is more complicated and crucial.</p>
+<p><a href="https://en.wikipedia.org/wiki/Debugging"><img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/First_Computer_Bug%252C_1945.jpg" title="An actual computer bug (source Wikipedia)" /></a></p>
+<div id="being-mindful-of-your-feelings" class="section level3">
+<h3>Being mindful of your feelings</h3>
+<p>We’ll cover the the technical debugging tools available in R. But I first want to first mention a crucial part of effective (and less stressful) debugging: <em>being mindful of your feelings about the bug</em>.</p>
+<p>A bug is frustrating because we are experiencing an, initially unclear, disassociation between who we think the world should work and how it is working. It’s as if we want to put a plate in the cupboard, but each time we try this it flies out. Frustration inclines us to look for the cause of a bug in–almost always–the wrong place: “the stupid computer is broken.”</p>
+<p>The best way to resolve bugs, as we’ll see, is to create testable hypotheses about what could be causing the bug. “The stupid computer is broken” is vague and so not a testable hypothesis.</p>
+<p>So, it is crucial that when you find a bug, to take a step back and ask:</p>
+<blockquote>
+<p>how does this bug make me feel?</p>
+</blockquote>
+<p>If the answer is “angry, I want to throw my computer out the window,” your best next step is to <em>take a break</em>. Grab a tea or whatever. Then, with a piece of paper (or some other tool that gets you away from the temptation to just begin slamming out code on your keyboard) write down hypotheses about the cause of the bug and ways to test these.</p>
+<p>Unlike social phenomena, most computer bugs are deterministic. The cause of a bug will always cause the bug. So your chances of definitively finding the bug are high with the following process and tools.</p>
+</div>
+<div id="clear-testable-program-specifications" class="section level3">
+<h3>Clear, testable program specifications</h3>
+</div>
+<div id="tools-for-testing-and-dissecting" class="section level3">
+<h3>Tools for testing and dissecting</h3>
+<p>The <code>browser()</code> function is critical for debugging functions and loops in R. When R is executing some code and hits <code>browser()</code> it stops the execution and begins an interactive <code>Browse</code> mode. This allows you to explore the objects in the current environment and run code. RStudio works really well with this function.</p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-gelmanhillaki2021" class="csl-entry">
+Gelman, Andrew, Jennifer Hill, and Aki Vehtari. 2021. <em>Regression and Other Stories</em>. Cambridge: Cambridge University Press.
+</div>
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>This example is modified from <span class="citation"><a href="#ref-gelmanhillaki2021" role="doc-biblioref">Gelman, Hill, and Vehtari</a> (<a href="#ref-gelmanhillaki2021" role="doc-biblioref">2021</a> Ch. 5, p.69-70)</span>.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>We can express this in R using scientific notation, e.g. <code>2e4</code>.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
