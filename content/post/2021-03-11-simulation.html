@@ -29,7 +29,7 @@ bibliography: main.bib
 <p>“What I cannot create, I do not understand” – <a href="https://archives.caltech.edu/pictures/1.10-29.jpg">Richard Feynman</a></p>
 </blockquote>
 <blockquote>
-<p>“It is immoral to collect data before simulating the hypothesized data generating process.” – Andrew Gelman (what I remember of a comment to the Stanford Causal Inference Seminar in 2020)</p>
+<p>“It is immoral to collect data before simulating the hypothesized data generating process.” – Andrew Gelman (what I remember of a comment to the Stanford Causal Inference Seminar in 2020).</p>
 </blockquote>
 <div id="lesson-preview" class="section level2">
 <h2>📝 Lesson Preview</h2>
@@ -38,6 +38,7 @@ bibliography: main.bib
 <li><p><a href="#workflow">Simple simulation workflow</a></p></li>
 <li><p><a href="#documenting">Documenting Functions in R</a></p></li>
 <li><p><a href="debugging-intro">Debugging in R</a></p></li>
+<li><p>Throughout, we will include examples of how to plot with base R and ggplot2</p></li>
 </ul>
 </div>
 <div id="motivation" class="section level2">
@@ -58,16 +59,20 @@ bibliography: main.bib
 <p>Notice that most steps often involve some debugging. We’ll dig debugging into that <a href="#debugging-intro">below</a>. But let’s look at a simple ideal case.</p>
 <div id="example-1-simple-ab-test-discrete-probabilities" class="section level3">
 <h3>Example 1: Simple A/B Test Discrete probabilities</h3>
-<p>Imagine that we want to run an A/B test–randomised control trial–a new treatment to the status quo control treatment. We are interested in the effect of the treatment on whether or not individuals in the study do some action–e.g. vote in an election.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<p>Imagine that we want to run an A/B test–randomised control trial–a new treatment to the status quo control treatment. We are interested in the effect of the treatment on whether or not individuals in the study do some action–e.g. vote in an election.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> This is a discrete variable. Can we use a difference of means test to estimate the treatment effect?</p>
 <p>Let’s start by hypothesizing what the data generating process could be. Imagine that based on prior research we know that their is a baseline probability of the action with the control of 0.1:</p>
 <p><span class="math display">\[y \sim \mathrm{Binomial}(0.1)\]</span> To simulate one draw from this binomial distribution in R use:</p>
-<pre class="r"><code>y &lt;- rbinom(n = 1, size = 1, prob = 0.1)
-y</code></pre>
-<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>control_y_1 &lt;- rbinom(n = 1, size = 1, prob = 0.1)
+control_y_1</code></pre>
+<pre><code>## [1] 0</code></pre>
 <p>Let’s walk through this code. <code>rbinom()</code> is the function to randomly (<code>r</code>) draw from the binomial distribution (<code>binom</code>). <code>n</code> is the number of draws for this simulation, <code>size</code> is the “number of trials,” basically it means that you want to the “success” outcome to be 1 and 0 otherwise. <code>prob</code> is the probability of “success.”</p>
-<p>It’s unlikely that we will run an A/B test with only one participant in the control group, let’s go up to 20,000<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> and plot the results.</p>
-<pre class="r"><code>control &lt;- rbinom(n = 2e4, size = 1, prob = 0.1)
-hist(control)</code></pre>
+<p>It’s unlikely that we will run an A/B test with only one participant in the control group, let’s go up to 2,000,000<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> and plot the results.</p>
+<pre class="r"><code># number of observations variable to ensure consistency across sims
+n_obs &lt;- 2e6
+control_prob &lt;- 0.1
+
+control_y &lt;- rbinom(n = n_obs, size = 1, prob = control_prob)
+hist(control_y)</code></pre>
 <p><img src="/post/2021-03-11-simulation_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <hr />
 </div>
@@ -82,23 +87,67 @@ theme_set(theme_linedraw())
 
 # ggplot cannot accept a vector, like hist. 
 # Instead you need to convert to a data frame or the tidyverse equivalent &quot;tibble&quot;
-control_tbl &lt;- as_tibble(control)
+control_y_tbl &lt;- as_tibble(control_y)
 
 # Plot and change the x-axis label
-ggplot(control_tbl, aes(value)) + # as_tibble names the column &quot;value&quot; by default
+ggplot(control_y_tbl, aes(value)) + # as_tibble names the column &quot;value&quot; by default
   geom_histogram() + 
   xlab(&quot;\nControl Outcome&quot;) # \n adds a line break before the label</code></pre>
 <p><img src="/post/2021-03-11-simulation_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <hr />
-<p>Ok, we’ve simulated one run of the control group. Now let’s think about the treatment group. Imagine we anticipate that a realistic effect of the treatment–again based on prior knowledge–is a relative improvement of 1%. Let’s</p>
-<p>We can begin filling in our function to run the simulation one time:</p>
-<pre class="r"><code>one_sim = function(n = 1000, prob = 0.2) {
+<p>Ok, we’ve simulated one run of the control group. Now let’s think about the treatment group. Imagine we anticipate that a realistic effect of the treatment–again based on prior knowledge–is an average relative improvement of 1%. We simulate this with:</p>
+<pre class="r"><code>rel_effect &lt;- 0.01
+treat_prob &lt;- control_prob + (control_prob * rel_effect)
+treatment_y &lt;- rbinom(n = n_obs, size = 1, prob = treat_prob)
+
+hist(treatment_y)</code></pre>
+<p><img src="/post/2021-03-11-simulation_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Finally, we compare the means of the two groups:</p>
+<pre class="r"><code>mean(treatment_y) - mean(control_y) </code></pre>
+<pre><code>## [1] 0.00113</code></pre>
+<p>That’s one simulation. Let’s wrap it up in a function so it will be easy to run <span class="math inline">\(n\)</span> simulations</p>
+<pre class="r"><code>one_sim &lt;- function(n, control_prob, rel_effect) {
+  treat_prob &lt;- control_prob + (control_prob * rel_effect)
+    
+  cy &lt;- rbinom(n = n, size = 1, prob = control_prob)
+  ty &lt;- rbinom(n = n, size = 1, prob = treat_prob)
   
+  mean(ty) - mean(cy)
 }</code></pre>
+<p>Let’s test it to make sure it works.</p>
+<pre class="r"><code>one_sim(n = n_obs, control_prob = control_prob, 
+        rel_effect = rel_effect)</code></pre>
+<pre><code>## [1] 0.0007105</code></pre>
+<hr />
 </div>
 </div>
 <div id="documenting" class="section level2">
 <h2>Documenting Functions in R</h2>
+<p>A quick aside: it is important to get in the habit of documenting your functions as you write them. This makes them easier for others (and yourself in the future) to understand.</p>
+<p>There are some R documentation conventions to follow.<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> Function documentation begins with a description of what the function does. Then each function parameter is documented using <code>@param</code>. You can also give examples of the function working with <code>@examples</code>. All of the documentation should be commented out with <code>#'</code>. E.g.</p>
+<pre class="r"><code>#&#39; Simulate one A/B test outcome from the binomial distribution
+#&#39; and return the difference of the means of the two treatment arms.
+#&#39; 
+#&#39; @param n integer number of observations per treatment arm
+#&#39; @param control_prob numeric probability of success in the control group
+#&#39; @param rel_effect numeric relative effect of the treatment compared
+#&#39; to the control
+
+one_sim &lt;- function(n, control_prob, rel_effect) {
+  treat_prob &lt;- control_prob + (control_prob * rel_effect)
+    
+  cy &lt;- rbinom(n = n, size = 1, prob = control_prob)
+  ty &lt;- rbinom(n = n, size = 1, prob = treat_prob)
+  
+  mean(ty) - mean(cy)
+}</code></pre>
+<hr />
+<div id="monte-carlo-with-for" class="section level3">
+<h3>Monte Carlo with <code>for</code></h3>
+</div>
+<div id="monte-carlo-with-apply" class="section level3">
+<h3>Monte Carlo with <code>apply</code></h3>
+</div>
 </div>
 <div id="debugging-intro" class="section level2">
 <h2>Debugging in R</h2>
@@ -134,6 +183,7 @@ Gelman, Andrew, Jennifer Hill, and Aki Vehtari. 2021. <em>Regression and Other S
 <hr />
 <ol>
 <li id="fn1"><p>This example is modified from <span class="citation"><a href="#ref-gelmanhillaki2021" role="doc-biblioref">Gelman, Hill, and Vehtari</a> (<a href="#ref-gelmanhillaki2021" role="doc-biblioref">2021</a> Ch. 5, p.69-70)</span>.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
-<li id="fn2"><p>We can express this in R using scientific notation, e.g. <code>2e4</code>.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>We can express this in R using scientific notation, e.g. <code>2e6</code>.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>These conventions are established by the <a href="https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html">roxygen2</a> package. If you create an R package to contain your functions, you can use roxygen2 to automatically generate package documentation. For more details see <a href="https://r-pkgs.org/">R Packages</a>.<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>

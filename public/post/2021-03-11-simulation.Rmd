@@ -16,7 +16,7 @@ bibliography: main.bib
 
 > "What I cannot create, I do not understand" -- [Richard Feynman](https://archives.caltech.edu/pictures/1.10-29.jpg)
 
-> "It is immoral to collect data before simulating the hypothesized data generating process." -- Andrew Gelman (what I remember of a comment to the Stanford Causal Inference Seminar in 2020)
+> "It is immoral to collect data before simulating the hypothesized data generating process." -- Andrew Gelman (what I remember of a comment to the Stanford Causal Inference Seminar in 2020).
 
 ```{r echo=FALSE}
 # Load required packages
@@ -32,6 +32,8 @@ xfun::pkg_attach2("DiagrammeR")
 -   [Documenting Functions in R]
 
 -   [Debugging in R](debugging-intro)
+
+-   Throughout, we will include examples of how to plot with base R and ggplot2
 
 ## Motivation: Why simulate? {#motivation}
 
@@ -71,7 +73,7 @@ Notice that most steps often involve some debugging. We'll dig debugging into th
 
 ### Example 1: Simple A/B Test Discrete probabilities
 
-Imagine that we want to run an A/B test--randomised control trial--a new treatment to the status quo control treatment. We are interested in the effect of the treatment on whether or not individuals in the study do some action--e.g. vote in an election.[^1]
+Imagine that we want to run an A/B test--randomised control trial--a new treatment to the status quo control treatment. We are interested in the effect of the treatment on whether or not individuals in the study do some action--e.g. vote in an election.[^1] This is a discrete variable. Can we use a difference of means test to estimate the treatment effect?
 
 [^1]: This example is modified from @gelmanhillaki2021 [ Ch. 5, p.69-70].
 
@@ -80,19 +82,23 @@ Let's start by hypothesizing what the data generating process could be. Imagine 
 $$y \sim \mathrm{Binomial}(0.1)$$ To simulate one draw from this binomial distribution in R use:
 
 ```{r}
-y <- rbinom(n = 1, size = 1, prob = 0.1)
-y
+control_y_1 <- rbinom(n = 1, size = 1, prob = 0.1)
+control_y_1
 ```
 
 Let's walk through this code. `rbinom()` is the function to randomly (`r`) draw from the binomial distribution (`binom`). `n` is the number of draws for this simulation, `size` is the "number of trials", basically it means that you want to the "success" outcome to be 1 and 0 otherwise. `prob` is the probability of "success".
 
-It's unlikely that we will run an A/B test with only one participant in the control group, let's go up to 20,000[^2] and plot the results.
+It's unlikely that we will run an A/B test with only one participant in the control group, let's go up to 2,000,000[^2] and plot the results.
 
-[^2]: We can express this in R using scientific notation, e.g. `2e4`.
+[^2]: We can express this in R using scientific notation, e.g. `2e6`.
 
 ```{r}
-control <- rbinom(n = 2e4, size = 1, prob = 0.1)
-hist(control)
+# number of observations variable to ensure consistency across sims
+n_obs <- 2e6
+control_prob <- 0.1
+
+control_y <- rbinom(n = n_obs, size = 1, prob = control_prob)
+hist(control_y)
 ```
 
 ------------------------------------------------------------------------
@@ -101,7 +107,7 @@ hist(control)
 
 [ggplot2](https://ggplot2.tidyverse.org/) is a very powerful way to create graphics in R. Here is an example of how you would create a histogram with ggplot2.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 # ggplot2 is a member of the "tidyverse" set of packages
 xfun::pkg_attach2("tidyverse")
 
@@ -110,27 +116,86 @@ theme_set(theme_linedraw())
 
 # ggplot cannot accept a vector, like hist. 
 # Instead you need to convert to a data frame or the tidyverse equivalent "tibble"
-control_tbl <- as_tibble(control)
+control_y_tbl <- as_tibble(control_y)
 
 # Plot and change the x-axis label
-ggplot(control_tbl, aes(value)) + # as_tibble names the column "value" by default
+ggplot(control_y_tbl, aes(value)) + # as_tibble names the column "value" by default
   geom_histogram() + 
   xlab("\nControl Outcome") # \n adds a line break before the label
 ```
 
 ------------------------------------------------------------------------
 
-Ok, we've simulated one run of the control group. Now let's think about the treatment group. Imagine we anticipate that a realistic effect of the treatment--again based on prior knowledge--is a relative improvement of 1%. Let's
-
-We can begin filling in our function to run the simulation one time:
+Ok, we've simulated one run of the control group. Now let's think about the treatment group. Imagine we anticipate that a realistic effect of the treatment--again based on prior knowledge--is an average relative improvement of 1%. We simulate this with:
 
 ```{r}
-one_sim = function(n = 1000, prob = 0.2) {
+rel_effect <- 0.01
+treat_prob <- control_prob + (control_prob * rel_effect)
+treatment_y <- rbinom(n = n_obs, size = 1, prob = treat_prob)
+
+hist(treatment_y)
+```
+
+Finally, we compare the means of the two groups:
+
+```{r}
+mean(treatment_y) - mean(control_y) 
+```
+
+That's one simulation. Let's wrap it up in a function so it will be easy to run $n$ simulations
+
+```{r}
+one_sim <- function(n, control_prob, rel_effect) {
+  treat_prob <- control_prob + (control_prob * rel_effect)
+    
+  cy <- rbinom(n = n, size = 1, prob = control_prob)
+  ty <- rbinom(n = n, size = 1, prob = treat_prob)
   
+  mean(ty) - mean(cy)
 }
 ```
 
+Let's test it to make sure it works.
+
+```{r}
+one_sim(n = n_obs, control_prob = control_prob, 
+        rel_effect = rel_effect)
+```
+
+------------------------------------------------------------------------
+
 ## Documenting Functions in R {#documenting}
+
+A quick aside: it is important to get in the habit of documenting your functions as you write them. This makes them easier for others (and yourself in the future) to understand.
+
+There are some R documentation conventions to follow.[^3] Function documentation begins with a description of what the function does. Then each function parameter is documented using `@param`. You can also give examples of the function working with `@examples`. All of the documentation should be commented out with `#'`. E.g.
+
+[^3]: These conventions are established by the [roxygen2](https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html) package. If you create an R package to contain your functions, you can use roxygen2 to automatically generate package documentation. For more details see [R Packages](https://r-pkgs.org/).
+
+```{r eval=FALSE}
+#' Simulate one A/B test outcome from the binomial distribution
+#' and return the difference of the means of the two treatment arms.
+#' 
+#' @param n integer number of observations per treatment arm
+#' @param control_prob numeric probability of success in the control group
+#' @param rel_effect numeric relative effect of the treatment compared
+#' to the control
+
+one_sim <- function(n, control_prob, rel_effect) {
+  treat_prob <- control_prob + (control_prob * rel_effect)
+    
+  cy <- rbinom(n = n, size = 1, prob = control_prob)
+  ty <- rbinom(n = n, size = 1, prob = treat_prob)
+  
+  mean(ty) - mean(cy)
+}
+```
+
+------------------------------------------------------------------------
+
+### Monte Carlo with `for`
+
+### Monte Carlo with `apply`
 
 ## Debugging in R {#debugging-intro}
 
