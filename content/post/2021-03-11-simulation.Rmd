@@ -29,7 +29,7 @@ xfun::pkg_attach2("DiagrammeR")
 
 -   [Simple simulation workflow](#workflow)
 
--   [Documenting Functions in R]
+-   [Documenting Functions in RMonte Carlo with apply and parallelization](#documenting)
 
 -   [Debugging in R](debugging-intro)
 
@@ -162,6 +162,8 @@ one_sim(n = n_obs, control_prob = control_prob,
         rel_effect = rel_effect)
 ```
 
+This is very close to the true increase of $\frac{\bar{x}_{treat} - \bar{x}_{control}}{\bar{x}_{control}}\cdot100=1\%$.
+
 ------------------------------------------------------------------------
 
 ## Documenting Functions in R {#documenting}
@@ -195,7 +197,75 @@ one_sim <- function(n, control_prob, rel_effect) {
 
 ### Monte Carlo with `for`
 
-### Monte Carlo with `apply`
+```{r}
+# package to add a progress bar to monitor loop progress
+xfun::pkg_attach2("progress")
+
+# Create vector of NAs to take the simulation results
+n_sims <- 100
+mean_diff <- rep(NA, n_sims)
+pb <- progress_bar$new(total = n_sims)
+
+for (i in seq_along(mean_diff)) {
+  pb$tick() # increment the progress bar
+  mean_diff[i] <- one_sim(n = n_obs, control_prob = control_prob, 
+        rel_effect = rel_effect)
+}
+
+hist(mean_diff)
+```
+
+### Monte Carlo with `apply` and parallelization
+
+`for` loops are [notoriously slow in R](https://privefl.github.io/blog/why-loops-are-slow-in-r/). This isn't a problem if you are only doing a few simulations, but gets very tedious if you need to run many simulations. Often--though not always--using the `apply` family of functions is faster. They make it easier to parallelize your code.
+
+Since we want to run the same function `n` times, we can use the `replicate()` helper function:[^4]
+
+[^4]: `replicate()` is a wrapper for `sapply()` you can see how this code works by typing `sapply` into your R console.
+
+```{r}
+system.time(
+  mean_diff <- replicate(n_sims, one_sim(n = n_obs, 
+                                       control_prob = control_prob, 
+                                       rel_effect = rel_effect))
+)
+```
+
+I wrapped this call in `system.time()` so that we can keep track of how much computation time we spend on the call. Monte Carlo simulations are just doing the same thing over and over. This computation time can add up.
+
+We can see that the the `apply` version in this case is pretty much as slow as the `for` loop.[^5]
+
+[^5]: Note that there is random variation in computation time. So if you want to get a more accurate sense of computation time use the [microbenchmark](https://cran.r-project.org/web/packages/microbenchmark/microbenchmark.pdf) package. This does repeated runs of the call and reports the distribution of run times.
+
+```{r}
+system.time(
+  for (i in seq_along(mean_diff)) {
+    mean_diff[i] <- one_sim(n = n_obs, control_prob = control_prob, 
+        rel_effect = rel_effect)
+  }
+)
+```
+
+So far we have been running all of our simulations in sequence. However, each simulation, by construction, is independent of the others. This is a perfect use case for parallelization.
+
+There is a `mcreplicate()` helper function (originally from the rethinking package) that makes this easy for the code we have written so far. *Note more than 1 core will not work on Windows.*
+
+```{r}
+# Run the following code if mcreplicate is not already installed
+# xfun::pkg_attach2("remotes")
+# install_github("christophergandrud/mcreplicate")
+
+library(mcreplicate)
+
+system.time(
+  diff_mean_mc <- mcreplicate(n_sims, one_sim(n = n_obs, 
+                              control_prob = control_prob, 
+                              rel_effect = rel_effect),
+              mc.cores = 4)
+)
+```
+
+As we would expect from running the simulations across 4 rather than one core, the `elapsed` time is 4 times faster with `mcreplicate()`.
 
 ## Debugging in R {#debugging-intro}
 
@@ -221,8 +291,10 @@ If the answer is "angry, I want to throw my computer out the window", your best 
 
 Unlike social phenomena, most computer bugs are deterministic. The cause of a bug will always cause the bug. So your chances of definitively finding the bug are high with the following process and tools.
 
-### Clear, testable program specifications 
+### Clear, testable program specifications
 
 ### Tools for testing and dissecting
 
 The `browser()` function is critical for debugging functions and loops in R. When R is executing some code and hits `browser()` it stops the execution and begins an interactive `Browse` mode. This allows you to explore the objects in the current environment and run code. RStudio works really well with this function.
+
+## 🥅 Exercise

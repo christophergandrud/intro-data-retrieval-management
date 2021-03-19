@@ -148,7 +148,7 @@ hist(treatment_y)</code></pre>
 <p><img src="/post/2021-03-11-simulation_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>Finally, we compare the means of the two groups:</p>
 <pre class="r"><code>mean(treatment_y) - mean(control_y) </code></pre>
-<pre><code>## [1] 0.00113</code></pre>
+<pre><code>## [1] 0.001211</code></pre>
 <p>That’s one simulation. Let’s wrap it up in a function so it will be easy to run <span class="math inline">\(n\)</span> simulations</p>
 <pre class="r"><code>one_sim &lt;- function(n, control_prob, rel_effect) {
   treat_prob &lt;- control_prob + (control_prob * rel_effect)
@@ -161,7 +161,7 @@ hist(treatment_y)</code></pre>
 <p>Let’s test it to make sure it works.</p>
 <pre class="r"><code>one_sim(n = n_obs, control_prob = control_prob, 
         rel_effect = rel_effect)</code></pre>
-<pre><code>## [1] 0.0007105</code></pre>
+<pre><code>## [1] 0.0010305</code></pre>
 <hr />
 </div>
 </div>
@@ -188,6 +188,7 @@ one_sim &lt;- function(n, control_prob, rel_effect) {
 <hr />
 <div id="monte-carlo-with-for" class="section level3">
 <h3>Monte Carlo with <code>for</code></h3>
+<p>Many people find the <code>for</code> control flow syntax easier to understand and therefore write.</p>
 </div>
 <div id="monte-carlo-with-apply" class="section level3">
 <h3>Monte Carlo with <code>apply</code></h3>
