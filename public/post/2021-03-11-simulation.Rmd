@@ -223,7 +223,7 @@ Since we want to run the same function `n` times, we can use the `replicate()` h
 
 [^4]: `replicate()` is a wrapper for `sapply()` you can see how this code works by typing `sapply` into your R console.
 
-```{r}
+```{r cache=TRUE}
 system.time(
   mean_diff <- replicate(n_sims, one_sim(n = n_obs, 
                                        control_prob = control_prob, 
@@ -237,7 +237,7 @@ We can see that the the `apply` version in this case is pretty much as slow as t
 
 [^5]: Note that there is random variation in computation time. So if you want to get a more accurate sense of computation time use the [microbenchmark](https://cran.r-project.org/web/packages/microbenchmark/microbenchmark.pdf) package. This does repeated runs of the call and reports the distribution of run times.
 
-```{r}
+```{r cache=TRUE}
 system.time(
   for (i in seq_along(mean_diff)) {
     mean_diff[i] <- one_sim(n = n_obs, control_prob = control_prob, 
@@ -248,7 +248,7 @@ system.time(
 
 So far we have been running all of our simulations in sequence. However, each simulation, by construction, is independent of the others. This is a perfect use case for parallelization.
 
-There is a `mcreplicate()` helper function (originally from the rethinking package) that makes this easy for the code we have written so far. *Note more than 1 core will not work on Windows.*
+There is a `mc_replicate()` helper function (originally from the rethinking package) that makes this easy for the code we have written so far. *Note more than 1 core will not work on Windows.*
 
 ```{r}
 # Run the following code if mcreplicate is not already installed
@@ -258,7 +258,7 @@ There is a `mcreplicate()` helper function (originally from the rethinking packa
 library(mcreplicate)
 
 system.time(
-  diff_mean_mc <- mcreplicate(n_sims, one_sim(n = n_obs, 
+  diff_mean_mc <- mc_replicate(n_sims, one_sim(n = n_obs, 
                               control_prob = control_prob, 
                               rel_effect = rel_effect),
               mc.cores = 4)

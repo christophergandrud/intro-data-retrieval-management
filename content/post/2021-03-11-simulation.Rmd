@@ -217,13 +217,15 @@ hist(mean_diff)
 
 ### Monte Carlo with `apply` and parallelization
 
-`for` loops are [notoriously slow in R](https://privefl.github.io/blog/why-loops-are-slow-in-r/). This isn't a problem if you are only doing a few simulations, but gets very tedious if you need to run many simulations. Often--though not always--using the `apply` family of functions is faster. They make it easier to parallelize your code.
+`for` loops are [notoriously slow in R](https://privefl.github.io/blog/why-loops-are-slow-in-r/).[^4] This isn't a problem if you are only doing a few simulations, but gets very tedious if you need to run many simulations. Often--though not always--using the `apply` family of functions is faster. They make it easier to parallelize your code.
 
-Since we want to run the same function `n` times, we can use the `replicate()` helper function:[^4]
+[^4]: If you ever need to kill an R process (e.g. because it is taking way longer than you expected, use `Ctrl + c` in your R console.
 
-[^4]: `replicate()` is a wrapper for `sapply()` you can see how this code works by typing `sapply` into your R console.
+Since we want to run the same function `n` times, we can use the `replicate()` helper function:[^5]
 
-```{r}
+[^5]: `replicate()` is a wrapper for `sapply()` you can see how this code works by typing `sapply` into your R console.
+
+```{r cache=TRUE}
 system.time(
   mean_diff <- replicate(n_sims, one_sim(n = n_obs, 
                                        control_prob = control_prob, 
@@ -233,11 +235,11 @@ system.time(
 
 I wrapped this call in `system.time()` so that we can keep track of how much computation time we spend on the call. Monte Carlo simulations are just doing the same thing over and over. This computation time can add up.
 
-We can see that the the `apply` version in this case is pretty much as slow as the `for` loop.[^5]
+We can see that the the `apply` version in this case is pretty much as slow as the `for` loop.[^6]
 
-[^5]: Note that there is random variation in computation time. So if you want to get a more accurate sense of computation time use the [microbenchmark](https://cran.r-project.org/web/packages/microbenchmark/microbenchmark.pdf) package. This does repeated runs of the call and reports the distribution of run times.
+[^6]: Note that there is random variation in computation time. So if you want to get a more accurate sense of computation time use the [microbenchmark](https://cran.r-project.org/web/packages/microbenchmark/microbenchmark.pdf) package. This does repeated runs of the call and reports the distribution of run times.
 
-```{r}
+```{r cache=TRUE}
 system.time(
   for (i in seq_along(mean_diff)) {
     mean_diff[i] <- one_sim(n = n_obs, control_prob = control_prob, 
@@ -248,9 +250,9 @@ system.time(
 
 So far we have been running all of our simulations in sequence. However, each simulation, by construction, is independent of the others. This is a perfect use case for parallelization.
 
-There is a `mcreplicate()` helper function (originally from the rethinking package) that makes this easy for the code we have written so far. *Note more than 1 core will not work on Windows.*
+There is a `mc_replicate()` helper function (originally from the rethinking package) that makes this easy for the code we have written so far. *Note more than 1 core will not work on Windows.*
 
-```{r}
+```{r cache=TRUE}
 # Run the following code if mcreplicate is not already installed
 # xfun::pkg_attach2("remotes")
 # install_github("christophergandrud/mcreplicate")
@@ -258,14 +260,38 @@ There is a `mcreplicate()` helper function (originally from the rethinking packa
 library(mcreplicate)
 
 system.time(
-  diff_mean_mc <- mcreplicate(n_sims, one_sim(n = n_obs, 
+  mc_replicate(n_sims, one_sim(n = n_obs, 
                               control_prob = control_prob, 
                               rel_effect = rel_effect),
               mc.cores = 4)
 )
 ```
 
-As we would expect from running the simulations across 4 rather than one core, the `elapsed` time is 4 times faster with `mcreplicate()`.
+As we would expect from running the simulations across 4 rather than one core, the `elapsed` time is 4 times faster with `mc_replicate()`.
+
+Finally, let's see if the difference of means is a useful way of estimating the treatment effect for a binary outcome? Let's run a few more simulations. We should see normally distributed difference of means centered on 0.001:
+
+```{r cache=TRUE, message=FALSE}
+diff_means_1000 <- mc_replicate(1e3, one_sim(n = n_obs, 
+                                      control_prob = control_prob, 
+                                      rel_effect = rel_effect),
+                              mc.cores = 4)
+
+# find mean of simulations
+mean_of_means <- mean(diff_means_1000)
+
+# plot simulations with line at mean value
+diff_means_1000_tbl <- as_tibble(diff_means_1000)
+
+ggplot(diff_means_1000_tbl, aes(value)) +
+  geom_histogram(alpha = 0.6, fill = "#29ffc6") +
+  geom_vline(xintercept = mean_of_means, linetype = "dashed") +
+  xlab("\nTreatment - Control") +
+  ggtitle("Monte Carlo Results", 
+          subtitle = "Difference of means for binary outcome\n10,000 simulations")
+```
+
+The more simulations we run, the more smooth and "normal" the curve will become.
 
 ## Debugging in R {#debugging-intro}
 
@@ -293,8 +319,125 @@ Unlike social phenomena, most computer bugs are deterministic. The cause of a bu
 
 ### Clear, testable program specifications
 
+> Finding your bug is a process of confirming the many things that you believe are true --- until you find one which is not true.
+>
+> ---Norm Matloff (quote from [Advanced R](https://adv-r.hadley.nz/debugging.html#debugging-strategy))
+
+Great debugging is driven by having great expectations of what the program should return. Having a well defined expectation of what a program should do is important to knowing if you have a bug to begin with. One way to approach software development is to even write tests for a function before you write the function. This is called [test drive development](https://en.wikipedia.org/wiki/Test-driven_development).
+
+Both in your functions, to test incremental expectations, and for the output of your functions you include automated tests. Here is a silly example. Imagine that we have a function that should add 2 + 2 and then divide by 2 to return 2. We can create an automated test like this:
+
+```{r}
+two <- function() {
+  four <- 2 + 2
+  if (four != 4) 
+    stop("Did not add 2 + 2 correctly")
+  
+  four / 2
+}
+
+if (two() != 2) stop("function two did not return two")
+```
+
+The `if` . . . `stop` statements automatically test whether or not the function is executing correctly. If there is a problem, the tests should help us pinpoint the cause more quickly.
+
 ### Tools for testing and dissecting
 
-The `browser()` function is critical for debugging functions and loops in R. When R is executing some code and hits `browser()` it stops the execution and begins an interactive `Browse` mode. This allows you to explore the objects in the current environment and run code. RStudio works really well with this function.
+Imagine that our function is not working correctly. A key R tool is the `browser()` function. When R executes some code and hits `browser()` it stops the execution and begins an interactive `Browse` mode. This allows you to explore the objects in the current environment and run code. RStudio works really well with this function.
+
+Imagine we wrote the loop above incorrectly:
+
+```{r eval=FALSE}
+one_sim_bug <- function(n, control_prob, rel_effect) {
+  treat_prob <- control_prob / (control_prob * rel_effect)
+    
+  cy <- rbinom(n = n, size = 1, prob = control_prob)
+  ty <- rbinom(n = n, size = 1, prob = treat_prob)
+  
+  mean(ty) - mean(cy)
+}
+
+mean_diff_bug <- rep(NA, n_sims)
+
+for (i in seq_along(mean_diff)) {
+  mean_diff_bug[u] <- one_sim_bug(n = n_obs, 
+                                  control_prob = control_prob, 
+                                  rel_effect = rel_effect)
+}
+```
+
+We two layers of nested functions where the bug could reside. Let's systematically use `browser()` to identify the source. Start from the outer most function--the `for` loop and work you way down as necessary.
+
+```{r eval=FALSE}
+for (i in seq_along(mean_diff)) {
+browser()
+  mean_diff_bug[u] <- one_sim_bug(n = n_obs, 
+                                  control_prob = control_prob, 
+                                  rel_effect = rel_effect)
+}
+```
+
+Ok, we've found the a typo. We should have used `i` instead of `u` to index the output of `one_sim`. Are we done? We'll let's check the output:
+
+```{r eval=FALSE}
+for (i in seq_along(mean_diff)) {
+  mean_diff_bug[i] <- one_sim_bug(n = n_obs, 
+                                  control_prob = control_prob, 
+                                  rel_effect = rel_effect)
+}
+
+hist(mean_diff_bug)
+```
+
+Hm, we are not getting a valid histogram. Let's now go down the function nesting to insert a `browser()` call in `one_sim`:
+
+```{r eval=FALSE}
+one_sim_bug <- function(n, control_prob, rel_effect) {
+  browser()
+  treat_prob <- control_prob / (control_prob * rel_effect)
+    
+  cy <- rbinom(n = n, size = 1, prob = control_prob)
+  ty <- rbinom(n = n, size = 1, prob = treat_prob)
+  
+  mean(ty) - mean(cy)
+}
+
+mean_diff_bug <- rep(NA, n_sims)
+
+for (i in seq_along(mean_diff)) {
+  mean_diff_bug[u] <- one_sim_bug(n = n_obs, 
+                                  control_prob = control_prob, 
+                                  rel_effect = rel_effect)
+}
+```
+
+When we do this, we can find that we incorrectly divide `control_prob` by `(control_prob * rel_effect)` the ultimate result, is that the output of `one_sim` is `NA`. We can't create a histogram of `NA`s.
 
 ## 🥅 Exercise
+
+**A.** Replicate the example above. This time use Monte Carlo simulation to find out the distribution of p-values if the you had a *total* sample size of 2,000. Hint: extract p-values in R from a t-test with `t.test()$p.value` .
+
+"Extra credit": how often you would incorrectly reject the null hypothesis of no difference of means at the 95% level with *total* sample sizes of 1,000, 2,000, 10,000, and 100,000? Plot the proportion of simulations falsely rejected across these sample sizes.
+
+**B.** Imagine that we are interested in understanding how bad [confounding](https://en.wikipedia.org/wiki/Confounding) by an unobserved variable:
+
+```{r confounding, echo=FALSE}
+DiagrammeR::mermaid("
+graph LR
+  Z-->Y
+  Z-->X
+  X-->Y
+")
+```
+
+$Z$ is a confounder. It causes both $X$ and our outcome of interest $Y$. Imagine we couldn't observe $Z$. Create a Monte Carlo simulation to explore how this confounder could be biasing our estimate of the relationship between $X$ and our $Y$.
+
+Assume a data generating process described by:
+
+$$
+Y = X\beta + Z\gamma + \epsilon
+$$
+
+And $Z$ is also a cause of $X$.
+
+**Completely over to you:** Now propose a data generating process and estimation strategy related to work that you are interested in. Conduct Monte Carlo analysis of the estimation strategy given this data generating process.

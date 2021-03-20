@@ -11,9 +11,6 @@
     <loc>https://brave-pasteur-c09ffa.netlify.app/post/optional-r-basics-2/</loc>
     <lastmod>2020-04-26T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://brave-pasteur-c09ffa.netlify.app/post/optional-r-basics-3/</loc>
-    <lastmod>2021-03-17T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://brave-pasteur-c09ffa.netlify.app/post/why-automated-data-collection/</loc>
     <lastmod>2020-05-02T00:00:00+00:00</lastmod>
   </url><url>
@@ -28,26 +25,11 @@
     <loc>https://brave-pasteur-c09ffa.netlify.app/post/nested-json-and-text-as-data/</loc>
     <lastmod>2020-05-30T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://brave-pasteur-c09ffa.netlify.app/tags/distributed/</loc>
-    <lastmod>2021-03-17T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://brave-pasteur-c09ffa.netlify.app/tags/functions/</loc>
-    <lastmod>2021-03-17T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://brave-pasteur-c09ffa.netlify.app/post/</loc>
-    <lastmod>2021-03-17T00:00:00+00:00</lastmod>
+    <lastmod>2021-03-15T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://brave-pasteur-c09ffa.netlify.app/</loc>
-    <lastmod>2021-03-17T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://brave-pasteur-c09ffa.netlify.app/tags/r/</loc>
-    <lastmod>2021-03-17T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://brave-pasteur-c09ffa.netlify.app/tags/simulation/</loc>
-    <lastmod>2021-03-17T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://brave-pasteur-c09ffa.netlify.app/tags/</loc>
-    <lastmod>2021-03-17T00:00:00+00:00</lastmod>
+    <lastmod>2021-03-15T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://brave-pasteur-c09ffa.netlify.app/tags/data-retrieval/</loc>
     <lastmod>2020-05-30T00:00:00+00:00</lastmod>
@@ -67,7 +49,13 @@
     <loc>https://brave-pasteur-c09ffa.netlify.app/tags/programming/</loc>
     <lastmod>2020-05-30T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://brave-pasteur-c09ffa.netlify.app/tags/r/</loc>
+    <lastmod>2020-05-30T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://brave-pasteur-c09ffa.netlify.app/tags/strings/</loc>
+    <lastmod>2020-05-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://brave-pasteur-c09ffa.netlify.app/tags/</loc>
     <lastmod>2020-05-30T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://brave-pasteur-c09ffa.netlify.app/tags/text/</loc>
@@ -86,6 +74,9 @@
     <lastmod>2020-05-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://brave-pasteur-c09ffa.netlify.app/tags/basics/</loc>
+    <lastmod>2020-04-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://brave-pasteur-c09ffa.netlify.app/tags/functions/</loc>
     <lastmod>2020-04-26T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://brave-pasteur-c09ffa.netlify.app/tags/if/</loc>
