@@ -446,3 +446,5 @@ How different is the estimated effect of $X$ on $Y$ when we include the unobserv
 Extra credit: how does this impact change as you vary the relationship between $Z$ and $X$ i.e. change $0.6 \cdot Z$?
 
 **C.** Propose a data generating process and estimation strategy related to work that you are interested in. Conduct Monte Carlo analysis of the estimation strategy given this data generating process.
+
+## References
