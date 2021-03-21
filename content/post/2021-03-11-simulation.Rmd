@@ -1,5 +1,5 @@
 ---
-title: '[Optional] Introduction to Computational Thinking & Simulation with R'
+title: '[Optional] Introduction to Computational Thinking via Simulation with R'
 author: Christopher Gandrud
 date: '2021-03-17'
 slug: optional-r-basics-3
@@ -79,7 +79,7 @@ Imagine that we want to run an A/B test--randomised control trial--a new treatme
 
 Let's start by hypothesizing what the data generating process could be. Imagine that based on prior research we know that their is a baseline probability of the action with the control of 0.1:
 
-$$y \sim \mathrm{Binomial}(0.1)$$ To simulate one draw from this binomial distribution in R use:
+$$Y \sim \mathrm{Binomial}(0.1)$$ To simulate one draw from this binomial distribution in R use:
 
 ```{r}
 control_y_1 <- rbinom(n = 1, size = 1, prob = 0.1)
@@ -197,7 +197,7 @@ one_sim <- function(n, control_prob, rel_effect) {
 
 ### Monte Carlo with `for`
 
-```{r}
+```{r message=FALSE}
 # package to add a progress bar to monitor loop progress
 xfun::pkg_attach2("progress")
 
@@ -341,7 +341,7 @@ if (two() != 2) stop("function two did not return two")
 
 The `if` . . . `stop` statements automatically test whether or not the function is executing correctly. If there is a problem, the tests should help us pinpoint the cause more quickly.
 
-### Tools for testing and dissecting
+### `browser()` for testing and dissecting
 
 Imagine that our function is not working correctly. A key R tool is the `browser()` function. When R executes some code and hits `browser()` it stops the execution and begins an interactive `Browse` mode. This allows you to explore the objects in the current environment and run code. RStudio works really well with this function.
 
@@ -377,7 +377,7 @@ browser()
 }
 ```
 
-Ok, we've found the a typo. We should have used `i` instead of `u` to index the output of `one_sim`. Are we done? We'll let's check the output:
+Ok, we've found the a typo. We should have used `i` instead of `u` to index the output of `one_sim`. Leave the browser environment with `c + Enter`. Are we done? We'll let's check the output:
 
 ```{r eval=FALSE}
 for (i in seq_along(mean_diff)) {
@@ -435,10 +435,19 @@ $Z$ is a confounder. It causes both $X$ and our outcome of interest $Y$. Imagine
 Assume a data generating process described by:
 
 $$
-Y = X\beta + Z\gamma + \epsilon
+Z \sim \mathrm{Binomial}(0.5)\\
+X \sim \mathrm{Binomial}(0.8 - 0.6 \cdot Z) \\
+\epsilon \sim \mathrm{Normal}(0, 1) \\
+Y = X \cdot 1 + Z \cdot 3 + \epsilon
 $$
 
-And $Z$ is also a cause of $X$. \$\\epsilon\$
+How different is the estimated effect of $X$ on $Y$ when we include the unobserved confounder compared to when we don't include it?
+
+Hints: use `lm()` to estimate a linear model. Coefficients can be extracted from `lm` model objects, say `m1` with `m1$coefficients`.
+
+Extra credit: how does this impact change as you vary the relationship between $Z$ and $X$ i.e. change $0.6 \cdot Z$? Answering this question will likely take some programming beyond what we have covered so far. Google is your friend here.
+
+**C.** Propose a data generating process and estimation strategy related to work that you are interested in. Conduct Monte Carlo analysis of the estimation strategy given this data generating process.
 
 **Completely over to you:** Now propose a data generating process and estimation strategy related to work that you are interested in. Conduct Monte Carlo analysis of the estimation strategy given this data generating process.
 

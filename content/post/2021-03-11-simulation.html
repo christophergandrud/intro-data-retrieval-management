@@ -1,5 +1,5 @@
 ---
-title: '[Optional] Introduction to Computational Thinking & Simulation with R'
+title: '[Optional] Introduction to Computational Thinking via Simulation with R'
 author: Christopher Gandrud
 date: '2021-03-17'
 slug: optional-r-basics-3
@@ -61,7 +61,7 @@ bibliography: main.bib
 <h3>Example 1: Simple A/B Test Discrete probabilities</h3>
 <p>Imagine that we want to run an A/B test–randomised control trial–a new treatment to the status quo control treatment. We are interested in the effect of the treatment on whether or not individuals in the study do some action–e.g. vote in an election.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> This is a discrete variable. Can we use a difference of means test to estimate the treatment effect?</p>
 <p>Let’s start by hypothesizing what the data generating process could be. Imagine that based on prior research we know that their is a baseline probability of the action with the control of 0.1:</p>
-<p><span class="math display">\[y \sim \mathrm{Binomial}(0.1)\]</span> To simulate one draw from this binomial distribution in R use:</p>
+<p><span class="math display">\[Y \sim \mathrm{Binomial}(0.1)\]</span> To simulate one draw from this binomial distribution in R use:</p>
 <pre class="r"><code>control_y_1 &lt;- rbinom(n = 1, size = 1, prob = 0.1)
 control_y_1</code></pre>
 <pre><code>## [1] 0</code></pre>
@@ -104,7 +104,7 @@ hist(treatment_y)</code></pre>
 <p><img src="/post/2021-03-11-simulation_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>Finally, we compare the means of the two groups:</p>
 <pre class="r"><code>mean(treatment_y) - mean(control_y) </code></pre>
-<pre><code>## [1] 0.0010635</code></pre>
+<pre><code>## [1] 0.000621</code></pre>
 <p>That’s one simulation. Let’s wrap it up in a function so it will be easy to run <span class="math inline">\(n\)</span> simulations</p>
 <pre class="r"><code>one_sim &lt;- function(n, control_prob, rel_effect) {
   treat_prob &lt;- control_prob + (control_prob * rel_effect)
@@ -117,7 +117,7 @@ hist(treatment_y)</code></pre>
 <p>Let’s test it to make sure it works.</p>
 <pre class="r"><code>one_sim(n = n_obs, control_prob = control_prob, 
         rel_effect = rel_effect)</code></pre>
-<pre><code>## [1] 0.001003</code></pre>
+<pre><code>## [1] 0.0006245</code></pre>
 <p>This is very close to the true increase of <span class="math inline">\(\frac{\bar{x}_{treat} - \bar{x}_{control}}{\bar{x}_{control}}\cdot100=1\%\)</span>.</p>
 <hr />
 </div>
@@ -257,8 +257,8 @@ ggplot(diff_means_1000_tbl, aes(value)) +
 if (two() != 2) stop(&quot;function two did not return two&quot;)</code></pre>
 <p>The <code>if</code> . . . <code>stop</code> statements automatically test whether or not the function is executing correctly. If there is a problem, the tests should help us pinpoint the cause more quickly.</p>
 </div>
-<div id="tools-for-testing-and-dissecting" class="section level3">
-<h3>Tools for testing and dissecting</h3>
+<div id="browser-for-testing-and-dissecting" class="section level3">
+<h3><code>browser()</code> for testing and dissecting</h3>
 <p>Imagine that our function is not working correctly. A key R tool is the <code>browser()</code> function. When R executes some code and hits <code>browser()</code> it stops the execution and begins an interactive <code>Browse</code> mode. This allows you to explore the objects in the current environment and run code. RStudio works really well with this function.</p>
 <p>Imagine we wrote the loop above incorrectly:</p>
 <pre class="r"><code>one_sim_bug &lt;- function(n, control_prob, rel_effect) {
@@ -284,7 +284,7 @@ browser()
                                   control_prob = control_prob, 
                                   rel_effect = rel_effect)
 }</code></pre>
-<p>Ok, we’ve found the a typo. We should have used <code>i</code> instead of <code>u</code> to index the output of <code>one_sim</code>. Are we done? We’ll let’s check the output:</p>
+<p>Ok, we’ve found the a typo. We should have used <code>i</code> instead of <code>u</code> to index the output of <code>one_sim</code>. Leave the browser environment with <code>c + Enter</code>. Are we done? We’ll let’s check the output:</p>
 <pre class="r"><code>for (i in seq_along(mean_diff)) {
   mean_diff_bug[i] &lt;- one_sim_bug(n = n_obs, 
                                   control_prob = control_prob, 
@@ -323,9 +323,15 @@ for (i in seq_along(mean_diff)) {
 <p><span class="math inline">\(Z\)</span> is a confounder. It causes both <span class="math inline">\(X\)</span> and our outcome of interest <span class="math inline">\(Y\)</span>. Imagine we couldn’t observe <span class="math inline">\(Z\)</span>. Create a Monte Carlo simulation to explore how this confounder could be biasing our estimate of the relationship between <span class="math inline">\(X\)</span> and our <span class="math inline">\(Y\)</span>.</p>
 <p>Assume a data generating process described by:</p>
 <p><span class="math display">\[
-Y = X\beta + Z\gamma + \epsilon
+Z \sim \mathrm{Binomial}(0.5)\\
+X \sim \mathrm{Binomial}(0.8 - 0.6 \cdot Z) \\
+\epsilon \sim \mathrm{Normal}(0, 1) \\
+Y = X \cdot 1 + Z \cdot 3 + \epsilon
 \]</span></p>
-<p>And <span class="math inline">\(Z\)</span> is also a cause of <span class="math inline">\(X\)</span>. $\epsilon$</p>
+<p>How different is the estimated effect of <span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span> when we include the unobserved confounder compared to when we don’t include it?</p>
+<p>Hints: use <code>lm()</code> to estimate a linear model. Coefficients can be extracted from <code>lm</code> model objects, say <code>m1</code> with <code>m1$coefficients</code>.</p>
+<p>Extra credit: how does this impact change as you vary the relationship between <span class="math inline">\(Z\)</span> and <span class="math inline">\(X\)</span> i.e. change <span class="math inline">\(0.6 \cdot Z\)</span>? Answering this question will likely take some programming beyond what we have covered so far. Google is your friend here.</p>
+<p><strong>C.</strong> Propose a data generating process and estimation strategy related to work that you are interested in. Conduct Monte Carlo analysis of the estimation strategy given this data generating process.</p>
 <p><strong>Completely over to you:</strong> Now propose a data generating process and estimation strategy related to work that you are interested in. Conduct Monte Carlo analysis of the estimation strategy given this data generating process.</p>
 </div>
 <div id="references" class="section level2 unnumbered">

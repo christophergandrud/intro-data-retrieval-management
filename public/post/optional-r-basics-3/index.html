@@ -80,7 +80,7 @@
 <ul>
 <li><p><a href="#motivation">Why simulate?</a></p></li>
 <li><p><a href="#workflow">Simple simulation workflow</a></p></li>
-<li><p><a href="#documenting">Documenting Functions in R</a></p></li>
+<li><p><a href="#documenting">Documenting Functions in RMonte Carlo with apply and parallelization</a></p></li>
 <li><p><a href="debugging-intro">Debugging in R</a></p></li>
 <li><p>Throughout, we will include examples of how to plot with base R and ggplot2</p></li>
 </ul>
@@ -105,7 +105,7 @@
 <h3>Example 1: Simple A/B Test Discrete probabilities</h3>
 <p>Imagine that we want to run an A/B test–randomised control trial–a new treatment to the status quo control treatment. We are interested in the effect of the treatment on whether or not individuals in the study do some action–e.g. vote in an election.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> This is a discrete variable. Can we use a difference of means test to estimate the treatment effect?</p>
 <p>Let’s start by hypothesizing what the data generating process could be. Imagine that based on prior research we know that their is a baseline probability of the action with the control of 0.1:</p>
-<p><span class="math display">\[y \sim \mathrm{Binomial}(0.1)\]</span> To simulate one draw from this binomial distribution in R use:</p>
+<p><span class="math display">\[Y \sim \mathrm{Binomial}(0.1)\]</span> To simulate one draw from this binomial distribution in R use:</p>
 <pre class="r"><code>control_y_1 &lt;- rbinom(n = 1, size = 1, prob = 0.1)
 control_y_1</code></pre>
 <pre><code>## [1] 0</code></pre>
@@ -148,7 +148,7 @@ hist(treatment_y)</code></pre>
 <p><img src="/post/2021-03-11-simulation_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>Finally, we compare the means of the two groups:</p>
 <pre class="r"><code>mean(treatment_y) - mean(control_y) </code></pre>
-<pre><code>## [1] 0.001211</code></pre>
+<pre><code>## [1] 0.0009345</code></pre>
 <p>That’s one simulation. Let’s wrap it up in a function so it will be easy to run <span class="math inline">\(n\)</span> simulations</p>
 <pre class="r"><code>one_sim &lt;- function(n, control_prob, rel_effect) {
   treat_prob &lt;- control_prob + (control_prob * rel_effect)
@@ -161,7 +161,8 @@ hist(treatment_y)</code></pre>
 <p>Let’s test it to make sure it works.</p>
 <pre class="r"><code>one_sim(n = n_obs, control_prob = control_prob, 
         rel_effect = rel_effect)</code></pre>
-<pre><code>## [1] 0.0010305</code></pre>
+<pre><code>## [1] 0.0010085</code></pre>
+<p>This is very close to the true increase of <span class="math inline">\(\frac{\bar{x}_{treat} - \bar{x}_{control}}{\bar{x}_{control}}\cdot100=1\%\)</span>.</p>
 <hr />
 </div>
 </div>
@@ -188,10 +189,80 @@ one_sim &lt;- function(n, control_prob, rel_effect) {
 <hr />
 <div id="monte-carlo-with-for" class="section level3">
 <h3>Monte Carlo with <code>for</code></h3>
-<p>Many people find the <code>for</code> control flow syntax easier to understand and therefore write.</p>
+<pre class="r"><code># package to add a progress bar to monitor loop progress
+xfun::pkg_attach2(&quot;progress&quot;)
+
+# Create vector of NAs to take the simulation results
+n_sims &lt;- 100
+mean_diff &lt;- rep(NA, n_sims)
+pb &lt;- progress_bar$new(total = n_sims)
+
+for (i in seq_along(mean_diff)) {
+  pb$tick() # increment the progress bar
+  mean_diff[i] &lt;- one_sim(n = n_obs, control_prob = control_prob, 
+        rel_effect = rel_effect)
+}
+
+hist(mean_diff)</code></pre>
+<p><img src="/post/2021-03-11-simulation_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 </div>
-<div id="monte-carlo-with-apply" class="section level3">
-<h3>Monte Carlo with <code>apply</code></h3>
+<div id="monte-carlo-with-apply-and-parallelization" class="section level3">
+<h3>Monte Carlo with <code>apply</code> and parallelization</h3>
+<p><code>for</code> loops are <a href="https://privefl.github.io/blog/why-loops-are-slow-in-r/">notoriously slow in R</a>.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> This isn’t a problem if you are only doing a few simulations, but gets very tedious if you need to run many simulations. Often–though not always–using the <code>apply</code> family of functions is faster. They make it easier to parallelize your code.</p>
+<p>Since we want to run the same function <code>n</code> times, we can use the <code>replicate()</code> helper function:<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a></p>
+<pre class="r"><code>system.time(
+  mean_diff &lt;- replicate(n_sims, one_sim(n = n_obs, 
+                                       control_prob = control_prob, 
+                                       rel_effect = rel_effect))
+)</code></pre>
+<pre><code>##    user  system elapsed 
+##  14.315   0.282  15.374</code></pre>
+<p>I wrapped this call in <code>system.time()</code> so that we can keep track of how much computation time we spend on the call. Monte Carlo simulations are just doing the same thing over and over. This computation time can add up.</p>
+<p>We can see that the the <code>apply</code> version in this case is pretty much as slow as the <code>for</code> loop.<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a></p>
+<pre class="r"><code>system.time(
+  for (i in seq_along(mean_diff)) {
+    mean_diff[i] &lt;- one_sim(n = n_obs, control_prob = control_prob, 
+        rel_effect = rel_effect)
+  }
+)</code></pre>
+<pre><code>##    user  system elapsed 
+##  14.283   0.225  15.015</code></pre>
+<p>So far we have been running all of our simulations in sequence. However, each simulation, by construction, is independent of the others. This is a perfect use case for parallelization.</p>
+<p>There is a <code>mc_replicate()</code> helper function (originally from the rethinking package) that makes this easy for the code we have written so far. <em>Note more than 1 core will not work on Windows.</em></p>
+<pre class="r"><code># Run the following code if mcreplicate is not already installed
+# xfun::pkg_attach2(&quot;remotes&quot;)
+# install_github(&quot;christophergandrud/mcreplicate&quot;)
+
+library(mcreplicate)
+
+system.time(
+  mc_replicate(n_sims, one_sim(n = n_obs, 
+                              control_prob = control_prob, 
+                              rel_effect = rel_effect),
+              mc.cores = 4)
+)</code></pre>
+<pre><code>##    user  system elapsed 
+##   6.908   0.230   4.406</code></pre>
+<p>As we would expect from running the simulations across 4 rather than one core, the <code>elapsed</code> time is 4 times faster with <code>mc_replicate()</code>.</p>
+<p>Finally, let’s see if the difference of means is a useful way of estimating the treatment effect for a binary outcome? Let’s run a few more simulations. We should see normally distributed difference of means centered on 0.001:</p>
+<pre class="r"><code>diff_means_1000 &lt;- mc_replicate(1e3, one_sim(n = n_obs, 
+                                      control_prob = control_prob, 
+                                      rel_effect = rel_effect),
+                              mc.cores = 4)</code></pre>
+<pre class="r"><code># find mean of simulations
+mean_of_means &lt;- mean(diff_means_1000)
+
+# plot simulations with line at mean value
+diff_means_1000_tbl &lt;- as_tibble(diff_means_1000)
+
+ggplot(diff_means_1000_tbl, aes(value)) +
+  geom_histogram(alpha = 0.6, fill = &quot;#29ffc6&quot;) +
+  geom_vline(xintercept = mean_of_means, linetype = &quot;dashed&quot;) +
+  xlab(&quot;\nTreatment - Control&quot;) +
+  ggtitle(&quot;Monte Carlo Results&quot;, 
+          subtitle = &quot;Difference of means for binary outcome\n10,000 simulations&quot;)</code></pre>
+<p><img src="/post/2021-03-11-simulation_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>The more simulations we run, the more smooth and “normal” the curve will become.</p>
 </div>
 </div>
 <div id="debugging-intro" class="section level2">
@@ -213,14 +284,104 @@ one_sim &lt;- function(n, control_prob, rel_effect) {
 </div>
 <div id="clear-testable-program-specifications" class="section level3">
 <h3>Clear, testable program specifications</h3>
+<blockquote>
+<p>Finding your bug is a process of confirming the many things that you believe are true — until you find one which is not true.</p>
+<p>—Norm Matloff (quote from <a href="https://adv-r.hadley.nz/debugging.html#debugging-strategy">Advanced R</a>)</p>
+</blockquote>
+<p>Great debugging is driven by having great expectations of what the program should return. Having a well defined expectation of what a program should do is important to knowing if you have a bug to begin with. One way to approach software development is to even write tests for a function before you write the function. This is called <a href="https://en.wikipedia.org/wiki/Test-driven_development">test drive development</a>.</p>
+<p>Both in your functions, to test incremental expectations, and for the output of your functions you include automated tests. Here is a silly example. Imagine that we have a function that should add 2 + 2 and then divide by 2 to return 2. We can create an automated test like this:</p>
+<pre class="r"><code>two &lt;- function() {
+  four &lt;- 2 + 2
+  if (four != 4) 
+    stop(&quot;Did not add 2 + 2 correctly&quot;)
+  
+  four / 2
+}
+
+if (two() != 2) stop(&quot;function two did not return two&quot;)</code></pre>
+<p>The <code>if</code> . . . <code>stop</code> statements automatically test whether or not the function is executing correctly. If there is a problem, the tests should help us pinpoint the cause more quickly.</p>
 </div>
-<div id="tools-for-testing-and-dissecting" class="section level3">
-<h3>Tools for testing and dissecting</h3>
-<p>The <code>browser()</code> function is critical for debugging functions and loops in R. When R is executing some code and hits <code>browser()</code> it stops the execution and begins an interactive <code>Browse</code> mode. This allows you to explore the objects in the current environment and run code. RStudio works really well with this function.</p>
+<div id="browser-for-testing-and-dissecting" class="section level3">
+<h3><code>browser()</code> for testing and dissecting</h3>
+<p>Imagine that our function is not working correctly. A key R tool is the <code>browser()</code> function. When R executes some code and hits <code>browser()</code> it stops the execution and begins an interactive <code>Browse</code> mode. This allows you to explore the objects in the current environment and run code. RStudio works really well with this function.</p>
+<p>Imagine we wrote the loop above incorrectly:</p>
+<pre class="r"><code>one_sim_bug &lt;- function(n, control_prob, rel_effect) {
+  treat_prob &lt;- control_prob / (control_prob * rel_effect)
+    
+  cy &lt;- rbinom(n = n, size = 1, prob = control_prob)
+  ty &lt;- rbinom(n = n, size = 1, prob = treat_prob)
+  
+  mean(ty) - mean(cy)
+}
+
+mean_diff_bug &lt;- rep(NA, n_sims)
+
+for (i in seq_along(mean_diff)) {
+  mean_diff_bug[u] &lt;- one_sim_bug(n = n_obs, 
+                                  control_prob = control_prob, 
+                                  rel_effect = rel_effect)
+}</code></pre>
+<p>We two layers of nested functions where the bug could reside. Let’s systematically use <code>browser()</code> to identify the source. Start from the outer most function–the <code>for</code> loop and work you way down as necessary.</p>
+<pre class="r"><code>for (i in seq_along(mean_diff)) {
+browser()
+  mean_diff_bug[u] &lt;- one_sim_bug(n = n_obs, 
+                                  control_prob = control_prob, 
+                                  rel_effect = rel_effect)
+}</code></pre>
+<p>Ok, we’ve found the a typo. We should have used <code>i</code> instead of <code>u</code> to index the output of <code>one_sim</code>. Leave the browser environment with <code>c + Enter</code>. Are we done? We’ll let’s check the output:</p>
+<pre class="r"><code>for (i in seq_along(mean_diff)) {
+  mean_diff_bug[i] &lt;- one_sim_bug(n = n_obs, 
+                                  control_prob = control_prob, 
+                                  rel_effect = rel_effect)
+}
+
+hist(mean_diff_bug)</code></pre>
+<p>Hm, we are not getting a valid histogram. Let’s now go down the function nesting to insert a <code>browser()</code> call in <code>one_sim</code>:</p>
+<pre class="r"><code>one_sim_bug &lt;- function(n, control_prob, rel_effect) {
+  browser()
+  treat_prob &lt;- control_prob / (control_prob * rel_effect)
+    
+  cy &lt;- rbinom(n = n, size = 1, prob = control_prob)
+  ty &lt;- rbinom(n = n, size = 1, prob = treat_prob)
+  
+  mean(ty) - mean(cy)
+}
+
+mean_diff_bug &lt;- rep(NA, n_sims)
+
+for (i in seq_along(mean_diff)) {
+  mean_diff_bug[u] &lt;- one_sim_bug(n = n_obs, 
+                                  control_prob = control_prob, 
+                                  rel_effect = rel_effect)
+}</code></pre>
+<p>When we do this, we can find that we incorrectly divide <code>control_prob</code> by <code>(control_prob * rel_effect)</code> the ultimate result, is that the output of <code>one_sim</code> is <code>NA</code>. We can’t create a histogram of <code>NA</code>s.</p>
+</div>
+</div>
+<div id="exercise" class="section level2">
+<h2>🥅 Exercise</h2>
+<p><strong>A.</strong> Replicate the example above. This time use Monte Carlo simulation to find out the distribution of p-values if the you had a <em>total</em> sample size of 2,000. Hint: extract p-values in R from a t-test with <code>t.test()$p.value</code> .</p>
+<p>“Extra credit”: how often you would incorrectly reject the null hypothesis of no difference of means at the 95% level with <em>total</em> sample sizes of 1,000, 2,000, 10,000, and 100,000? Plot the proportion of simulations falsely rejected across these sample sizes.</p>
+<p><strong>B.</strong> Imagine that we are interested in understanding how bad <a href="https://en.wikipedia.org/wiki/Confounding">confounding</a> by an unobserved variable:</p>
+<div id="htmlwidget-2" style="width:672px;height:480px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"diagram":"\ngraph LR\n  Z-->Y\n  Z-->X\n  X-->Y\n"},"evals":[],"jsHooks":[]}</script>
+<p><span class="math inline">\(Z\)</span> is a confounder. It causes both <span class="math inline">\(X\)</span> and our outcome of interest <span class="math inline">\(Y\)</span>. Imagine we couldn’t observe <span class="math inline">\(Z\)</span>. Create a Monte Carlo simulation to explore how this confounder could be biasing our estimate of the relationship between <span class="math inline">\(X\)</span> and our <span class="math inline">\(Y\)</span>.</p>
+<p>Assume a data generating process described by:</p>
+<p><span class="math display">\[
+Z \sim \mathrm{Binomial}(0.5)\\
+X \sim \mathrm{Binomial}(0.8 - 0.6 \cdot Z) \\
+\epsilon \sim \mathrm{Normal}(0, 1) \\
+Y = X \cdot 1 + Z \cdot 3 + \epsilon
+\]</span></p>
+<p>How different is the estimated effect of <span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span> when we include the unobserved confounder compared to when we don’t include it?</p>
+<p>Hints: use <code>lm()</code> to estimate a linear model. Coefficients can be extracted from <code>lm</code> model objects, say <code>m1</code> with <code>m1$coefficients</code>.</p>
+<p>Extra credit: how does this impact change as you vary the relationship between <span class="math inline">\(Z\)</span> and <span class="math inline">\(X\)</span> i.e. change <span class="math inline">\(0.6 \cdot Z\)</span>? Answering this question will likely take some programming beyond what we have covered so far. Google is your friend here.</p>
+<p><strong>C.</strong> Propose a data generating process and estimation strategy related to work that you are interested in. Conduct Monte Carlo analysis of the estimation strategy given this data generating process.</p>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-gelmanhillaki2021" class="csl-entry">
 Gelman, Andrew, Jennifer Hill, and Aki Vehtari. 2021. <em>Regression and Other Stories</em>. Cambridge: Cambridge University Press.
-</div>
 </div>
 </div>
 </div>
@@ -230,6 +391,9 @@ Gelman, Andrew, Jennifer Hill, and Aki Vehtari. 2021. <em>Regression and Other S
 <li id="fn1"><p>This example is modified from <span class="citation"><a href="#ref-gelmanhillaki2021" role="doc-biblioref">Gelman, Hill, and Vehtari</a> (<a href="#ref-gelmanhillaki2021" role="doc-biblioref">2021</a> Ch. 5, p.69-70)</span>.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
 <li id="fn2"><p>We can express this in R using scientific notation, e.g. <code>2e6</code>.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
 <li id="fn3"><p>These conventions are established by the <a href="https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html">roxygen2</a> package. If you create an R package to contain your functions, you can use roxygen2 to automatically generate package documentation. For more details see <a href="https://r-pkgs.org/">R Packages</a>.<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>If you ever need to kill an R process (e.g. because it is taking way longer than you expected, use <code>Ctrl + c</code> in your R console.<a href="#fnref4" class="footnote-back">↩︎</a></p></li>
+<li id="fn5"><p><code>replicate()</code> is a wrapper for <code>sapply()</code> you can see how this code works by typing <code>sapply</code> into your R console.<a href="#fnref5" class="footnote-back">↩︎</a></p></li>
+<li id="fn6"><p>Note that there is random variation in computation time. So if you want to get a more accurate sense of computation time use the <a href="https://cran.r-project.org/web/packages/microbenchmark/microbenchmark.pdf">microbenchmark</a> package. This does repeated runs of the call and reports the distribution of run times.<a href="#fnref6" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 
