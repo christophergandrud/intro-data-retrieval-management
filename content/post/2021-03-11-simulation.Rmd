@@ -441,3 +441,5 @@ $$
 And $Z$ is also a cause of $X$. \$\\epsilon\$
 
 **Completely over to you:** Now propose a data generating process and estimation strategy related to work that you are interested in. Conduct Monte Carlo analysis of the estimation strategy given this data generating process.
+
+## References
