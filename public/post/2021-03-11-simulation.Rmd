@@ -1,5 +1,5 @@
 ---
-title: '[Optional] Introduction to Computational Thinking & Simulation with R'
+title: '[Intro to Computational Thinking] Introduction to Computational Thinking via Simulation with R'
 author: Christopher Gandrud
 date: '2021-03-17'
 slug: optional-r-basics-3
