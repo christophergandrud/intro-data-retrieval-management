@@ -17,7 +17,8 @@
 Email: christopher.gandrud@gmail.com
 Class: TO UPDATE
 Location: Virtual
-📜 Course Description The rapid growth of the World Wide Web over the past two decades tremendously changed the way in which we share, collect and publish data. The web is full of data that are of great interest to scientists and businesses alike. Firms, public institutions and private users provide every imaginable type of information and new channels of communication generate vast amounts of data on human behaviour.</description>
+📜 Course Description Part I: Introduction to programming and statistical simulation
+Social scientists increasingly rely on computational methods and tools to help understand social phenomena. Computational tools are crucial for making sense of large new social data sets and computational thinking can aid scientists in modelling social processes. In this hands on workshop, we will learn the key components of programming in R and statistical simulation.</description>
     </item>
     
     <item>
@@ -48,7 +49,7 @@ numeric_vector &amp;lt;- c(2.</description>
     </item>
     
     <item>
-      <title>[Optional] Introduction to Computational Thinking &amp; Simulation with R</title>
+      <title>[Optional] Introduction to Computational Thinking via Simulation with R</title>
       <link>https://brave-pasteur-c09ffa.netlify.app/post/optional-r-basics-3/</link>
       <pubDate>Wed, 17 Mar 2021 00:00:00 +0000</pubDate>
       
