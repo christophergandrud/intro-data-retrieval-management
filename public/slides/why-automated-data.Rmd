@@ -28,6 +28,8 @@ theme_set(theme_minimal())
 
 - Personal data privacy and GDPR
 
+- Automation - Effort trade off
+
 ---
 
 class: inverse, center, middle
