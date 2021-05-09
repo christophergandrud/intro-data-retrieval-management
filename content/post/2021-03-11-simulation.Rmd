@@ -299,7 +299,9 @@ Debugging is the process of finding and resolving discrepancies between a progra
 
 The reason we are covering debugging now, is that statistical simulations are more complex processes and debugging them is more complicated and crucial.
 
-[![](https://upload.wikimedia.org/wikipedia/commons/f/ff/First_Computer_Bug%252C_1945.jpg "An actual computer bug (source Wikipedia)")](https://en.wikipedia.org/wiki/Debugging)
+![An actual computer bug](/post/2021-03-11-simulation_files/First_Computer_Bug_1945.jpeg "An actual computer bug (source Wikipedia)")](https://en.wikipedia.org/wiki/Debugging)
+
+[![](https://upload.wikimedia.org/wikipedia/commons/f/ff/First_Computer_Bug%2C_1945.jpg "An actual computer bug (source Wikipedia)")](https://en.wikipedia.org/wiki/Debugging)
 
 ### Being mindful of your feelings
 
