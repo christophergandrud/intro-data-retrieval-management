@@ -37,7 +37,7 @@ bibliography: main.bib
 <li><p><a href="#motivation">Why simulate?</a></p></li>
 <li><p><a href="#workflow">Simple simulation workflow</a></p></li>
 <li><p><a href="#documenting">Documenting Functions in RMonte Carlo with apply and parallelization</a></p></li>
-<li><p><a href="debugging-intro">Debugging in R</a></p></li>
+<li><p><a href="#debugging-intro">Debugging in R</a></p></li>
 <li><p>Throughout, we will include examples of how to plot with base R and ggplot2</p></li>
 </ul>
 </div>
@@ -64,7 +64,7 @@ bibliography: main.bib
 <p><span class="math display">\[Y \sim \mathrm{Binomial}(0.1)\]</span> To simulate one draw from this binomial distribution in R use:</p>
 <pre class="r"><code>control_y_1 &lt;- rbinom(n = 1, size = 1, prob = 0.1)
 control_y_1</code></pre>
-<pre><code>## [1] 1</code></pre>
+<pre><code>## [1] 0</code></pre>
 <p>Let’s walk through this code. <code>rbinom()</code> is the function to randomly (<code>r</code>) draw from the binomial distribution (<code>binom</code>). <code>n</code> is the number of draws for this simulation, <code>size</code> is the “number of trials,” basically it means that you want to the “success” outcome to be 1 and 0 otherwise. <code>prob</code> is the probability of “success.”</p>
 <p>It’s unlikely that we will run an A/B test with only one participant in the control group, let’s go up to 2,000,000<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> and plot the results.</p>
 <pre class="r"><code># number of observations variable to ensure consistency across sims
@@ -104,7 +104,7 @@ hist(treatment_y)</code></pre>
 <p><img src="/post/2021-03-11-simulation_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>Finally, we compare the means of the two groups:</p>
 <pre class="r"><code>mean(treatment_y) - mean(control_y) </code></pre>
-<pre><code>## [1] 0.0006835</code></pre>
+<pre><code>## [1] 0.001102</code></pre>
 <p>That’s one simulation. Let’s wrap it up in a function so it will be easy to run <span class="math inline">\(n\)</span> simulations</p>
 <pre class="r"><code>one_sim &lt;- function(n, control_prob, rel_effect) {
   treat_prob &lt;- control_prob + (control_prob * rel_effect)
@@ -117,7 +117,7 @@ hist(treatment_y)</code></pre>
 <p>Let’s test it to make sure it works.</p>
 <pre class="r"><code>one_sim(n = n_obs, control_prob = control_prob, 
         rel_effect = rel_effect)</code></pre>
-<pre><code>## [1] 0.0004795</code></pre>
+<pre><code>## [1] 0.0008705</code></pre>
 <p>This is very close to the true increase of <span class="math inline">\(\frac{\bar{x}_{treat} - \bar{x}_{control}}{\bar{x}_{control}}\cdot100=1\%\)</span>.</p>
 <hr />
 </div>
@@ -223,9 +223,8 @@ ggplot(diff_means_1000_tbl, aes(value)) +
 </div>
 <div id="debugging-intro" class="section level2">
 <h2>Debugging in R</h2>
-<p>Debugging is the process of finding and resolving discrepancies between a program’s specification and its implementation. For example, I want a ggplot2 to plot multiple time series on the same plot as separate lines, but it plots them all as one–very jagged and confusing line. I use a debugging process to find the cause of and correct this discrepancy.</p>
+<p>Debugging is the process of finding and resolving discrepancies between a program’s specification and its implementation.<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a> For example, I want a ggplot2 to plot multiple time series on the same plot as separate lines, but it plots them all as one–very jagged and confusing line. I use a debugging process to find the cause of and correct this discrepancy.</p>
 <p>The reason we are covering debugging now, is that statistical simulations are more complex processes and debugging them is more complicated and crucial.</p>
-<p><img src="/post/2021-03-11-simulation_files/First_Computer_Bug_1945.jpeg" title="An actual computer bug (source Wikipedia)" alt="An actual computer bug" />](<a href="https://en.wikipedia.org/wiki/Debugging" class="uri">https://en.wikipedia.org/wiki/Debugging</a>)</p>
 <div id="being-mindful-of-your-feelings" class="section level3">
 <h3>Being mindful of your feelings</h3>
 <p>We’ll cover the the technical debugging tools available in R. But I first want to first mention a crucial part of effective (and less stressful) debugging: <em>being mindful of your feelings about the bug</em>.</p>
@@ -351,5 +350,6 @@ Gelman, Andrew, Jennifer Hill, and Aki Vehtari. 2021. <em>Regression and Other S
 <li id="fn4"><p>If you ever need to kill an R process (e.g. because it is taking way longer than you expected, use <code>Ctrl + c</code> in your R console.<a href="#fnref4" class="footnote-back">↩︎</a></p></li>
 <li id="fn5"><p><code>replicate()</code> is a wrapper for <code>sapply()</code> you can see how this code works by typing <code>sapply</code> into your R console.<a href="#fnref5" class="footnote-back">↩︎</a></p></li>
 <li id="fn6"><p>Note that there is random variation in computation time. So if you want to get a more accurate sense of computation time use the <a href="https://cran.r-project.org/web/packages/microbenchmark/microbenchmark.pdf">microbenchmark</a> package. This does repeated runs of the call and reports the distribution of run times.<a href="#fnref6" class="footnote-back">↩︎</a></p></li>
+<li id="fn7"><p>See the <a href="https://en.wikipedia.org/wiki/Debugging">Wiki page on debugging</a> for a visual example of an early computer bug, an actual bug that got stuck in a computer.<a href="#fnref7" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>

@@ -455,6 +455,7 @@ JD Long [highlights](https://twitter.com/CMastication/status/1390752830177398785
 
 - The frequency of doing a process stays the same after it is automated: automation makes it easier to do the process again -> you do it more
 
+---
 
 # 👀 Course preview: from structured to unstructured data
 
