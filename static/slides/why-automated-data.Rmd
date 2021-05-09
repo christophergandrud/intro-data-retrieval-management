@@ -445,6 +445,8 @@ the data subjects' rights pursuant to Articles 12 to 222
 
 ![xkcd](https://imgs.xkcd.com/comics/is_it_worth_the_time.png)
 
+---
+
 # Assumptions behind xkcd framework
 
 JD Long [highlights](https://twitter.com/CMastication/status/1390752830177398785) key assumptions behind this framework that might not hold:
