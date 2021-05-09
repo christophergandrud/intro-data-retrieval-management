@@ -299,7 +299,7 @@ Debugging is the process of finding and resolving discrepancies between a progra
 
 The reason we are covering debugging now, is that statistical simulations are more complex processes and debugging them is more complicated and crucial.
 
-[![](https://upload.wikimedia.org/wikipedia/commons/f/ff/First_Computer_Bug%252C_1945.jpg "An actual computer bug (source Wikipedia)")](https://en.wikipedia.org/wiki/Debugging)
+![An actual computer bug](/post/2021-03-11-simulation_files/First_Computer_Bug_1945.jpeg "An actual computer bug (source Wikipedia)")](https://en.wikipedia.org/wiki/Debugging)
 
 ### Being mindful of your feelings
 
@@ -448,5 +448,7 @@ Hints: use `lm()` to estimate a linear model. Coefficients can be extracted from
 Extra credit: how does this impact change as you vary the relationship between $Z$ and $X$ i.e. change $0.6 \cdot Z$? Answering this question will likely take some programming beyond what we have covered so far. Google is your friend here.
 
 **C.** Propose a data generating process and estimation strategy related to work that you are interested in. Conduct Monte Carlo analysis of the estimation strategy given this data generating process.
+
+**Completely over to you:** Now propose a data generating process and estimation strategy related to work that you are interested in. Conduct Monte Carlo analysis of the estimation strategy given this data generating process.
 
 ## References

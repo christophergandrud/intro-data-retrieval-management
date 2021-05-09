@@ -64,7 +64,7 @@ bibliography: main.bib
 <p><span class="math display">\[Y \sim \mathrm{Binomial}(0.1)\]</span> To simulate one draw from this binomial distribution in R use:</p>
 <pre class="r"><code>control_y_1 &lt;- rbinom(n = 1, size = 1, prob = 0.1)
 control_y_1</code></pre>
-<pre><code>## [1] 0</code></pre>
+<pre><code>## [1] 1</code></pre>
 <p>Let’s walk through this code. <code>rbinom()</code> is the function to randomly (<code>r</code>) draw from the binomial distribution (<code>binom</code>). <code>n</code> is the number of draws for this simulation, <code>size</code> is the “number of trials,” basically it means that you want to the “success” outcome to be 1 and 0 otherwise. <code>prob</code> is the probability of “success.”</p>
 <p>It’s unlikely that we will run an A/B test with only one participant in the control group, let’s go up to 2,000,000<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> and plot the results.</p>
 <pre class="r"><code># number of observations variable to ensure consistency across sims
@@ -104,7 +104,7 @@ hist(treatment_y)</code></pre>
 <p><img src="/post/2021-03-11-simulation_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>Finally, we compare the means of the two groups:</p>
 <pre class="r"><code>mean(treatment_y) - mean(control_y) </code></pre>
-<pre><code>## [1] 0.00102</code></pre>
+<pre><code>## [1] 0.0006835</code></pre>
 <p>That’s one simulation. Let’s wrap it up in a function so it will be easy to run <span class="math inline">\(n\)</span> simulations</p>
 <pre class="r"><code>one_sim &lt;- function(n, control_prob, rel_effect) {
   treat_prob &lt;- control_prob + (control_prob * rel_effect)
@@ -117,7 +117,7 @@ hist(treatment_y)</code></pre>
 <p>Let’s test it to make sure it works.</p>
 <pre class="r"><code>one_sim(n = n_obs, control_prob = control_prob, 
         rel_effect = rel_effect)</code></pre>
-<pre><code>## [1] 0.001022</code></pre>
+<pre><code>## [1] 0.0004795</code></pre>
 <p>This is very close to the true increase of <span class="math inline">\(\frac{\bar{x}_{treat} - \bar{x}_{control}}{\bar{x}_{control}}\cdot100=1\%\)</span>.</p>
 <hr />
 </div>
@@ -172,7 +172,7 @@ hist(mean_diff)</code></pre>
                                        rel_effect = rel_effect))
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##  14.342   0.229  16.045</code></pre>
+##  13.532   0.098  13.665</code></pre>
 <p>I wrapped this call in <code>system.time()</code> so that we can keep track of how much computation time we spend on the call. Monte Carlo simulations are just doing the same thing over and over. This computation time can add up.</p>
 <p>We can see that the the <code>apply</code> version in this case is pretty much as slow as the <code>for</code> loop.<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a></p>
 <pre class="r"><code>system.time(
@@ -182,7 +182,7 @@ hist(mean_diff)</code></pre>
   }
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##  14.128   0.139  14.642</code></pre>
+##  13.545   0.077  13.653</code></pre>
 <p>So far we have been running all of our simulations in sequence. However, each simulation, by construction, is independent of the others. This is a perfect use case for parallelization.</p>
 <p>There is a <code>mc_replicate()</code> helper function (originally from the rethinking package) that makes this easy for the code we have written so far. <em>Note more than 1 core will not work on Windows.</em></p>
 <pre class="r"><code># Run the following code if mcreplicate is not already installed
@@ -198,7 +198,7 @@ system.time(
               mc.cores = 4)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##  10.389   0.250   4.218</code></pre>
+##  10.365   0.205   3.730</code></pre>
 <p>As we would expect from running the simulations across 4 rather than one core, the <code>elapsed</code> time is 4 times faster with <code>mc_replicate()</code>.</p>
 <p>Finally, let’s see if the difference of means is a useful way of estimating the treatment effect for a binary outcome? Let’s run a few more simulations. We should see normally distributed difference of means centered on 0.001:</p>
 <pre class="r"><code>diff_means_1000 &lt;- mc_replicate(1e3, one_sim(n = n_obs, 
@@ -225,7 +225,7 @@ ggplot(diff_means_1000_tbl, aes(value)) +
 <h2>Debugging in R</h2>
 <p>Debugging is the process of finding and resolving discrepancies between a program’s specification and its implementation. For example, I want a ggplot2 to plot multiple time series on the same plot as separate lines, but it plots them all as one–very jagged and confusing line. I use a debugging process to find the cause of and correct this discrepancy.</p>
 <p>The reason we are covering debugging now, is that statistical simulations are more complex processes and debugging them is more complicated and crucial.</p>
-<p><a href="https://en.wikipedia.org/wiki/Debugging"><img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/First_Computer_Bug%252C_1945.jpg" title="An actual computer bug (source Wikipedia)" /></a></p>
+<p><img src="/post/2021-03-11-simulation_files/First_Computer_Bug_1945.jpeg" title="An actual computer bug (source Wikipedia)" alt="An actual computer bug" />](<a href="https://en.wikipedia.org/wiki/Debugging" class="uri">https://en.wikipedia.org/wiki/Debugging</a>)</p>
 <div id="being-mindful-of-your-feelings" class="section level3">
 <h3>Being mindful of your feelings</h3>
 <p>We’ll cover the the technical debugging tools available in R. But I first want to first mention a crucial part of effective (and less stressful) debugging: <em>being mindful of your feelings about the bug</em>.</p>
