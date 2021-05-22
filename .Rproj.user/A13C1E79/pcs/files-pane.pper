@@ -2,8 +2,8 @@
     "sortOrder": [
         {
             "columnIndex": 2,
-            "ascending": true
+            "ascending": false
         }
     ],
-    "path": "~/git_repos/intro-data-retrieval-management/static/slides"
+    "path": "~/git_repos/intro-data-retrieval-management"
 }
