@@ -37,21 +37,20 @@ xfun::pkg_attach2("DiagrammeR")
 
 ## Motivation: Why simulate? {#motivation}
 
-We've covered many of the basics of programming in R. Let's bring many of these concepts together to help us better understand our research problems, even before we gather any data. Let's simulate some **data generating processes (DGP)**.
+We've covered the basics of programming in R. Let's bring many of these concepts together to help us better understand our research problems, even before we gather any data. To do this, we'll learn how to use R to simulate and analyse **data generating processes (DGP)**.
 
 A data generating process is the process that creates the data in a data set. These processes can include, for example, both the social processes that result in migration data and even unexpected (or undesired) issues in the sampling procedure like non-random study attrition.
 
-Wait, why are we talking about simulating data generating processes in an introduction to R course? There are two sets of reasons.
+Why are we talking about simulating data generating processes in an introduction to R course? There are two sets of reasons.
 
-First, computational generative modeling--simulating data generating processes with a computer--can be a key tool for understanding and evaluating the statistical methods you are using to understand a given data generating process [@gelmanhillaki2021, p. 76]. Will your chosen statistical model identify the effect you are interested, even if you completely understand the DGP? This is surprisingly often not the case, especially for non-trivial data generating processes. Simulation allows you to stress test your chosen models, with a given assumed DGP, and compare the appropriateness of different models for this DGP.
+First, computational generative modeling--simulating data generating processes with a computer--is a useful **tool for understanding and evaluating the statistical methods** you are using to study data generating processes [@gelmanhillaki2021, p. 76]. Will your chosen statistical model identify the effect you are interested, even if you completely understand the DGP? This is surprisingly often not the case, especially for non-trivial data generating processes. Simulation allows you to stress test your models, with a given assumed DGP, and compare the appropriateness of different models for this DGP.
 
-In Gelman's strong view stated above, if your identification strategy can't recover effects in known--simulated data--you shouldn't waste time and money collecting real world data.
+In Gelman's strong view stated above, if your identification strategy can't recover effects in known--simulated data--you shouldn't waste time and money collecting real world data. If data gathering is time consuming and expensive, you can also use generative modelling to make progress on your problem before your data is fully collected.
 
-The second reason we are covering statistical simulation, and most importantly for this class, is that simulation requires you to work your new skills as an R programmer. Because the DGP you are working with are probabilistic, you will need to repeat the simulations with the same data generating process to understand the statistical properties. This is called the [Monte Carlo Method](https://en.wikipedia.org/wiki/Monte_Carlo_method). So you will need to write functions, run them efficiently, e.g. sometimes in parallel, transform large amounts of data, and plot the results.
-
+The second reason we are covering statistical simulation, and most importantly for this class, is that simulation requires you to **work your new R programmering skills**. The DGP we will work with are probabilistic. You need to repeat the simulations with the same data generating process multiple times to understand its statistical properties. This is called the [Monte Carlo Method](https://en.wikipedia.org/wiki/Monte_Carlo_method). You should never do this repeated sampling by rewriting the same function over and over. Instead, encode the sampling in a function that you can run repeatedly and, ideally, efficiently, e.g. in parallel.
 ## Simple simulation workflow {#workflow}
 
-A typical simulation workflow looks something like this:
+This is a typical simulation workflow:
 
 ```{r sim-workflow, echo=FALSE}
 DiagrammeR::mermaid("
@@ -67,17 +66,17 @@ graph TB
 ")
 ```
 
-We start by hypothesizing what the data generating process we care about might be. Then we propose one or candidate strategies to identify effects in this data generating process, e.g. regression, matching, difference in differences. We begin implementing the simulation fo this DGP-identification strategy by creating function(s) for simulating and analyzing the data for one simulation. Once we have the simulation correctly working for one draw, we create a function(s) to make $n$ draws. We then (usually) examine the results by plotting quantities of interest from the simulations, such as the distribution of some estimate or the error from some ground truth across simulations. Frequently, we learn something unexpected by the end either about our understanding of the data generating process or our candidate identification strategies. So we often need to repeat the process.
+We start by hypothesizing what the data generating process we care about might be. Then we propose one or more candidate strategies to identify effects in this data generating process, e.g. regression, matching, difference in differences. We begin implementing the simulation for the DGP-identification strategy by creating function(s) for simulating and analyzing the data for *one simulation draw*. Once we have the simulation correctly working for one draw, we create a function(s) to make $n$ additional draws. We then (usually) examine the results by plotting quantities of interest from the simulations. Quantities of interest could be the distribution of some estimate we are interested in or the error from some "ground truth" across simulations. Frequently, we learn something unexpected by the end of this process. Our learnings could include a new understanding of the data generating process or our candidate identification strategies. Because we often learn something about how our originally selected identification strategy is lacking or our proposed DGP is too simplistic, we often need to repeat the process a number of times before we are confident we understand even the simulated data and its hypothetical relationship to the real social phenomenon we are interested in.
 
-Notice that most steps often involve some debugging. We'll dig debugging into that [below](#debugging-intro). But let's look at a simple ideal case.
+Notice that most steps can involve some debugging. We'll dig into debugging [below](#debugging-intro). But let's look at a simple ideal case first.
 
 ### Example 1: Simple A/B Test Discrete probabilities
 
-Imagine that we want to run an A/B test--randomised control trial--a new treatment to the status quo control treatment. We are interested in the effect of the treatment on whether or not individuals in the study do some action--e.g. vote in an election.[^1] This is a discrete variable. Can we use a difference of means test to estimate the treatment effect?
+Imagine that we want to run an A/B test--randomised control trial--to evaluate the causal effect of a new treatment relative to the status quo control counterfactual. We are interested in the effect of the treatment on whether or not individuals in the study do some action--e.g. vote in an election.[^1] Imagine the outcome is a discrete variable coded $[0, 1]$. Can we use a difference of means test to estimate the treatment effect?
 
 [^1]: This example is modified from @gelmanhillaki2021 [ Ch. 5, p.69-70].
 
-Let's start by hypothesizing what the data generating process could be. Imagine that based on prior research we know that their is a baseline probability of the action with the control of 0.1:
+Let's start by hypothesizing what the data generating process could be. Imagine that based on prior research we know that there is a baseline probability of the outcome being $1$ when a person is exposed to the control of 0.1, i.e.:
 
 $$Y \sim \mathrm{Binomial}(0.1)$$ To simulate one draw from this binomial distribution in R use:
 
@@ -86,9 +85,9 @@ control_y_1 <- rbinom(n = 1, size = 1, prob = 0.1)
 control_y_1
 ```
 
-Let's walk through this code. `rbinom()` is the function to randomly (`r`) draw from the binomial distribution (`binom`). `n` is the number of draws for this simulation, `size` is the "number of trials", basically it means that you want to the "success" outcome to be 1 and 0 otherwise. `prob` is the probability of "success".
+Let's walk through this code. `rbinom()` is the function to randomly (the `r` in `rbinom`) draw from the binomial distribution (`binom`). `n` is the number of draws for this simulation, `size` is the "number of trials". Basically it means that you want the "success" outcome to be 1 and 0 otherwise. `prob` is the probability of "success".
 
-It's unlikely that we will run an A/B test with only one participant in the control group, let's go up to 2,000,000[^2] and plot the results.
+It's unlikely that we will run an A/B test with only one participant in the control group (this would be hilariously under-powered). So, let's simulate a test with 2,000,000 draws[^2] and plot the results.
 
 [^2]: We can express this in R using scientific notation, e.g. `2e6`.
 
@@ -111,29 +110,46 @@ hist(control_y)
 # ggplot2 is a member of the "tidyverse" set of packages
 xfun::pkg_attach2("tidyverse")
 
-# I personally enjoy the simplicity of the linedraw theme
+# I personally enjoy the simplicity of the "linedraw" theme
 theme_set(theme_linedraw())
 
-# ggplot cannot accept a vector, like hist. 
-# Instead you need to convert to a data frame or the tidyverse equivalent "tibble"
+# ggplot cannot accept a vector, like `hist` 
+# You need to convert to a data frame or the tidyverse equivalent "tibble"
 control_y_tbl <- as_tibble(control_y)
 
 # Plot and change the x-axis label
-ggplot(control_y_tbl, aes(value)) + # as_tibble names the column "value" by default
+ggplot(control_y_tbl, aes(x = value)) + # as_tibble names the column "value" by default
   geom_histogram() + 
-  xlab("\nControl Outcome") # \n adds a line break before the label
+  xlab("\nControl Outcome") + # \n adds a line break before the label
+  ggtitle("Simple Simulation Histogram", subtitle = "Control Group")
+```
+
+Notice how you build up the layers of the plot in *ggplot* by adding "geoms" with plus (`+`) notation. These are literally stacked on top of each other in the order you enter them in code. So the base layer is set with `ggplot`. This specifies the data frame to work with and the aesthetics (`aes`) layer that defines things like the X and Y coordinates, and grouping variables. Histograms only need the x-axis specified in `aes` because the y-axis will be the automatically generated count per histogram bin. But for other geoms, such as `geom_point` for scatter plots, you also need to specify  a variable that defines the y-axis with the `y` argument.
+
+If you plan to make similar ggplot plots multiple times, consider wrapping it in a function. For example:
+
+```{r message=FALSE}
+plot_histogram <- function(outcomes, subtitle) {
+  x_tbl <- as_tibble(outcomes)
+  ggplot(x_tbl, aes(x = value)) + 
+  geom_histogram() + 
+  xlab("\nControl Outcome") +
+  ggtitle("Simple Simulation Histogram", subtitle = subtitle)
+}
+
+plot_histogram(outcomes = control_y, subtitle = "Control Group")
 ```
 
 ------------------------------------------------------------------------
 
 Ok, we've simulated one run of the control group. Now let's think about the treatment group. Imagine we anticipate that a realistic effect of the treatment--again based on prior knowledge--is an average relative improvement of 1%. We simulate this with:
 
-```{r}
+```{r message=FALSE}
 rel_effect <- 0.01
 treat_prob <- control_prob + (control_prob * rel_effect)
 treatment_y <- rbinom(n = n_obs, size = 1, prob = treat_prob)
 
-hist(treatment_y)
+plot_histogram(treatment_y, subtitle = "Treatment Group")
 ```
 
 Finally, we compare the means of the two groups:
@@ -166,11 +182,11 @@ This is very close to the true increase of $\frac{\bar{x}_{treat} - \bar{x}_{con
 
 ------------------------------------------------------------------------
 
-## Documenting Functions in R {#documenting}
+## Side note: Documenting Functions in R {#documenting}
 
-A quick aside: it is important to get in the habit of documenting your functions as you write them. This makes them easier for others (and yourself in the future) to understand.
+It is important to get in the habit of documenting your functions as you write them. This makes them easier for others (and yourself in the future) to understand.
 
-There are some R documentation conventions to follow.[^3] Function documentation begins with a description of what the function does. Then each function parameter is documented using `@param`. You can also give examples of the function working with `@examples`. All of the documentation should be commented out with `#'`. E.g.
+There are some R documentation conventions to follow.[^3] Function documentation begins with a description of what the function does. Then each function parameter is documented using `@param`. It is not required, but it is good practice to document the expected type of the value for each argument, e.g. `integer`. You can also give examples of the function working with `@examples`. All of the documentation should be commented out with `#'`. E.g.
 
 [^3]: These conventions are established by the [roxygen2](https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html) package. If you create an R package to contain your functions, you can use roxygen2 to automatically generate package documentation. For more details see [R Packages](https://r-pkgs.org/).
 
@@ -197,6 +213,10 @@ one_sim <- function(n, control_prob, rel_effect) {
 
 ### Monte Carlo with `for`
 
+Now that we've created a function for one total draw of the simulated A/B test, let's repeatedly sample it so that we can better understand the probabilistic properties of our hypothesized data generating process. 
+
+One way to do this is with `for` loops. For example:
+
 ```{r message=FALSE}
 # package to add a progress bar to monitor loop progress
 xfun::pkg_attach2("progress")
@@ -217,11 +237,11 @@ hist(mean_diff)
 
 ### Monte Carlo with `apply` and parallelization
 
-`for` loops are [notoriously slow in R](https://privefl.github.io/blog/why-loops-are-slow-in-r/).[^4] This isn't a problem if you are only doing a few simulations, but gets very tedious if you need to run many simulations. Often--though not always--using the `apply` family of functions is faster. They make it easier to parallelize your code.
+`for` loops are [notoriously slow in R](https://privefl.github.io/blog/why-loops-are-slow-in-r/).[^4] This isn't a problem if you are only doing a few simulations, but gets very tedious if you need to run many simulations. Often--though not always--using the `apply` family of functions is faster. They also can make it easier to parallelize your code.
 
 [^4]: If you ever need to kill an R process (e.g. because it is taking way longer than you expected, use `Ctrl + c` in your R console.
 
-Since we want to run the same function `n` times, we can use the `replicate()` helper function:[^5]
+Since we want to run the same function `n` times, we can use the `replicate()` helper function for the `apply` family:[^5]
 
 [^5]: `replicate()` is a wrapper for `sapply()` you can see how this code works by typing `sapply` into your R console.
 
@@ -250,7 +270,7 @@ system.time(
 
 So far we have been running all of our simulations in sequence. However, each simulation, by construction, is independent of the others. This is a perfect use case for parallelization.
 
-There is a `mc_replicate()` helper function (originally from the rethinking package) that makes this easy for the code we have written so far. *Note more than 1 core will not work on Windows.*
+There is a `mc_replicate()` helper function (originally from the *rethinking* package) that makes this easy for the code we have written so far. *Note more than 1 core will not work on Windows, so you will see no performance difference.*
 
 ```{r cache=TRUE}
 # Run the following code if mcreplicate is not already installed
@@ -267,7 +287,7 @@ system.time(
 )
 ```
 
-As we would expect from running the simulations across 4 rather than one core, the `elapsed` time is 4 times faster with `mc_replicate()`.
+As we would expect from running the simulations across 4 rather than one core, the `elapsed` time is roughly 4 times faster with `mc_replicate()`.
 
 Finally, let's see if the difference of means is a useful way of estimating the treatment effect for a binary outcome? Let's run a few more simulations. We should see normally distributed difference of means centered on 0.001:
 
@@ -277,7 +297,7 @@ diff_means_1000 <- mc_replicate(1e3, one_sim(n = n_obs,
                                       rel_effect = rel_effect),
                               mc.cores = 4)
 
-# find mean of simulations
+# find mean of all simulations for plotting
 mean_of_means <- mean(diff_means_1000)
 
 # plot simulations with line at mean value
@@ -291,21 +311,21 @@ ggplot(diff_means_1000_tbl, aes(value)) +
           subtitle = "Difference of means for binary outcome\n10,000 simulations")
 ```
 
-The more simulations we run, the more smooth and "normal" the curve will become.
+In this example, the more simulations we run, the more smooth and "normal" the curve will become.
 
 ## Debugging in R {#debugging-intro}
 
-Debugging is the process of finding and resolving discrepancies between a program's specification and its implementation.[^debug] For example, I want a ggplot2 to plot multiple time series on the same plot as separate lines, but it plots them all as one--very jagged and confusing line. I use a debugging process to find the cause of and correct this discrepancy.
+Debugging is the process of finding and resolving discrepancies between a program's specification and its implementation.[^debug] For example, I want a ggplot2 to plot multiple time series on the same plot as separate lines, but it plots them all as one--very jagged and confusing line. I could use a debugging process to find the cause of and correct this discrepancy.
 
 [^debug]: See the [Wiki page on debugging](https://en.wikipedia.org/wiki/Debugging) for a visual example of an early computer bug, an actual bug that got stuck in a computer. 
 
-The reason we are covering debugging now, is that statistical simulations are more complex processes and debugging them is more complicated and crucial.
+The reason we are covering debugging now, is that statistical simulations are more complex computational and coding processes than we've seen before, so debugging them is more complicated.
 
 ### Being mindful of your feelings
 
 We'll cover the the technical debugging tools available in R. But I first want to first mention a crucial part of effective (and less stressful) debugging: *being mindful of your feelings about the bug*.
 
-A bug is frustrating because we are experiencing an, initially unclear, disassociation between who we think the world should work and how it is working. It's as if we want to put a plate in the cupboard, but each time we try this it flies out. Frustration inclines us to look for the cause of a bug in--almost always--the wrong place: "the stupid computer is broken".
+A bug is frustrating. Our first encounter with a bug is an experience of disassociation between how we think the world should work and how it is working. It's as if we want to put a plate in the cupboard, but each time we try to put the plate in the cupboard it flies out. Frustration inclines us to look for the cause of a bug in--almost always--the wrong place: "the stupid computer is broken".
 
 The best way to resolve bugs, as we'll see, is to create testable hypotheses about what could be causing the bug. "The stupid computer is broken" is vague and so not a testable hypothesis.
 
@@ -313,9 +333,9 @@ So, it is crucial that when you find a bug, to take a step back and ask:
 
 > how does this bug make me feel?
 
-If the answer is "angry, I want to throw my computer out the window", your best next step is to *take a break*. Grab a tea or whatever. Then, with a piece of paper (or some other tool that gets you away from the temptation to just begin slamming out code on your keyboard) write down hypotheses about the cause of the bug and ways to test these.
+If the answer is "angry, I want to throw my computer out the window", your best next step is to *take a break*. Grab a tea or whatever. Then, with a piece of paper (or some other tool that gets you away from the temptation to just begin slamming out code on your keyboard) write down hypotheses about the cause of the bug and ways to test them.
 
-Unlike social phenomena, most computer bugs are deterministic. The cause of a bug will always cause the bug. So your chances of definitively finding the bug are high with the following process and tools.
+Unlike social phenomena, most computer bugs are deterministic. The cause of a bug will usually cause the bug. So your chances of definitively finding the bug are high with the following process and tools.
 
 ### Clear, testable program specifications
 
@@ -323,11 +343,12 @@ Unlike social phenomena, most computer bugs are deterministic. The cause of a bu
 >
 > ---Norm Matloff (quote from [Advanced R](https://adv-r.hadley.nz/debugging.html#debugging-strategy))
 
-Great debugging is driven by having great expectations of what the program should return. Having a well defined expectation of what a program should do is important to knowing if you have a bug to begin with. One way to approach software development is to even write tests for a function before you write the function. This is called [test drive development](https://en.wikipedia.org/wiki/Test-driven_development).
+Great debugging is driven by having great expectations of what the program should return. Having a well defined expectation of what a program should do is important to knowing if you have a bug to begin with. One way to approach software development is to write tests for a function *before* you write the function. This is called [test drive development](https://en.wikipedia.org/wiki/Test-driven_development).
 
 Both in your functions, to test incremental expectations, and for the output of your functions you include automated tests. Here is a silly example. Imagine that we have a function that should add 2 + 2 and then divide by 2 to return 2. We can create an automated test like this:
 
 ```{r}
+# Function to test
 two <- function() {
   four <- 2 + 2
   if (four != 4) 
@@ -336,14 +357,17 @@ two <- function() {
   four / 2
 }
 
+# Automated test 
 if (two() != 2) stop("function two did not return two")
 ```
 
 The `if` . . . `stop` statements automatically test whether or not the function is executing correctly. If there is a problem, the tests should help us pinpoint the cause more quickly.
 
+Automated tests will also help us make sure that our code is correct even as we change it, for example, to add new features.
+
 ### `browser()` for testing and dissecting
 
-Imagine that our function is not working correctly. A key R tool is the `browser()` function. When R executes some code and hits `browser()` it stops the execution and begins an interactive `Browse` mode. This allows you to explore the objects in the current environment and run code. RStudio works really well with this function.
+A key debugging R tool is the `browser()` function. When R executes some code and hits `browser()` it stops the execution and begins an interactive `Browse` mode. This allows you to explore objects created in the code execution in the environment that created then, as well as run new code. RStudio works really well with this function.
 
 Imagine we wrote the loop above incorrectly:
 
@@ -366,7 +390,7 @@ for (i in seq_along(mean_diff)) {
 }
 ```
 
-We two layers of nested functions where the bug could reside. Let's systematically use `browser()` to identify the source. Start from the outer most function--the `for` loop and work you way down as necessary.
+We have two layers of nested functions where the bug could be. Let's systematically use `browser()` to identify the source. Start from the outer most function--the `for` loop and work you way down as necessary.
 
 ```{r eval=FALSE}
 for (i in seq_along(mean_diff)) {
@@ -375,9 +399,10 @@ browser()
                                   control_prob = control_prob, 
                                   rel_effect = rel_effect)
 }
+
 ```
 
-Ok, we've found the a typo. We should have used `i` instead of `u` to index the output of `one_sim`. Leave the browser environment with `c + Enter`. Are we done? We'll let's check the output:
+Ok, we've found the typo. We should have used `i` instead of `u` to index the output of `one_sim`. To leave the browser environment type `c + Enter`. Are we done? We'll let's check the output:
 
 ```{r eval=FALSE}
 for (i in seq_along(mean_diff)) {
@@ -411,15 +436,15 @@ for (i in seq_along(mean_diff)) {
 }
 ```
 
-When we do this, we can find that we incorrectly divide `control_prob` by `(control_prob * rel_effect)` the ultimate result, is that the output of `one_sim` is `NA`. We can't create a histogram of `NA`s.
+When we do this, we can find that we incorrectly divide `control_prob` by `(control_prob * rel_effect)` the ultimate result, is that the output of `one_sim` is `NA`. We can't create a histogram of `NA`s. Once we solve this issue, we should get the expected histogram.
 
 ## 🥅 Exercise
 
-**A.** Replicate the example above. This time use Monte Carlo simulation to find out the distribution of p-values if the you had a *total* sample size of 2,000. Hint: extract p-values in R from a t-test with `t.test()$p.value` .
+**A.** Replicate the example above. This time use Monte Carlo simulation to find the distribution of p-values if you had a *total* sample size of 2,000. Hint: extract p-values in R from a t-test with `t.test()$p.value` .
 
-"Extra credit": how often you would incorrectly reject the null hypothesis of no difference of means at the 95% level with *total* sample sizes of 1,000, 2,000, 10,000, and 100,000? Plot the proportion of simulations falsely rejected across these sample sizes.
+"Extra credit": how often would you incorrectly reject the null hypothesis of no difference of means at the 95% level with *total* sample sizes of 1,000, 2,000, 10,000, and 100,000? Plot the proportion of simulations falsely rejected across these sample sizes.
 
-**B.** Imagine that we are interested in understanding how bad [confounding](https://en.wikipedia.org/wiki/Confounding) by an unobserved variable:
+**B.** Imagine that we are interested in understanding how bad [confounding](https://en.wikipedia.org/wiki/Confounding) by an unobserved variable could be in a DGP:
 
 ```{r confounding, echo=FALSE}
 DiagrammeR::mermaid("
@@ -447,8 +472,29 @@ Hints: use `lm()` to estimate a linear model. Coefficients can be extracted from
 
 Extra credit: how does this impact change as you vary the relationship between $Z$ and $X$ i.e. change $0.6 \cdot Z$? Answering this question will likely take some programming beyond what we have covered so far. Google is your friend here.
 
-**C.** Propose a data generating process and estimation strategy related to work that you are interested in. Conduct Monte Carlo analysis of the estimation strategy given this data generating process.
+**Extended pair project: Option 1** 
 
-**Completely over to you:** Now propose a data generating process and estimation strategy related to work that you are interested in. Conduct Monte Carlo analysis of the estimation strategy given this data generating process.
+1. Propose a data generating process and two estimation strategies for a quantity of interest from this DGP related to work that you are interested in. 
+
+2. Create "acceptance criteria" to decide it which estimation strategy is more promising given this DGP.
+
+3. Conduct Monte Carlo analysis of the estimation strategies and determine what is the best estimation strategy.
+
+**Extended pair project: Option 2**
+
+This project requires significant additional Googling/questions for the instructor, but you will learn the valuable skill of creating R packages. R packages are a great way to wrap up reusable code, share this code with others, and ensure it has a high quality, for example by building in automated testing.
+
+In this pair project:
+
+- create an R package from the functions in this example. Hint: in RStudio click `New Project. . .` -> `New Directory` -> `R Package`.  
+
+- ensure the functions are well documented using the function documentation syntax above. 
+
+- create examples and automated tests to ensure that the functions run 
+correctly using the `testthat` package. Hint: install the *usethis* package and, within your package's R project enter the function `use_testthat()`.  
+
+A great resource for R package creation is Wickham and Bryan's [R Packages](https://r-pkgs.org/).
+
+
 
 ## References
