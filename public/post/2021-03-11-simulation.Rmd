@@ -31,7 +31,7 @@ xfun::pkg_attach2("DiagrammeR")
 
 -   [Documenting Functions in RMonte Carlo with apply and parallelization](#documenting)
 
--   [Debugging in R](debugging-intro)
+-   [Debugging in R](#debugging-intro)
 
 -   Throughout, we will include examples of how to plot with base R and ggplot2
 
@@ -295,11 +295,11 @@ The more simulations we run, the more smooth and "normal" the curve will become.
 
 ## Debugging in R {#debugging-intro}
 
-Debugging is the process of finding and resolving discrepancies between a program's specification and its implementation. For example, I want a ggplot2 to plot multiple time series on the same plot as separate lines, but it plots them all as one--very jagged and confusing line. I use a debugging process to find the cause of and correct this discrepancy.
+Debugging is the process of finding and resolving discrepancies between a program's specification and its implementation.[^debug] For example, I want a ggplot2 to plot multiple time series on the same plot as separate lines, but it plots them all as one--very jagged and confusing line. I use a debugging process to find the cause of and correct this discrepancy.
+
+[^debug]: See the [Wiki page on debugging](https://en.wikipedia.org/wiki/Debugging) for a visual example of an early computer bug, an actual bug that got stuck in a computer. 
 
 The reason we are covering debugging now, is that statistical simulations are more complex processes and debugging them is more complicated and crucial.
-
-![An actual computer bug](/post/2021-03-11-simulation_files/First_Computer_Bug_1945.jpeg "An actual computer bug (source Wikipedia)")](https://en.wikipedia.org/wiki/Debugging)
 
 ### Being mindful of your feelings
 
