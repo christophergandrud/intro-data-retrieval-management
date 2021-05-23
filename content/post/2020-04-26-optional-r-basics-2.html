@@ -69,6 +69,14 @@ library(magrittr)
 mean(numeric_vector) %&gt;%
     round(digits = 1)</code></pre>
 <pre><code>## [1] 6.5</code></pre>
+<p>The <code>%&gt;%</code> pipe also allows you to pipe objects to arguments other than the first argument by inserting a <code>.</code> where you want the object to be piped to. For example:</p>
+<pre class="r"><code>TRUE %&gt;% mean(1:10, na.rm = .)</code></pre>
+<pre><code>## [1] 5.5</code></pre>
+<p>The value <code>TRUE</code> was piped as the argument to <code>na.rm</code> with <code>na.rm = .</code>.</p>
+<p>From R version 4.1.0, there is a native pipe operator <code>|&gt;</code>. It works similar to the <em>magrittr</em>/<em>dplyr</em> pipe, but is not exactly the same.</p>
+<pre class="r"><code>mean(numeric_vector) |&gt;
+    round(digits = 1)</code></pre>
+<pre><code>## [1] 6.5</code></pre>
 </div>
 <div id="creating-functions" class="section level3">
 <h3>Creating functions</h3>
@@ -176,13 +184,13 @@ detectCores()</code></pre>
 <p>Let’s compute the mean of each vector in the list in parallel:</p>
 <pre class="r"><code>mclapply(three_list, mean, mc.cores = 3)</code></pre>
 <pre><code>## $A
-## [1] 1.029162
+## [1] 1.169381
 ## 
 ## $B
-## [1] 1.925991
+## [1] 2.052606
 ## 
 ## $C
-## [1] 5.050694</code></pre>
+## [1] 4.839364</code></pre>
 <p><code>mc.cores</code> sets the number of cores to use. Usually use 1 - the number of cores you have available.</p>
 </div>
 <div id="exercises" class="section level2">

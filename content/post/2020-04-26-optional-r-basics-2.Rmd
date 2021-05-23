@@ -99,6 +99,21 @@ mean(numeric_vector) %>%
     round(digits = 1)
 ```
 
+The `%>%` pipe also allows you to pipe objects to arguments other than the first argument by inserting a `.` where you want the object to be piped to. For example:
+
+```{r PipeAlternate}
+TRUE %>% mean(1:10, na.rm = .)
+```
+
+The value `TRUE` was piped as the argument to `na.rm` with `na.rm = .`.
+
+From R version 4.1.0, there is a native pipe operator `|>`. It works similar to the *magrittr*/*dplyr* pipe, but is not exactly the same.
+
+```{r}
+mean(numeric_vector) |>
+    round(digits = 1)
+```
+
 ### Creating functions
 
 Functions are just objects. You can create your own functions with the `function()` function! Why would you create your own functions? If you ever find yourself repeating code with only minor variation, e.g. just changing the inputs, then it is time to create a function.
