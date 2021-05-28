@@ -29,7 +29,9 @@ xfun::pkg_attach2("DiagrammeR")
 
 -   [Simple simulation workflow](#workflow)
 
--   [Documenting Functions in RMonte Carlo with apply and parallelization](#documenting)
+-   [Documenting Functions in R](#documenting)
+
+-   [Monte Carlo with apply and parallelization](#monte-carlo)
 
 -   [Debugging in R](#debugging-intro)
 
@@ -48,6 +50,7 @@ First, computational generative modeling--simulating data generating processes w
 In Gelman's strong view stated above, if your identification strategy can't recover effects in known--simulated data--you shouldn't waste time and money collecting real world data. If data gathering is time consuming and expensive, you can also use generative modelling to make progress on your problem before your data is fully collected.
 
 The second reason we are covering statistical simulation, and most importantly for this class, is that simulation requires you to **work your new R programmering skills**. The DGP we will work with are probabilistic. You need to repeat the simulations with the same data generating process multiple times to understand its statistical properties. This is called the [Monte Carlo Method](https://en.wikipedia.org/wiki/Monte_Carlo_method). You should never do this repeated sampling by rewriting the same function over and over. Instead, encode the sampling in a function that you can run repeatedly and, ideally, efficiently, e.g. in parallel.
+
 ## Simple simulation workflow {#workflow}
 
 This is a typical simulation workflow:
@@ -211,7 +214,7 @@ one_sim <- function(n, control_prob, rel_effect) {
 
 ------------------------------------------------------------------------
 
-### Monte Carlo with `for`
+### Monte Carlo with `for` {#monte-carlo}
 
 Now that we've created a function for one total draw of the simulated A/B test, let's repeatedly sample it so that we can better understand the probabilistic properties of our hypothesized data generating process. 
 
@@ -337,7 +340,7 @@ If the answer is "angry, I want to throw my computer out the window", your best 
 
 Unlike social phenomena, most computer bugs are deterministic. The cause of a bug will usually cause the bug. So your chances of definitively finding the bug are high with the following process and tools.
 
-### Clear, testable program specifications
+### Clear and testable program specifications
 
 > Finding your bug is a process of confirming the many things that you believe are true --- until you find one which is not true.
 >

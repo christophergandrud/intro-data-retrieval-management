@@ -1,0 +1,351 @@
+	
+	<!doctype html>
+<html lang="en">
+  <head>
+    <title> - [Intro to Computational Thinking] R Basics 2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+    
+    <link href="/css/milk.min.css" rel="stylesheet">
+    <link href="/css/milk-responsive.min.css" rel="stylesheet">     
+    <link href="/css/style.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/css/fonts.css" rel="stylesheet" type="text/css" media="all">
+    <link rel="shortcut icon" href="/images/chart-icon.ico">
+    <link rel="apple-touch-icon" href="">
+    <link rel="canonical" href="https://brave-pasteur-c09ffa.netlify.app/post/optional-r-basics-2/">
+
+    
+    <link href="/rss.xml" type="application/atom+xml" rel="alternate" title="Programming Methods for Data Retrieval &amp; Management">
+
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+  <div id="navbar-inner">
+    <div id="logo">
+       <a href="https://brave-pasteur-c09ffa.netlify.app/"><img src="/images/cover-img.png" width="1000px"></img></a>
+    </div>
+  </div>
+</div>
+
+
+<div class="container">
+  <div class="content">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="posts">
+
+
+	    
+	  <div class="post">
+	    <header class="post-header">
+	        <h1><a href="/post/optional-r-basics-2/">[Intro to Computational Thinking] R Basics 2</a></h1>
+	        <div class="post-time">April 26 2020</div>
+	    </header>
+	    <div class="post-after">
+	        <div class="tags">
+	            
+	                <a href="https://brave-pasteur-c09ffa.netlify.app//tags/r">R</a>
+	            
+	                <a href="https://brave-pasteur-c09ffa.netlify.app//tags/functions">functions</a>
+	            
+	                <a href="https://brave-pasteur-c09ffa.netlify.app//tags/if">if</a>
+	            
+	                <a href="https://brave-pasteur-c09ffa.netlify.app//tags/loops">loops</a>
+	            
+	                <a href="https://brave-pasteur-c09ffa.netlify.app//tags/basics">basics</a>
+	            
+	        </div>
+	    </div>
+	    <hr>
+	    <div class="post content">
+	        
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<div id="lesson-preview" class="section level2">
+<h2>📝 Lesson Preview</h2>
+<ul>
+<li><p><a href="#functions-functions-intro">Functions</a></p></li>
+<li><p>Control Flow</p>
+<ul>
+<li><p><a href="#if"><code>if</code> statements</a></p></li>
+<li><p><a href="#loop-intro"><code>for</code> loops</a></p></li>
+<li><p><a href="#apply-intro"><code>apply()</code></a></p></li>
+</ul></li>
+<li><p><a href="#parallel-intro">Parallel computation</a></p></li>
+</ul>
+</div>
+<div id="functions-intro" class="section level2">
+<h2>Functions</h2>
+<p>If objects are the nouns of the R language, functions are the verbs. They do things to objects. Let’s use the <code>mean</code> function as an example. This function takes the mean of a numeric vector object. Remember our <em>numeric_vector</em> object from Lesson 1:</p>
+<pre class="r"><code>numeric_vector &lt;- c(2.8, 2, 14.8)
+
+numeric_vector</code></pre>
+<pre><code>## [1]  2.8  2.0 14.8</code></pre>
+<p>To find the mean of this object, type:</p>
+<pre class="r"><code>mean(x = numeric_vector)</code></pre>
+<pre><code>## [1] 6.533333</code></pre>
+<p>We use the assignment operator to place a function’s output into an object. For example:</p>
+<pre class="r"><code>numeric_vector_mean &lt;- mean(x = numeric_vector)</code></pre>
+<p>Notice that we typed the function’s name then enclosed the object name in parentheses immediately afterwards. This is the basic syntax that all functions use, i.e. <code>FUNCTION(ARGUMENTS)</code>. Even if you don’t want to explicitly include an argument, <em>you still need to type the parentheses after the function</em>.</p>
+<div id="arguments" class="section level3">
+<h3>Arguments</h3>
+<p>Arguments modify what functions do. In our most recent example, we gave the <code>mean</code> function one argument (<code>x = numeric_vector</code>) telling it that we wanted to find the mean of <em>numeric_vector</em>. Arguments use the <code>ARGUMENT_LABEL = VALUE</code> syntax. In this case, <strong>x</strong> is the argument label.</p>
+<p>To find all of the arguments that a function can accept, look at the <strong>Arguments</strong> section of the function’s help file. To access the help file, type: <code>?FUNCTION</code>. For example:</p>
+<pre class="r"><code>?mean</code></pre>
+<p>The help file will also tell you the default values that the arguments are set to. You do not need to explicitly set an argument if you want to use its default value.</p>
+<p>You do need to be fairly precise with the syntax for your argument’s values. Values for logical arguments must be written as <code>TRUE</code> or <code>FALSE</code>. Arguments that accept character strings require quotation marks.</p>
+<p>Let’s see how to use multiple arguments with the <code>round()</code> function. This function rounds a vector of numbers. We can use the <code>digits</code> argument to specify how many decimal places we want the numbers rounded to. To round the object <em>numeric_vector_mean</em> to one decimal place, type:</p>
+<pre class="r"><code>round(x = numeric_vector_mean, digits = 1)</code></pre>
+<pre><code>## [1] 6.5</code></pre>
+<p>Note that <em>arguments are always separated by commas</em>.</p>
+<p>Some arguments do not need to be explicitly labeled. For example, we could write:</p>
+<pre class="r"><code># Find mean of numeric_vector
+mean(numeric_vector)</code></pre>
+<pre><code>## [1] 6.533333</code></pre>
+<p>R will do its best to figure out what you want and will only give up when it can’t. This will generate an error message. However, to avoid any misunderstandings between yourself and R, it is good practice to label your argument values. This will also make your code easier for other people to read, i.e. it will be more reproducible.</p>
+<p>You can stack functions inside of arguments. For example, have R find the mean of <em>numeric_vector</em> and round it to one decimal place:</p>
+<pre class="r"><code>round(mean(numeric_vector), digits = 1)</code></pre>
+<pre><code>## [1] 6.5</code></pre>
+<p>Stacking functions inside of each other can create code that is difficult to read. Another option that potentially makes more easily understandable code is piping using the pipe function (<code>%&gt;%</code>) that you can access from the <em>magrittr</em> or <em>dplyr</em> packages. The basic idea behind the pipe function is that the output of one function is set as the first argument of the next. For example, to find the mean of <em>numeric_vector</em> and then round it to one decimal place use:</p>
+<pre class="r"><code># Load magrittr package
+library(magrittr)
+# Find mean of numeric_vector and round to 1 decimal place
+mean(numeric_vector) %&gt;%
+    round(digits = 1)</code></pre>
+<pre><code>## [1] 6.5</code></pre>
+<p>The <code>%&gt;%</code> pipe also allows you to pipe objects to arguments other than the first argument by inserting a <code>.</code> where you want the object to be piped to. For example:</p>
+<pre class="r"><code>TRUE %&gt;% mean(1:10, na.rm = .)</code></pre>
+<pre><code>## [1] 5.5</code></pre>
+<p>The value <code>TRUE</code> was piped as the argument to <code>na.rm</code> with <code>na.rm = .</code>.</p>
+<p>From R version 4.1.0, there is a native pipe operator <code>|&gt;</code>. It works similar to the <em>magrittr</em>/<em>dplyr</em> pipe, but is not exactly the same.</p>
+<pre class="r"><code>mean(numeric_vector) |&gt;
+    round(digits = 1)</code></pre>
+<pre><code>## [1] 6.5</code></pre>
+</div>
+<div id="creating-functions" class="section level3">
+<h3>Creating functions</h3>
+<p>Functions are just objects. You can create your own functions with the <code>function()</code> function! Why would you create your own functions? If you ever find yourself repeating code with only minor variation, e.g. just changing the inputs, then it is time to create a function.</p>
+<p>For example imagine we want to repeatedly find vector means and the round them to one digit. We can create a new function called <code>mean_rounder()</code> to do this for us.</p>
+<pre class="r"><code>mean_rounder &lt;- function(x) {
+  mean(x) %&gt;% 
+    round(digits = 1)
+}
+
+mean_rounder(numeric_vector)</code></pre>
+<pre><code>## [1] 6.5</code></pre>
+<p>Notice that the contents of the function are enclosed inside of curly brackets <code>{}</code>.</p>
+<p>When you make a function, remember to document it. You want to be able to use this function over and over. If it isn’t well documented, this will be harder.</p>
+<p>A common convention is to use <code>@param</code> to document function arguments:<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<pre class="r"><code># @param x a numeric vector to find the mean of
+
+mean_rounder &lt;- function(x) {
+  mean(x) %&gt;% 
+    round(digits = 1)
+}</code></pre>
+<p>Notice that we started the <code>@param</code> line with a <code>#</code>. In R (and many other languages), <code>#</code> is the <strong>comment character</strong>. Everything on a line that starts with <code>#</code> is ignored by R.</p>
+</div>
+</div>
+<div id="control-flow" class="section level2">
+<h2>Control flow</h2>
+<p>We can use conditional evaluation (like if statements) and loops to control the flow of our programs.</p>
+<div id="if" class="section level3">
+<h3>If statements</h3>
+<p>So we have seen functions that always (try to) do the same thing for any inputs. There are many cases when you want to do different things depending on the type of input.</p>
+<p>For example, imagine we want to create a new binary <code>[0, 1]</code> variable from a vector. We want a new vector with a 0 if the original value was less than 5 and 1 if it is greater than or equal to 5. We can use <code>ifelse()</code>:</p>
+<pre class="r"><code>numeric_vector</code></pre>
+<pre><code>## [1]  2.8  2.0 14.8</code></pre>
+<pre class="r"><code>greater_than_5 &lt;- ifelse(numeric_vector &gt;= 5, 
+                         yes = 1, 
+                         no = 0) 
+
+greater_than_5</code></pre>
+<pre><code>## [1] 0 0 1</code></pre>
+<p>The way we read this is if the value is greater than or equal to 5 (<code>yes</code>) then the new value is <code>1</code>, if not (<code>no</code>) then it is <code>0</code>.</p>
+<p>Note that <code>&gt;=</code> is one of R’s <strong>logical operators</strong>. See the additional material for a table of common <a href="#logical-operators">logical operators</a> in R.</p>
+<p>For more complex if statements, use <code>if() {. . .} else()</code>.</p>
+</div>
+<div id="loop-intro" class="section level3">
+<h3><code>for</code> loops</h3>
+<p>Some times you want to do the same thing to each part of an object. We already saw an example with <code>ifelse()</code> which ran an if statement on each element of <em>numeric_vector</em>.</p>
+<p>A general solution to iterating through elements of an object is the <code>for()</code> loop function. Here is an example using R’s built in <strong>swiss</strong> data set:</p>
+<pre class="r"><code>head(swiss)</code></pre>
+<pre><code>##              Fertility Agriculture Examination Education Catholic
+## Courtelary        80.2        17.0          15        12     9.96
+## Delemont          83.1        45.1           6         9    84.84
+## Franches-Mnt      92.5        39.7           5         5    93.40
+## Moutier           85.8        36.5          12         7    33.77
+## Neuveville        76.9        43.5          17        15     5.16
+## Porrentruy        76.1        35.3           9         7    90.57
+##              Infant.Mortality
+## Courtelary               22.2
+## Delemont                 22.2
+## Franches-Mnt             20.2
+## Moutier                  20.3
+## Neuveville               20.6
+## Porrentruy               26.6</code></pre>
+<p>For each column in the data set, we’ll take the mean, round it to 1 digit, and then print the results with R’s <code>cat()</code>–concatenate–function.</p>
+<pre class="r"><code>for (i in 1:ncol(swiss)) {
+    swiss[, i] %&gt;%
+    mean() %&gt;%
+    round(digits = 1) %&gt;%
+    paste(names(swiss)[i], ., &#39;\n&#39;) %&gt;%  # the . directs the pipe
+    cat()
+}</code></pre>
+<pre><code>## Fertility 70.1 
+## Agriculture 50.7 
+## Examination 16.5 
+## Education 11 
+## Catholic 41.1 
+## Infant.Mortality 19.9</code></pre>
+<p>The first line reads: “for each <code>i</code> in the vector 1 through the number of columns in the <strong>swiss</strong> data frame . . .”</p>
+<p>We then use <code>i</code> in the subscripts <code>[]</code> to select each column of <strong>swiss</strong> to find and print its mean.</p>
+</div>
+<div id="apply-intro" class="section level3">
+<h3>Apply</h3>
+<p>Loops in R are <em>notoriously slow</em>. The <code>apply</code> family of functions does a something similar and is usually faster.</p>
+<p>For example, let’s find the mean of each column in <strong>swiss</strong>:</p>
+<pre class="r"><code>apply(swiss, MARGIN = 2, mean)</code></pre>
+<pre><code>##        Fertility      Agriculture      Examination        Education 
+##         70.14255         50.65957         16.48936         10.97872 
+##         Catholic Infant.Mortality 
+##         41.14383         19.94255</code></pre>
+<p>For data frames and matrices, we need to specify whether we are applying the function to each row (<code>MARGIN = 1</code>) or each column (<code>MARGIN = 2</code>).</p>
+</div>
+</div>
+<div id="parallel-intro" class="section level2">
+<h2>Advanced: Parallelisation</h2>
+<p>By default, all computation in R is done sequentially–one after the other. However, your computer likely has more processor cores and so can run computations in “parallel”.</p>
+<p>To find the number of cores on your computer use:</p>
+<pre class="r"><code>library(parallel)
+detectCores()</code></pre>
+<pre><code>## [1] 4</code></pre>
+<p>Not all computation can be done in parallel. Somethings have to be done in sequence, because the output of one operation is needed for the computation of the subsequent operations. However, pretty much anything that can be looped or applied can be done in parallel. This will often improve the speed of the computation.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
+<p><code>mclapply()</code> from base R’s <em>parallel</em> package works like <code>lapply</code> (list apply) for. Imagine we have a list with 3 numeric vectors:</p>
+<pre class="r"><code>three_list &lt;- list(A = rnorm(n = 100, mean = 1),
+                   B = rnorm(n = 100, mean = 2),
+                   C = rnorm(n = 100, mean = 5))</code></pre>
+<p>Note <code>rnorm()</code> simulates data from the normal distribution.</p>
+<p>Let’s compute the mean of each vector in the list in parallel:</p>
+<pre class="r"><code>mclapply(three_list, mean, mc.cores = 3)</code></pre>
+<pre><code>## $A
+## [1] 1.169381
+## 
+## $B
+## [1] 2.052606
+## 
+## $C
+## [1] 4.839364</code></pre>
+<p><code>mc.cores</code> sets the number of cores to use. Usually use 1 - the number of cores you have available.</p>
+</div>
+<div id="exercises" class="section level2">
+<h2>🥅 Exercises</h2>
+<ul>
+<li><p>Create a new function to summarise numeric vectors in a method of your choosing (explore R’s built in statistical capabilities).</p></li>
+<li><p>Create a data frame with numeric and character columns. Then, for each column find the standard deviation (<code>sd()</code>) if it is numeric and return the <code>message()</code> <code>"This column has characters"</code> if it is a character type column.</p></li>
+<li><p><code>nchar()</code> counts the number of characters in a string. Create a list of character vectors with strings of different lengths. In parallel, count the number of characters in each vector.</p></li>
+</ul>
+</div>
+<div id="additional-materials" class="section level2">
+<h2>Additional Materials</h2>
+</div>
+<div id="logical-operators" class="section level2">
+<h2>(Some) Logical Operators</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Logical Operator</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>&amp;</code></td>
+<td>and</td>
+</tr>
+<tr class="even">
+<td><code>|</code> or</td>
+<td>or</td>
+</tr>
+<tr class="odd">
+<td><code>&lt;</code></td>
+<td>less than</td>
+</tr>
+<tr class="even">
+<td><code>&gt;</code></td>
+<td>greater than</td>
+</tr>
+<tr class="odd">
+<td><code>&gt;=</code></td>
+<td>greater than or equal to</td>
+</tr>
+<tr class="even">
+<td><code>&lt;=</code></td>
+<td>less than or equal to</td>
+</tr>
+<tr class="odd">
+<td><code>!=</code></td>
+<td>not equal</td>
+</tr>
+<tr class="even">
+<td><code>isTRUE(x)</code></td>
+<td>test if <code>x</code> is <code>TRUE</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="references" class="section level2">
+<h2>📚 References</h2>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>This stands for “parameter”, a more general programming term for “argument”. If you want to go deep on documenting functions, see the <a href="https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html">roxygen2</a> package.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>It won’t necessarily be faster as there is “overhead” for breaking up the operation into parallel computation. Also, while the computation time can go down, the enegery usage will be the same as in total the same computation will have happened.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+
+	    </div>
+	    
+	<div class="about">
+	<p> 
+     
+    </p>
+</div>
+		<nav id="pagination">
+			<a class="prev" href="https://brave-pasteur-c09ffa.netlify.app/post/optional-r-basics-1/">Prev</a>
+			<a class="next" href="https://brave-pasteur-c09ffa.netlify.app/post/optional-r-basics-3/">Next</a>
+		</nav>
+	
+		        <footer>
+		        	Built with <a href="https://github.com/spf13/hugo">Hugo</a> using <a href="https://themes.gohugo.io/theme/simple-a/">simple-a</a>
+		        	<p>Christopher Gandrud 2020</p>
+					<script src="//yihui.org/js/math-code.js"></script>
+<script async
+src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+		        </footer>
+		    </div>
+		  </div>
+		</div>
+      </div>
+    </div>
+</body>
+
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + ":change-me";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 4]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+
+
+</html>
+

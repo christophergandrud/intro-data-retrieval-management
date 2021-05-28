@@ -51,13 +51,13 @@ Or download and **install** R and RStudio on your computer:
 
 2. Install RStudio (free version): <https://rstudio.com/products/rstudio/download/>
 
-When you open RStudio you should see something like:
-
-![RStudio Cloud at Startup](/post/2020-04-26-optional-r-basics-1_files/rstudio-startup.png)
-
-Take some time to explore the interface. Then we'll dive into details.
+Once you open RStudio, take some time to explore the interface. Then we'll dive into details.
 
 Notice in particular the `>` character in the left-most window called the **Console**. This prompt is where you enter R code. To run R code that you have typed after the prompt, press the `Return` or `Enter` key. 
+
+### Jupyter Lab
+
+Jupyter Lab is a popular alternative to RStudio. It is less tailored to R, but is used in many especially industry settings. If you would like to try it out, see setup instructions [here](https://github.com/christophergandrud/hu-live-coding-course-examples/blob/main/src/jupyter-lab-setup.md).
 
 ## Install packages {#install-packages}
 

@@ -55,6 +55,16 @@ Once you open RStudio, take some time to explore the interface. Then we'll dive 
 
 Notice in particular the `>` character in the left-most window called the **Console**. This prompt is where you enter R code. To run R code that you have typed after the prompt, press the `Return` or `Enter` key. 
 
+It is also a good idea to become familiar with the command line terminal outside of R. We will touch on this, especially in Part II of the course. 
+
+### Jupyter Lab
+
+Jupyter Lab is a popular alternative to RStudio. It is less tailored to R, but is used in many especially industry settings. If you would like to try it out, see setup instructions [here](https://github.com/christophergandrud/hu-live-coding-course-examples/blob/main/src/jupyter-lab-setup.md).
+
+### Markdown
+
+[Markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) is a [markup language](https://en.wikipedia.org/wiki/Markup_language) widely used in data science to format human readable documents, especially interspersed with code. It is used in both [RMarkdown](https://rmarkdown.rstudio.com/) (how these materials are created) and Jupyter Lab.
+
 ## Install packages {#install-packages}
 
 In base R, use the `install.packages()` function to install the add-on packages you'll need to gather and manage data:

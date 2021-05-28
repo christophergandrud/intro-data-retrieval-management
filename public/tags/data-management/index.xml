@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>data management on Programming Methods for Data Retrieval &amp; Management</title>
+    <link>https://brave-pasteur-c09ffa.netlify.app/tags/data-management/</link>
+    <description>Recent content in data management on Programming Methods for Data Retrieval &amp; Management</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 22 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://brave-pasteur-c09ffa.netlify.app/tags/data-management/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>File Organisation and Tidy Data Structures</title>
+      <link>https://brave-pasteur-c09ffa.netlify.app/post/tidy-data-structures/</link>
+      <pubDate>Fri, 22 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://brave-pasteur-c09ffa.netlify.app/post/tidy-data-structures/</guid>
+      <description>  📝 Lesson Preview  Why is file management important?
+ What is tidy data?
+ Manipulating tidy data (1)
+   📣 Lecture slides   </description>
+    </item>
+    
+  </channel>
+</rss>
