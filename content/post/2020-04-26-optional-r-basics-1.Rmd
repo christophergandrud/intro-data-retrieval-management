@@ -73,6 +73,8 @@ It is also a good idea to become familiar with the command line terminal
 outside of R. We will touch on this, especially in Part II of the
 course.
 
+💁 Tip: in the R Console or the Terminal, you can cancel a process with `Ctrl + c`.
+
 ### Jupyter Lab
 
 Jupyter Lab is a popular alternative to RStudio. It is less tailored to
