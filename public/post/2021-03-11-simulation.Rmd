@@ -127,12 +127,16 @@ ggplot(control_y_tbl, aes(x = value)) + # as_tibble names the column "value" by 
   ggtitle("Simple Simulation Histogram", subtitle = "Control Group")
 ```
 
-Notice how you build up the layers of the plot in *ggplot* by adding "geoms" with plus (`+`) notation. These are literally stacked on top of each other in the order you enter them in code. So the base layer is set with `ggplot`. This specifies the data frame to work with and the aesthetics (`aes`) layer that defines things like the X and Y coordinates, and grouping variables. Histograms only need the x-axis specified in `aes` because the y-axis will be the automatically generated count per histogram bin. But for other geoms, such as `geom_point` for scatter plots, you also need to specify  a variable that defines the y-axis with the `y` argument.
+Notice how you build up the layers of the plot in *ggplot* by adding "geoms" with plus (`+`) notation. These are literally stacked on top of each other in the order you enter them in code. So the base layer is set with `ggplot`. This specifies the data frame to work with and the aesthetics (`aes`) layer that defines things like the X and Y coordinates, and grouping variables. Histograms only need the x-axis specified in `aes` because the y-axis will be the automatically generated count per histogram bin. But for other geoms, such as `geom_point` for scatter plots, you also need to specify a variable that defines the y-axis with the `y` argument.
 
 If you plan to make similar ggplot plots multiple times, consider wrapping it in a function. For example:
 
 ```{r message=FALSE}
+# @param outcomes numeric vector
+# @param subtitle character string of the plot's subtitle
+
 plot_histogram <- function(outcomes, subtitle) {
+  if (missing(subtitle)) stop("subtitle must be specified")
   x_tbl <- as_tibble(outcomes)
   ggplot(x_tbl, aes(x = value)) + 
   geom_histogram() + 
@@ -140,7 +144,7 @@ plot_histogram <- function(outcomes, subtitle) {
   ggtitle("Simple Simulation Histogram", subtitle = subtitle)
 }
 
-plot_histogram(outcomes = control_y, subtitle = "Control Group")
+plot_histogram(outcomes = control_y, subtitle = "asfkjnsdl;fij")
 ```
 
 ------------------------------------------------------------------------
@@ -164,6 +168,11 @@ mean(treatment_y) - mean(control_y)
 That's one simulation. Let's wrap it up in a function so it will be easy to run $n$ simulations
 
 ```{r}
+# @param n integer number of draws per treatment arm
+# @param control_prob numeric probability of control success [0, 1]
+# @param rel_effect numeric relative effect, change in success probability 
+# caused by treatment 
+
 one_sim <- function(n, control_prob, rel_effect) {
   treat_prob <- control_prob + (control_prob * rel_effect)
     
@@ -181,7 +190,7 @@ one_sim(n = n_obs, control_prob = control_prob,
         rel_effect = rel_effect)
 ```
 
-This is very close to the true increase of $\frac{\bar{x}_{treat} - \bar{x}_{control}}{\bar{x}_{control}}\cdot100=1\%$.
+This is very close to the true increase of 0.001\`.
 
 ------------------------------------------------------------------------
 
@@ -216,7 +225,7 @@ one_sim <- function(n, control_prob, rel_effect) {
 
 ### Monte Carlo with `for` {#monte-carlo}
 
-Now that we've created a function for one total draw of the simulated A/B test, let's repeatedly sample it so that we can better understand the probabilistic properties of our hypothesized data generating process. 
+Now that we've created a function for one total draw of the simulated A/B test, let's repeatedly sample it so that we can better understand the probabilistic properties of our hypothesized data generating process.
 
 One way to do this is with `for` loops. For example:
 
@@ -233,6 +242,7 @@ for (i in seq_along(mean_diff)) {
   pb$tick() # increment the progress bar
   mean_diff[i] <- one_sim(n = n_obs, control_prob = control_prob, 
         rel_effect = rel_effect)
+  #if (is.na(mean_diff[i])) stop(paste(i, "is missing"))
 }
 
 hist(mean_diff)
@@ -311,16 +321,16 @@ ggplot(diff_means_1000_tbl, aes(value)) +
   geom_vline(xintercept = mean_of_means, linetype = "dashed") +
   xlab("\nTreatment - Control") +
   ggtitle("Monte Carlo Results", 
-          subtitle = "Difference of means for binary outcome\n10,000 simulations")
+          subtitle = "Difference of means for binary outcome\n1,000 simulations")
 ```
 
 In this example, the more simulations we run, the more smooth and "normal" the curve will become.
 
 ## Debugging in R {#debugging-intro}
 
-Debugging is the process of finding and resolving discrepancies between a program's specification and its implementation.[^debug] For example, I want a ggplot2 to plot multiple time series on the same plot as separate lines, but it plots them all as one--very jagged and confusing line. I could use a debugging process to find the cause of and correct this discrepancy.
+Debugging is the process of finding and resolving discrepancies between a program's specification and its implementation.[^7] For example, I want a ggplot2 to plot multiple time series on the same plot as separate lines, but it plots them all as one--very jagged and confusing line. I could use a debugging process to find the cause of and correct this discrepancy.
 
-[^debug]: See the [Wiki page on debugging](https://en.wikipedia.org/wiki/Debugging) for a visual example of an early computer bug, an actual bug that got stuck in a computer. 
+[^7]: See the [Wiki page on debugging](https://en.wikipedia.org/wiki/Debugging) for a visual example of an early computer bug, an actual bug that got stuck in a computer.
 
 The reason we are covering debugging now, is that statistical simulations are more complex computational and coding processes than we've seen before, so debugging them is more complicated.
 
@@ -475,13 +485,13 @@ Hints: use `lm()` to estimate a linear model. Coefficients can be extracted from
 
 Extra credit: how does this impact change as you vary the relationship between $Z$ and $X$ i.e. change $0.6 \cdot Z$? Answering this question will likely take some programming beyond what we have covered so far. Google is your friend here.
 
-**Extended pair project: Option 1** 
+**Extended pair project: Option 1**
 
-1. Propose a data generating process and two estimation strategies for a quantity of interest from this DGP related to work that you are interested in. 
+1.  Propose a data generating process and two estimation strategies for a quantity of interest from this DGP related to work that you are interested in.
 
-2. Create "acceptance criteria" to decide it which estimation strategy is more promising given this DGP.
+2.  Create "acceptance criteria" to decide it which estimation strategy is more promising given this DGP.
 
-3. Conduct Monte Carlo analysis of the estimation strategies and determine what is the best estimation strategy.
+3.  Conduct Monte Carlo analysis of the estimation strategies and determine what is the best estimation strategy.
 
 **Extended pair project: Option 2**
 
@@ -489,15 +499,12 @@ This project requires significant additional Googling/questions for the instruct
 
 In this pair project:
 
-- create an R package from the functions in this example. Hint: in RStudio click `New Project. . .` -> `New Directory` -> `R Package`.  
+-   create an R package from the functions in this example. Hint: in RStudio click `New Project. . .` -\> `New Directory` -\> `R Package`.
 
-- ensure the functions are well documented using the function documentation syntax above. 
+-   ensure the functions are well documented using the function documentation syntax above.
 
-- create examples and automated tests to ensure that the functions run 
-correctly using the `testthat` package. Hint: install the *usethis* package and, within your package's R project enter the function `use_testthat()`.  
+-   create examples and automated tests to ensure that the functions run correctly using the `testthat` package. Hint: install the *usethis* package and, within your package's R project enter the function `use_testthat()`.
 
 A great resource for R package creation is Wickham and Bryan's [R Packages](https://r-pkgs.org/).
-
-
 
 ## References

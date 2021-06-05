@@ -178,6 +178,7 @@ quotation marks (`''`, or `""`). Let's create an object called *words*
 containing the character string `Hello World`:
 
 ```{r Ch3CharacterObject, echo=TRUE}
+# Create hello world character string
 words <- "Hello World"
 ```
 

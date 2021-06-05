@@ -191,9 +191,22 @@ for (i in 1:ncol(swiss)) {
     swiss[, i] %>%
     mean() %>%
     round(digits = 1) %>%
-    paste(names(swiss)[i], ., '\n') %>%  # the . directs the pipe
+    paste(names(swiss)[i], ., "\n") %>%  # the . directs the pipe
     cat()
 }
+
+
+# To do over lunch
+means_df <- data.frame()
+swiss_names <- names(swiss)
+
+for (i in 1:ncol(swiss)) {
+  tmp <- data.frame(name = swiss_names[i], 
+                    mean_value = mean_rounder(swiss[, i]))
+  means_df <- rbind(tmp, means_df)
+  
+}
+means_df
 ```
 
 The first line reads: "for each `i` in the vector 1 through the number of columns in the **swiss** data frame . . . "
@@ -207,7 +220,8 @@ Loops in R are *notoriously slow*. The `apply` family of functions does a someth
 For example, let's find the mean of each column in **swiss**:
 
 ```{r mean-print}
-apply(swiss, MARGIN = 2, mean)
+means_apply <- apply(swiss, MARGIN = 2, mean_rounder)
+as.data.frame(means_apply)
 ```
 
 For data frames and matrices, we need to specify whether we are applying the function to each row (`MARGIN = 1`) or each column (`MARGIN = 2`).
@@ -251,7 +265,32 @@ mclapply(three_list, mean, mc.cores = 3)
 
 -   Create a data frame with numeric and character columns. Then, for each column find the standard deviation (`sd()`) if it is numeric and return the `message()` `"This column has characters"` if it is a character type column.
 
+```{r}
+# Create data frame with numeric and character columns
+means_df
+
+for (i in seq_along(means_df)) {
+  # extract column
+  tmp <- means_df[, i]
+  if (is.numeric(tmp)) {
+    message(sd(tmp))
+  }
+  else if (is.character(tmp)) {
+    message("This is a character vector")
+  }
+  else
+    warning("Not Character or Numeric")
+}
+
+
+```
+
 -   `nchar()` counts the number of characters in a string. Create a list of character vectors with strings of different lengths. In parallel, count the number of characters in each vector.
+
+```{r}
+
+
+```
 
 ## Additional Materials
 
@@ -261,6 +300,7 @@ mclapply(three_list, mean, mc.cores = 3)
 |------------------|--------------------------|
 | `&`              | and                      |
 | `|` or           | or                       |
+| `==`             | equality                 |
 | `<`              | less than                |
 | `>`              | greater than             |
 | `>=`             | greater than or equal to |

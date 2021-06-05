@@ -509,10 +509,4 @@ If it is in long format, pivot wider.
 
 If it is in wide format, pivot longer.
 
----
-
-class: inverse, center, middle
-background-color: #FF8C03
-
-# Retro
 
