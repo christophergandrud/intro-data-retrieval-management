@@ -36,7 +36,8 @@ bibliography: main.bib
 <ul>
 <li><p><a href="#motivation">Why simulate?</a></p></li>
 <li><p><a href="#workflow">Simple simulation workflow</a></p></li>
-<li><p><a href="#documenting">Documenting Functions in RMonte Carlo with apply and parallelization</a></p></li>
+<li><p><a href="#documenting">Documenting Functions in R</a></p></li>
+<li><p><a href="#monte-carlo">Monte Carlo with apply and parallelization</a></p></li>
 <li><p><a href="#debugging-intro">Debugging in R</a></p></li>
 <li><p>Throughout, we will include examples of how to plot with base R and ggplot2</p></li>
 </ul>
@@ -48,8 +49,10 @@ bibliography: main.bib
 <p>Why are we talking about simulating data generating processes in an introduction to R course? There are two sets of reasons.</p>
 <p>First, computational generative modeling–simulating data generating processes with a computer–is a useful <strong>tool for understanding and evaluating the statistical methods</strong> you are using to study data generating processes <span class="citation">(<a href="#ref-gelmanhillaki2021" role="doc-biblioref">Gelman, Hill, and Vehtari 2021, 76</a>)</span>. Will your chosen statistical model identify the effect you are interested, even if you completely understand the DGP? This is surprisingly often not the case, especially for non-trivial data generating processes. Simulation allows you to stress test your models, with a given assumed DGP, and compare the appropriateness of different models for this DGP.</p>
 <p>In Gelman’s strong view stated above, if your identification strategy can’t recover effects in known–simulated data–you shouldn’t waste time and money collecting real world data. If data gathering is time consuming and expensive, you can also use generative modelling to make progress on your problem before your data is fully collected.</p>
-<p>The second reason we are covering statistical simulation, and most importantly for this class, is that simulation requires you to <strong>work your new R programmering skills</strong>. The DGP we will work with are probabilistic. You need to repeat the simulations with the same data generating process multiple times to understand its statistical properties. This is called the <a href="https://en.wikipedia.org/wiki/Monte_Carlo_method">Monte Carlo Method</a>. You should never do this repeated sampling by rewriting the same function over and over. Instead, encode the sampling in a function that you can run repeatedly and, ideally, efficiently, e.g. in parallel.
-## Simple simulation workflow {#workflow}</p>
+<p>The second reason we are covering statistical simulation, and most importantly for this class, is that simulation requires you to <strong>work your new R programmering skills</strong>. The DGP we will work with are probabilistic. You need to repeat the simulations with the same data generating process multiple times to understand its statistical properties. This is called the <a href="https://en.wikipedia.org/wiki/Monte_Carlo_method">Monte Carlo Method</a>. You should never do this repeated sampling by rewriting the same function over and over. Instead, encode the sampling in a function that you can run repeatedly and, ideally, efficiently, e.g. in parallel.</p>
+</div>
+<div id="workflow" class="section level2">
+<h2>Simple simulation workflow</h2>
 <p>This is a typical simulation workflow:</p>
 <div id="htmlwidget-1" style="width:672px;height:480px;" class="DiagrammeR html-widget"></div>
 <script type="application/json" data-for="htmlwidget-1">{"x":{"diagram":"\ngraph TB\n  A[Hypothesise DGP]-->AA[Identification strategies]\n  AA-->B[Functions for 1 draw & analysis]\n  B-->C[Function to repeat for n draws]\n  B-- Debug -->B\n  C-->D[Plot simulations]\n  C-- Debug -->C \n  D-- Debug -->D\n  D-- Iterate -->A\n"},"evals":[],"jsHooks":[]}</script>
@@ -62,7 +65,7 @@ bibliography: main.bib
 <p><span class="math display">\[Y \sim \mathrm{Binomial}(0.1)\]</span> To simulate one draw from this binomial distribution in R use:</p>
 <pre class="r"><code>control_y_1 &lt;- rbinom(n = 1, size = 1, prob = 0.1)
 control_y_1</code></pre>
-<pre><code>## [1] 0</code></pre>
+<pre><code>## [1] 1</code></pre>
 <p>Let’s walk through this code. <code>rbinom()</code> is the function to randomly (the <code>r</code> in <code>rbinom</code>) draw from the binomial distribution (<code>binom</code>). <code>n</code> is the number of draws for this simulation, <code>size</code> is the “number of trials.” Basically it means that you want the “success” outcome to be 1 and 0 otherwise. <code>prob</code> is the probability of “success.”</p>
 <p>It’s unlikely that we will run an A/B test with only one participant in the control group (this would be hilariously under-powered). So, let’s simulate a test with 2,000,000 draws<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> and plot the results.</p>
 <pre class="r"><code># number of observations variable to ensure consistency across sims
@@ -95,7 +98,11 @@ ggplot(control_y_tbl, aes(x = value)) + # as_tibble names the column &quot;value
 <p><img src="/post/2021-03-11-simulation_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>Notice how you build up the layers of the plot in <em>ggplot</em> by adding “geoms” with plus (<code>+</code>) notation. These are literally stacked on top of each other in the order you enter them in code. So the base layer is set with <code>ggplot</code>. This specifies the data frame to work with and the aesthetics (<code>aes</code>) layer that defines things like the X and Y coordinates, and grouping variables. Histograms only need the x-axis specified in <code>aes</code> because the y-axis will be the automatically generated count per histogram bin. But for other geoms, such as <code>geom_point</code> for scatter plots, you also need to specify a variable that defines the y-axis with the <code>y</code> argument.</p>
 <p>If you plan to make similar ggplot plots multiple times, consider wrapping it in a function. For example:</p>
-<pre class="r"><code>plot_histogram &lt;- function(outcomes, subtitle) {
+<pre class="r"><code># @param outcomes numeric vector
+# @param subtitle character string of the plot&#39;s subtitle
+
+plot_histogram &lt;- function(outcomes, subtitle) {
+  if (missing(subtitle)) stop(&quot;subtitle must be specified&quot;)
   x_tbl &lt;- as_tibble(outcomes)
   ggplot(x_tbl, aes(x = value)) + 
   geom_histogram() + 
@@ -103,7 +110,7 @@ ggplot(control_y_tbl, aes(x = value)) + # as_tibble names the column &quot;value
   ggtitle(&quot;Simple Simulation Histogram&quot;, subtitle = subtitle)
 }
 
-plot_histogram(outcomes = control_y, subtitle = &quot;Control Group&quot;)</code></pre>
+plot_histogram(outcomes = control_y, subtitle = &quot;asfkjnsdl;fij&quot;)</code></pre>
 <p><img src="/post/2021-03-11-simulation_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <hr />
 <p>Ok, we’ve simulated one run of the control group. Now let’s think about the treatment group. Imagine we anticipate that a realistic effect of the treatment–again based on prior knowledge–is an average relative improvement of 1%. We simulate this with:</p>
@@ -115,9 +122,14 @@ plot_histogram(treatment_y, subtitle = &quot;Treatment Group&quot;)</code></pre>
 <p><img src="/post/2021-03-11-simulation_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>Finally, we compare the means of the two groups:</p>
 <pre class="r"><code>mean(treatment_y) - mean(control_y) </code></pre>
-<pre><code>## [1] 0.001393</code></pre>
+<pre><code>## [1] 0.001354</code></pre>
 <p>That’s one simulation. Let’s wrap it up in a function so it will be easy to run <span class="math inline">\(n\)</span> simulations</p>
-<pre class="r"><code>one_sim &lt;- function(n, control_prob, rel_effect) {
+<pre class="r"><code># @param n integer number of draws per treatment arm
+# @param control_prob numeric probability of control success [0, 1]
+# @param rel_effect numeric relative effect, change in success probability 
+# caused by treatment 
+
+one_sim &lt;- function(n, control_prob, rel_effect) {
   treat_prob &lt;- control_prob + (control_prob * rel_effect)
     
   cy &lt;- rbinom(n = n, size = 1, prob = control_prob)
@@ -128,8 +140,8 @@ plot_histogram(treatment_y, subtitle = &quot;Treatment Group&quot;)</code></pre>
 <p>Let’s test it to make sure it works.</p>
 <pre class="r"><code>one_sim(n = n_obs, control_prob = control_prob, 
         rel_effect = rel_effect)</code></pre>
-<pre><code>## [1] 0.0012255</code></pre>
-<p>This is very close to the true increase of <span class="math inline">\(\frac{\bar{x}_{treat} - \bar{x}_{control}}{\bar{x}_{control}}\cdot100=1\%\)</span>.</p>
+<pre><code>## [1] 0.001492</code></pre>
+<p>This is very close to the true increase of 0.001`.</p>
 <hr />
 </div>
 </div>
@@ -154,7 +166,7 @@ one_sim &lt;- function(n, control_prob, rel_effect) {
   mean(ty) - mean(cy)
 }</code></pre>
 <hr />
-<div id="monte-carlo-with-for" class="section level3">
+<div id="monte-carlo" class="section level3">
 <h3>Monte Carlo with <code>for</code></h3>
 <p>Now that we’ve created a function for one total draw of the simulated A/B test, let’s repeatedly sample it so that we can better understand the probabilistic properties of our hypothesized data generating process.</p>
 <p>One way to do this is with <code>for</code> loops. For example:</p>
@@ -170,6 +182,7 @@ for (i in seq_along(mean_diff)) {
   pb$tick() # increment the progress bar
   mean_diff[i] &lt;- one_sim(n = n_obs, control_prob = control_prob, 
         rel_effect = rel_effect)
+  #if (is.na(mean_diff[i])) stop(paste(i, &quot;is missing&quot;))
 }
 
 hist(mean_diff)</code></pre>
@@ -229,7 +242,7 @@ ggplot(diff_means_1000_tbl, aes(value)) +
   geom_vline(xintercept = mean_of_means, linetype = &quot;dashed&quot;) +
   xlab(&quot;\nTreatment - Control&quot;) +
   ggtitle(&quot;Monte Carlo Results&quot;, 
-          subtitle = &quot;Difference of means for binary outcome\n10,000 simulations&quot;)</code></pre>
+          subtitle = &quot;Difference of means for binary outcome\n1,000 simulations&quot;)</code></pre>
 <p><img src="/post/2021-03-11-simulation_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <p>In this example, the more simulations we run, the more smooth and “normal” the curve will become.</p>
 </div>
@@ -250,8 +263,8 @@ ggplot(diff_means_1000_tbl, aes(value)) +
 <p>If the answer is “angry, I want to throw my computer out the window,” your best next step is to <em>take a break</em>. Grab a tea or whatever. Then, with a piece of paper (or some other tool that gets you away from the temptation to just begin slamming out code on your keyboard) write down hypotheses about the cause of the bug and ways to test them.</p>
 <p>Unlike social phenomena, most computer bugs are deterministic. The cause of a bug will usually cause the bug. So your chances of definitively finding the bug are high with the following process and tools.</p>
 </div>
-<div id="clear-testable-program-specifications" class="section level3">
-<h3>Clear, testable program specifications</h3>
+<div id="clear-and-testable-program-specifications" class="section level3">
+<h3>Clear and testable program specifications</h3>
 <blockquote>
 <p>Finding your bug is a process of confirming the many things that you believe are true — until you find one which is not true.</p>
 <p>—Norm Matloff (quote from <a href="https://adv-r.hadley.nz/debugging.html#debugging-strategy">Advanced R</a>)</p>
@@ -358,8 +371,7 @@ Y = X \cdot 1 + Z \cdot 3 + \epsilon
 <ul>
 <li><p>create an R package from the functions in this example. Hint: in RStudio click <code>New Project. . .</code> -&gt; <code>New Directory</code> -&gt; <code>R Package</code>.</p></li>
 <li><p>ensure the functions are well documented using the function documentation syntax above.</p></li>
-<li><p>create examples and automated tests to ensure that the functions run
-correctly using the <code>testthat</code> package. Hint: install the <em>usethis</em> package and, within your package’s R project enter the function <code>use_testthat()</code>.</p></li>
+<li><p>create examples and automated tests to ensure that the functions run correctly using the <code>testthat</code> package. Hint: install the <em>usethis</em> package and, within your package’s R project enter the function <code>use_testthat()</code>.</p></li>
 </ul>
 <p>A great resource for R package creation is Wickham and Bryan’s <a href="https://r-pkgs.org/">R Packages</a>.</p>
 </div>

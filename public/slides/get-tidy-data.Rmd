@@ -98,7 +98,7 @@ See Janssen (2012, 262-263) for more.
 # Recommended podcast
 
 Max Ogden on the Request for Commits podcast discussing challenges faced working 
-for the City of Boston with Code for America (<https://changelog.com/rfc-6/>).
+for the City of Boston with Code for America (<https://changelog.com/rfc/6>).
 
 ---
 

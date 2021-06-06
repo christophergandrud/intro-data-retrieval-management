@@ -4,7 +4,7 @@
     <title>Get and Clean Tidy Data</title>
     <meta charset="utf-8" />
     <meta name="author" content="Christopher Gandrud" />
-    <script src="libs/header-attrs-2.2/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.8/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/robot.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # Get and Clean Tidy Data
 ### Christopher Gandrud
 ### HU DYNAMICS
-### 2020-05-22 (updated: 2020-06-06)
+### 2020-05-22 (updated: 2021-06-06)
 
 ---
 
@@ -101,7 +101,7 @@ See Janssen (2012, 262-263) for more.
 # Recommended podcast
 
 Max Ogden on the Request for Commits podcast discussing challenges faced working 
-for the City of Boston with Code for America (&lt;https://changelog.com/rfc-6/&gt;).
+for the City of Boston with Code for America (&lt;https://changelog.com/rfc/6&gt;).
 
 ---
 
@@ -746,13 +746,13 @@ head(data)
 ```
 
 ```
-##            people year   income
-## 1    Aashiq, Alex 2010 36931.27
-## 2    Aashiq, Alex 2011 67760.36
-## 3    Aashiq, Alex 2012 32512.72
-## 4    Aashiq, Alex 2013 58828.07
-## 5 Abeyta, Domingo 2010 41270.64
-## 6 Abeyta, Domingo 2011 41498.49
+##              people year   income
+## 1 Abeyta, Christina 2010 82227.74
+## 2 Abeyta, Christina 2011 13682.54
+## 3 Abeyta, Christina 2012 13998.15
+## 4 Abeyta, Christina 2013 38954.18
+## 5   Ackerson, Cymry 2010 63019.51
+## 6   Ackerson, Cymry 2011     0.00
 ```
 
 ---
@@ -769,13 +769,13 @@ head(higher_income)
 ```
 
 ```
-##               people year    income
-## 1       Aashiq, Alex 2011  67760.36
-## 2  Agyepong, Dominic 2011  77562.42
-## 3 al-Alam, Jaarallah 2012  66637.30
-## 4      al-Amir, Anas 2012  60124.95
-## 5  al-Amiri, Naadiya 2012 109680.48
-## 6 al-Ansari, Annnees 2012  73566.88
+##                       people year   income
+## 1          Abeyta, Christina 2010 82227.74
+## 2            Ackerson, Cymry 2010 63019.51
+## 3             Acosta, Jeremy 2013 60513.68
+## 4         Agee-Woods, Bemnet 2012 60538.01
+## 5 Agripino-Alvarado, Jessica 2013 70578.47
+## 6               Aguayo, Raul 2013 65940.29
 ```
 
 ---
@@ -795,13 +795,13 @@ head(people_income)
 ```
 
 ```
-##            people   income
-## 1    Aashiq, Alex 36931.27
-## 2    Aashiq, Alex 67760.36
-## 3    Aashiq, Alex 32512.72
-## 4    Aashiq, Alex 58828.07
-## 5 Abeyta, Domingo 41270.64
-## 6 Abeyta, Domingo 41498.49
+##              people   income
+## 1 Abeyta, Christina 82227.74
+## 2 Abeyta, Christina 13682.54
+## 3 Abeyta, Christina 13998.15
+## 4 Abeyta, Christina 38954.18
+## 5   Ackerson, Cymry 63019.51
+## 6   Ackerson, Cymry     0.00
 ```
 
 ---
@@ -820,13 +820,13 @@ head(group_data)[1:5, ]
 ```
 ## # A tibble: 5 x 3
 ## # Groups:   people [2]
-##   people           year income
-##   &lt;chr&gt;           &lt;int&gt;  &lt;dbl&gt;
-## 1 Aashiq, Alex     2010 36931.
-## 2 Aashiq, Alex     2011 67760.
-## 3 Aashiq, Alex     2012 32513.
-## 4 Aashiq, Alex     2013 58828.
-## 5 Abeyta, Domingo  2010 41271.
+##   people             year income
+##   &lt;chr&gt;             &lt;int&gt;  &lt;dbl&gt;
+## 1 Abeyta, Christina  2010 82228.
+## 2 Abeyta, Christina  2011 13683.
+## 3 Abeyta, Christina  2012 13998.
+## 4 Abeyta, Christina  2013 38954.
+## 5 Ackerson, Cymry    2010 63020.
 ```
 
 Note: the following functions work on **non-grouped data** as well.
@@ -844,23 +844,17 @@ For example, we can extract the highest and lowest income years for each person:
 min_max_income &lt;- summarize(group_data,
                             min_income = min(income),
                             max_income = max(income))
-```
 
-```
-## `summarise()` ungrouping output (override with `.groups` argument)
-```
-
-```r
 head(min_max_income)[1:3, ]
 ```
 
 ```
 ## # A tibble: 3 x 3
-##   people           min_income max_income
-##   &lt;chr&gt;                 &lt;dbl&gt;      &lt;dbl&gt;
-## 1 Aashiq, Alex         32513.     67760.
-## 2 Abeyta, Domingo      22145.     42893.
-## 3 Abrahms, Javonte         0      46668.
+##   people            min_income max_income
+##   &lt;chr&gt;                  &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Abeyta, Christina     13683.     82228.
+## 2 Ackerson, Cymry           0      63020.
+## 3 Acosta, Benito            0      34511.
 ```
 
 ---
@@ -879,11 +873,11 @@ head(ascending)[1:3, ]
 
 ```
 ## # A tibble: 3 x 3
-##   people             min_income max_income
-##   &lt;chr&gt;                   &lt;dbl&gt;      &lt;dbl&gt;
-## 1 Heredia, Joseph         9611.     12914.
-## 2 al-Musa, Amaan             0      17950.
-## 3 el-Hosein, Sabaaha         0      17994.
+##   people                     min_income max_income
+##   &lt;chr&gt;                           &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Vigil, Alexus                      0      11573.
+## 2 Harris, Adail                  10264.     15123.
+## 3 Gonzalez Bustillos, Alexis         0      17929.
 ```
 
 ---
@@ -901,11 +895,11 @@ head(descending)[1:3, ]
 
 ```
 ## # A tibble: 3 x 3
-##   people                  min_income max_income
-##   &lt;chr&gt;                        &lt;dbl&gt;      &lt;dbl&gt;
-## 1 al-Amiri, Naadiya           33131.    109680.
-## 2 Gonzalez-Saucedo, Andre     25386.    104340.
-## 3 Hernandez, Andrea           31728.     96451.
+##   people          min_income max_income
+##   &lt;chr&gt;                &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Jolly, Benjamin         0     112396.
+## 2 el-Gaber, Azmi      19255.     97641.
+## 3 Le, Akankcha         7814.     95083.
 ```
 
 ---
@@ -928,11 +922,11 @@ head(data)[1:3, ]
 ```
 ## # A tibble: 3 x 5
 ## # Groups:   people [1]
-##   people        year income min_income max_income
-##   &lt;chr&gt;        &lt;int&gt;  &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
-## 1 Aashiq, Alex  2010 36931.     32513.     67760.
-## 2 Aashiq, Alex  2011 67760.     32513.     67760.
-## 3 Aashiq, Alex  2012 32513.     32513.     67760.
+##   people             year income min_income max_income
+##   &lt;chr&gt;             &lt;int&gt;  &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Abeyta, Christina  2010 82228.     13683.     82228.
+## 2 Abeyta, Christina  2011 13683.     13683.     82228.
+## 3 Abeyta, Christina  2012 13998.     13683.     82228.
 ```
 
 ---

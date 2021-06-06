@@ -4,7 +4,7 @@
     <title>Get and Clean Tidy Data</title>
     <meta charset="utf-8" />
     <meta name="author" content="Christopher Gandrud" />
-    <script src="libs/header-attrs-2.2/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.8/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/robot.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # Get and Clean Tidy Data
 ### Christopher Gandrud
 ### HU DYNAMICS
-### 2020-05-22 (updated: 2020-06-06)
+### 2020-05-22 (updated: 2021-06-06)
 
 ---
 
@@ -101,7 +101,7 @@ See Janssen (2012, 262-263) for more.
 # Recommended podcast
 
 Max Ogden on the Request for Commits podcast discussing challenges faced working 
-for the City of Boston with Code for America (&lt;https://changelog.com/rfc-6/&gt;).
+for the City of Boston with Code for America (&lt;https://changelog.com/rfc/6&gt;).
 
 ---
 
@@ -198,7 +198,7 @@ Load data from @Pemstein2010 in a file called *uds_summary.csv*.
 ```r
 # For simplicity, store the URL in an object called 'URL'.
 
-URL &lt;- "http://bit.ly/1jXJgDh"
+URL &lt;- "https://bit.ly/3z4Lay2"
 
 # Create a temporary file called 'temp' to put the zip file into.
 temp &lt;- tempfile()
@@ -219,7 +219,7 @@ unlink(temp)
 
 # Secure (https) URL Plain-text data
 
-Use `import()` from the devtools package.
+Use `import()` from the *rio* package.
 
 Data on GitHub is stored at secure URLs. Select the **RAW** URL:
 
@@ -239,7 +239,7 @@ Data maintainers (unfortunately) often change data sets with little or no docume
 `source_data` allows you to notice these changes by assigning each file a unique
 [SHA1 Hash](http://en.wikipedia.org/wiki/SHA-1).
 
-Each download can be checked against the Hash
+Each download can be checked against the Hash:
 
 
 ```r
@@ -255,14 +255,13 @@ main &lt;- repmis::source_data(URL,
 ## Specified SHA-1 hash matches downloaded data file.
 ```
 
+🏊 Dive deeper: [source code](https://github.com/christophergandrud/repmis/blob/3989ad8f5d6270ea1c939d8e53ad6c3c14afe4f1/R/utils.R#L39-L51) for hash check.
+
 ---
 
 # Excel Files
 
-The `source_XlsxData()` function in repmis does the same thing as `source_data()`, but
-for Excel files. 
-
-Builds on `read.xlsx()` for loading locally stored Excel files. 
+The `source_XlsxData()` function in repmis does the same hash check as `source_data()`, but for Excel files. It builds on `read.xlsx()` for loading locally stored Excel files. 
 
 Can also use `import()` from rio.
 
@@ -273,7 +272,8 @@ for statistical/graphical analyses.
 
 # Caching
 
-`source_data()` allows you to **cache** data with `cache = TRUE`.
+`source_data()` allows you to **cache** data with `cache = TRUE`
+([source code](https://github.com/christophergandrud/repmis/blob/3989ad8f5d6270ea1c939d8e53ad6c3c14afe4f1/R/source_data.R#L84-L113)).
 
 Caching stores data so that future requests for the data can be done faster.
 
@@ -406,7 +406,7 @@ First identify what your observations and variables are.
 
 Then use R tools to convert your data into this format.
 
-**tidyr** and its predecessor **reshape2** are particularly useful.
+**tidyr** and is particularly useful.
 
 ---
 
@@ -473,8 +473,7 @@ For example, see if:
 
 - Distributions are what you expect them to be.
 
-[testdat](https://github.com/ropensci/testdat) can be useful for this, though 
-not actively maintained.
+[dlookr](https://cran.r-project.org/web/packages/dlookr/vignettes/diagonosis.html) looks promising for a data quality checker package.
 
 ---
 
@@ -746,13 +745,13 @@ head(data)
 ```
 
 ```
-##            people year   income
-## 1    Aashiq, Alex 2010 36931.27
-## 2    Aashiq, Alex 2011 67760.36
-## 3    Aashiq, Alex 2012 32512.72
-## 4    Aashiq, Alex 2013 58828.07
-## 5 Abeyta, Domingo 2010 41270.64
-## 6 Abeyta, Domingo 2011 41498.49
+##            people year    income
+## 1  Abeyta, Alexis 2010 25280.929
+## 2  Abeyta, Alexis 2011  3412.657
+## 3  Abeyta, Alexis 2012 46945.584
+## 4  Abeyta, Alexis 2013 35673.256
+## 5 Ablay, Jayratna 2010 35067.262
+## 6 Ablay, Jayratna 2011 57199.922
 ```
 
 ---
@@ -769,13 +768,13 @@ head(higher_income)
 ```
 
 ```
-##               people year    income
-## 1       Aashiq, Alex 2011  67760.36
-## 2  Agyepong, Dominic 2011  77562.42
-## 3 al-Alam, Jaarallah 2012  66637.30
-## 4      al-Amir, Anas 2012  60124.95
-## 5  al-Amiri, Naadiya 2012 109680.48
-## 6 al-Ansari, Annnees 2012  73566.88
+##                people year   income
+## 1       Adams, Alyssa 2012 83563.99
+## 2       Adams, Alyssa 2013 70118.56
+## 3        Adams, Kayla 2011 60520.46
+## 4    al-Abdoo, Jubair 2011 65245.64
+## 5    al-Amara, Muhsin 2011 69877.64
+## 6 al-Chahine, Mamdooh 2013 62381.04
 ```
 
 ---
@@ -795,13 +794,13 @@ head(people_income)
 ```
 
 ```
-##            people   income
-## 1    Aashiq, Alex 36931.27
-## 2    Aashiq, Alex 67760.36
-## 3    Aashiq, Alex 32512.72
-## 4    Aashiq, Alex 58828.07
-## 5 Abeyta, Domingo 41270.64
-## 6 Abeyta, Domingo 41498.49
+##            people    income
+## 1  Abeyta, Alexis 25280.929
+## 2  Abeyta, Alexis  3412.657
+## 3  Abeyta, Alexis 46945.584
+## 4  Abeyta, Alexis 35673.256
+## 5 Ablay, Jayratna 35067.262
+## 6 Ablay, Jayratna 57199.922
 ```
 
 ---
@@ -822,11 +821,11 @@ head(group_data)[1:5, ]
 ## # Groups:   people [2]
 ##   people           year income
 ##   &lt;chr&gt;           &lt;int&gt;  &lt;dbl&gt;
-## 1 Aashiq, Alex     2010 36931.
-## 2 Aashiq, Alex     2011 67760.
-## 3 Aashiq, Alex     2012 32513.
-## 4 Aashiq, Alex     2013 58828.
-## 5 Abeyta, Domingo  2010 41271.
+## 1 Abeyta, Alexis   2010 25281.
+## 2 Abeyta, Alexis   2011  3413.
+## 3 Abeyta, Alexis   2012 46946.
+## 4 Abeyta, Alexis   2013 35673.
+## 5 Ablay, Jayratna  2010 35067.
 ```
 
 Note: the following functions work on **non-grouped data** as well.
@@ -844,23 +843,17 @@ For example, we can extract the highest and lowest income years for each person:
 min_max_income &lt;- summarize(group_data,
                             min_income = min(income),
                             max_income = max(income))
-```
 
-```
-## `summarise()` ungrouping output (override with `.groups` argument)
-```
-
-```r
 head(min_max_income)[1:3, ]
 ```
 
 ```
 ## # A tibble: 3 x 3
-##   people           min_income max_income
-##   &lt;chr&gt;                 &lt;dbl&gt;      &lt;dbl&gt;
-## 1 Aashiq, Alex         32513.     67760.
-## 2 Abeyta, Domingo      22145.     42893.
-## 3 Abrahms, Javonte         0      46668.
+##   people               min_income max_income
+##   &lt;chr&gt;                     &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Abeyta, Alexis            3413.     46946.
+## 2 Ablay, Jayratna          28828.     57200.
+## 3 Abrams, Laquisheanna      5044.     56898.
 ```
 
 ---
@@ -879,11 +872,11 @@ head(ascending)[1:3, ]
 
 ```
 ## # A tibble: 3 x 3
-##   people             min_income max_income
-##   &lt;chr&gt;                   &lt;dbl&gt;      &lt;dbl&gt;
-## 1 Heredia, Joseph         9611.     12914.
-## 2 al-Musa, Amaan             0      17950.
-## 3 el-Hosein, Sabaaha         0      17994.
+##   people          min_income max_income
+##   &lt;chr&gt;                &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Neff, Shyloah           0       6497.
+## 2 Johnson, Rachel       537.     16331.
+## 3 Spears, Taylor      14227.     18891.
 ```
 
 ---
@@ -901,11 +894,11 @@ head(descending)[1:3, ]
 
 ```
 ## # A tibble: 3 x 3
-##   people                  min_income max_income
-##   &lt;chr&gt;                        &lt;dbl&gt;      &lt;dbl&gt;
-## 1 al-Amiri, Naadiya           33131.    109680.
-## 2 Gonzalez-Saucedo, Andre     25386.    104340.
-## 3 Hernandez, Andrea           31728.     96451.
+##   people             min_income max_income
+##   &lt;chr&gt;                   &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Vasquez, Luis          11541.    100425.
+## 2 el-Mina, Fateen        31031.     96586.
+## 3 Greenlee, Tyneasha     21682.     95820.
 ```
 
 ---
@@ -928,11 +921,11 @@ head(data)[1:3, ]
 ```
 ## # A tibble: 3 x 5
 ## # Groups:   people [1]
-##   people        year income min_income max_income
-##   &lt;chr&gt;        &lt;int&gt;  &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
-## 1 Aashiq, Alex  2010 36931.     32513.     67760.
-## 2 Aashiq, Alex  2011 67760.     32513.     67760.
-## 3 Aashiq, Alex  2012 32513.     32513.     67760.
+##   people          year income min_income max_income
+##   &lt;chr&gt;          &lt;int&gt;  &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Abeyta, Alexis  2010 25281.      3413.     46946.
+## 2 Abeyta, Alexis  2011  3413.      3413.     46946.
+## 3 Abeyta, Alexis  2012 46946.      3413.     46946.
 ```
 
 ---
