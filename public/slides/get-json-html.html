@@ -4,9 +4,13 @@
     <title>Get and Parse HTML Data</title>
     <meta charset="utf-8" />
     <meta name="author" content="Christopher Gandrud" />
-    <script src="libs/header-attrs-2.2/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.8/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/robot.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+    <script src="libs/viz-1.8.2/viz.js"></script>
+    <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+    <script src="libs/grViz-binding-1.0.6.1/grViz.js"></script>
   </head>
   <body>
     <textarea id="source">
@@ -15,7 +19,7 @@ class: center, middle, inverse, title-slide
 # Get and Parse HTML Data
 ### Christopher Gandrud
 ### HU DYNAMICS
-### 2020-05-30 (updated: 2020-06-06)
+### 2020-05-30 (updated: 2021-06-06)
 
 ---
 
@@ -118,7 +122,7 @@ address
 
 # JSON syntax
 
-**Indentation** is not required, but helps us see the nesting structure.
+**Indentation** and line breaks are not required, but helps us see the nesting structure.
 
 ```json
 {
@@ -236,7 +240,7 @@ head(json_example)
 
 ---
 
-# JSON to R
+# JSON to R: Over to you
 
 Use your R data manipulation tools to download, parse and transform JSON data to the R format you need for your analysis. 
 
@@ -261,7 +265,7 @@ background-color: #FFC400
 
 ---
 
-# 👩‍💻 Web scraping
+# 👩 💻 Web scraping
 
 [Web scraping](https://en.wikipedia.org/wiki/Web_scraping) simply means programmatically gathering data from websites.
 
@@ -332,7 +336,7 @@ Source: [wikipedia](https://en.wikipedia.org/wiki/Tim_Berners-Lee#/media/File:Fi
 
 ---
 
-# 👩‍HTTP: Hypertext Transfer Protocol
+# 👩 HTTP: Hypertext Transfer Protocol
 
 Tim Berners-Lee proposed and implemented the Hypertext Transfer Protocol (HTTP).
 
@@ -340,11 +344,12 @@ Allowed documents to be **linked** to each other.
 
 Today HTTP defines **request** and **response** *methods*.
 
-&lt;img src="get-json-html_files/figure-html/http-1.png" width="288" style="display: block; margin: auto;" /&gt;
+<div id="htmlwidget-cd54d44f82cb8fc908eb" style="width:504px;height:504px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-cd54d44f82cb8fc908eb">{"x":{"diagram":"\n    digraph http {\n      graph [layout = dot, rankdir = LR, overlap = true];\n      edge [arrowsize = 0.5];\n      node [shape = rectangle];\n\n      d1   [label = \"Your Computer (client)\"];\n      d2   [label = \"Server (host)\"];\n\n      d1 -> d2[label=\"Request\"];\n      d2 -> d1[label=\"Response\"]\n  } \n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 ---
 
-# ‍HTTP Verbs
+# HTTP Verbs
 
 HTTP **request** and **response** methods are often called "[HTTP verbs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)". The verbs include:
 
@@ -755,7 +760,7 @@ cleaning generally is taken up with **processing strings**.
 # Character encoding: Motivation
 
 Sometimes when you load text into R you will get weird symbols like �
-([the replacement character](http://en.wikipedia.org/wiki/Specials_(Unicode_block)#Replacement_character))
+ (the replacement character)
 or other strange things will happen to the text.
 
 NOTE: remember to always check your data when you import it!
@@ -768,7 +773,7 @@ This often happens when R is using the **wrong character encoding**.
 
 All characters in a computer are **encoded** using some standardised system.
 
-R can recognise [latin1](http://en.wikipedia.org/wiki/Latin-1_Supplement_(Unicode_block))
+R can recognise latin1
 and [UTF-8](http://en.wikipedia.org/wiki/UTF-8).
 
 - latin1 is fairly limited (mostly to the latin alphabet)
@@ -1057,8 +1062,10 @@ background-color: #FF8C03
 
 # 🥅 Practice
 
-**Scrape** and **clean** the Medal Table from
-&lt;http://www.bbc.com/sport/winter-olympics/2014/medals/countries&gt;.
+**Scrape** and **clean** the Medals Table from
+&lt;https://en.wikipedia.org/wiki/2012_Summer_Olympics_medal_table&gt;.
+
+Hint: it is the second `table` on the page.
 
 Also, sort by total medals in **descending order**.
 

@@ -49,7 +49,7 @@ background-color: #FB3579
 knitr::include_graphics("img/peace-table.png")
 ```
 
-PDF at: <http://visionofhumanity.org/app/uploads/2019/07/GPI-2019web.pdf>
+PDF at: <https://www.visionofhumanity.org/wp-content/uploads/2020/10/GPI_2020_web.pdf>
 
 Example modified from [Ketan Deshpande](https://medium.com/@ketanrd.009/how-to-extract-pdf-tables-in-r-e994c0fe4e28)
 
@@ -215,7 +215,7 @@ announce_page_href
 
 # Multiple pages
 
-There were 29 search results, but we only have:
+Notice:
 
 ```{r}
 length(announce_page_href)
@@ -370,6 +370,13 @@ summary(announce_corpus)
 announce_dtm <- dfm(announce_corpus, 
                     remove = stopwords("english"), 
                     stem = TRUE, remove_punct = TRUE) 
+
+announce_dtm <- announce_corpus %>%
+                  tokens(remove_punct = TRUE) %>%
+                  dfm() %>%
+                  dfm_remove(stopwords("english")) %>%
+                  dfm_wordstem() 
+
 announce_dtm
 ```
 
@@ -378,6 +385,7 @@ announce_dtm
 ## The "mullet" of text analysis
 
 ```{r, warning=FALSE}
+xfun::pkg_attach2("quanteda.textplots")
 textplot_wordcloud(announce_dtm, min_count = 10)
 ```
 
@@ -388,7 +396,7 @@ background-color: #FF8C03
 
 # 🥅 Practice
 
-Scrape and clean up table from <http://visionofhumanity.org/app/uploads/2019/07/GPI-2019web.pdf>
+Scrape and clean up the first table from <https://www.visionofhumanity.org/wp-content/uploads/2020/10/GPI_2020_web.pdf>
 
 ---
 

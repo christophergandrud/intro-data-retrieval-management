@@ -16,7 +16,7 @@ bibliography: main.bib
 
 ```{r setup, include=FALSE}
 library(xfun)
-pkg_attach2("tidyverse", "jsonlite", "janitor")
+pkg_attach2("tidyverse", "jsonlite", "janitor", "DiagrammeR")
 knitr::opts_chunk$set(fig.align = 'center')
 ```
 
@@ -116,7 +116,7 @@ address
 
 # JSON syntax
 
-**Indentation** is not required, but helps us see the nesting structure.
+**Indentation** and line breaks are not required, but helps us see the nesting structure.
 
 ```json
 {
@@ -195,7 +195,7 @@ head(json_example)
 
 ---
 
-# JSON to R
+# JSON to R: Over to you
 
 Use your R data manipulation tools to download, parse and transform JSON data to the R format you need for your analysis. 
 
@@ -220,7 +220,7 @@ background-color: #FFC400
 
 ---
 
-# 👩‍💻 Web scraping
+# 👩 💻 Web scraping
 
 [Web scraping](https://en.wikipedia.org/wiki/Web_scraping) simply means programmatically gathering data from websites.
 
@@ -295,7 +295,7 @@ Source: [wikipedia](https://en.wikipedia.org/wiki/Tim_Berners-Lee#/media/File:Fi
 
 ---
 
-# 👩‍HTTP: Hypertext Transfer Protocol
+# 👩 HTTP: Hypertext Transfer Protocol
 
 Tim Berners-Lee proposed and implemented the Hypertext Transfer Protocol (HTTP).
 
@@ -303,23 +303,25 @@ Allowed documents to be **linked** to each other.
 
 Today HTTP defines **request** and **response** *methods*.
 
-```{dot http, echo=FALSE, fig.retina=10, cache=TRUE, fig.width=4}
-digraph http {
-    graph [layout = dot, rankdir = LR, overlap = true];
-    edge [arrowsize = 0.5];
-    node [shape = rectangle];
+```{r http, echo=FALSE,, cache=TRUE, fig.width=7}
+DiagrammeR::grViz('
+    digraph http {
+      graph [layout = dot, rankdir = LR, overlap = true];
+      edge [arrowsize = 0.5];
+      node [shape = rectangle];
 
-    d1   [label = "Your Computer (client)"];
-    d2   [label = "Server (host)"];
+      d1   [label = "Your Computer (client)"];
+      d2   [label = "Server (host)"];
 
-    d1 -> d2[label="Request"];
-    d2 -> d1[label="Response"]
-}
+      d1 -> d2[label="Request"];
+      d2 -> d1[label="Response"]
+  } 
+')
 ```
 
 ---
 
-# ‍HTTP Verbs
+# HTTP Verbs
 
 HTTP **request** and **response** methods are often called "[HTTP verbs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)". The verbs include:
 
@@ -699,7 +701,7 @@ cleaning generally is taken up with **processing strings**.
 # Character encoding: Motivation
 
 Sometimes when you load text into R you will get weird symbols like �
-([the replacement character](http://en.wikipedia.org/wiki/Specials_(Unicode_block)#Replacement_character))
+ (the replacement character)
 or other strange things will happen to the text.
 
 NOTE: remember to always check your data when you import it!
@@ -712,7 +714,7 @@ This often happens when R is using the **wrong character encoding**.
 
 All characters in a computer are **encoded** using some standardised system.
 
-R can recognise [latin1](http://en.wikipedia.org/wiki/Latin-1_Supplement_(Unicode_block))
+R can recognise latin1
 and [UTF-8](http://en.wikipedia.org/wiki/UTF-8).
 
 - latin1 is fairly limited (mostly to the latin alphabet)
@@ -912,8 +914,10 @@ background-color: #FF8C03
 
 # 🥅 Practice
 
-**Scrape** and **clean** the Medal Table from
-<http://www.bbc.com/sport/winter-olympics/2014/medals/countries>.
+**Scrape** and **clean** the Medals Table from
+<https://en.wikipedia.org/wiki/2012_Summer_Olympics_medal_table>.
+
+Hint: it is the second `table` on the page.
 
 Also, sort by total medals in **descending order**.
 

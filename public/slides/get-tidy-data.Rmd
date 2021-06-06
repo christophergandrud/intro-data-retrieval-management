@@ -193,7 +193,7 @@ Load data from @Pemstein2010 in a file called *uds_summary.csv*.
 ```{r, cache=TRUE, warning=FALSE, eval=FALSE}
 # For simplicity, store the URL in an object called 'URL'.
 
-URL <- "http://bit.ly/1jXJgDh"
+URL <- "https://bit.ly/3z4Lay2"
 
 # Create a temporary file called 'temp' to put the zip file into.
 temp <- tempfile()
@@ -216,7 +216,7 @@ uds <- read.csv(file = "data/uds_summary.csv")
 
 # Secure (https) URL Plain-text data
 
-Use `import()` from the devtools package.
+Use `import()` from the *rio* package.
 
 Data on GitHub is stored at secure URLs. Select the **RAW** URL:
 
@@ -235,21 +235,20 @@ Data maintainers (unfortunately) often change data sets with little or no docume
 `source_data` allows you to notice these changes by assigning each file a unique
 [SHA1 Hash](http://en.wikipedia.org/wiki/SHA-1).
 
-Each download can be checked against the Hash
+Each download can be checked against the Hash:
 
 ```{r, cache=TRUE}
 main <- repmis::source_data(URL,
                 sha1 = '01cff579b689cea9ef9c98e433ce3122745cc5cb')
 ```
 
+🏊 Dive deeper: [source code](https://github.com/christophergandrud/repmis/blob/3989ad8f5d6270ea1c939d8e53ad6c3c14afe4f1/R/utils.R#L39-L51) for hash check.
+
 ---
 
 # Excel Files
 
-The `source_XlsxData()` function in repmis does the same thing as `source_data()`, but
-for Excel files. 
-
-Builds on `read.xlsx()` for loading locally stored Excel files. 
+The `source_XlsxData()` function in repmis does the same hash check as `source_data()`, but for Excel files. It builds on `read.xlsx()` for loading locally stored Excel files. 
 
 Can also use `import()` from rio.
 
@@ -260,7 +259,8 @@ for statistical/graphical analyses.
 
 # Caching
 
-`source_data()` allows you to **cache** data with `cache = TRUE`.
+`source_data()` allows you to **cache** data with `cache = TRUE`
+([source code](https://github.com/christophergandrud/repmis/blob/3989ad8f5d6270ea1c939d8e53ad6c3c14afe4f1/R/source_data.R#L84-L113)).
 
 Caching stores data so that future requests for the data can be done faster.
 
@@ -396,7 +396,7 @@ First identify what your observations and variables are.
 
 Then use R tools to convert your data into this format.
 
-**tidyr** and its predecessor **reshape2** are particularly useful.
+**tidyr** and is particularly useful.
 
 ---
 
@@ -440,8 +440,7 @@ For example, see if:
 
 - Distributions are what you expect them to be.
 
-[testdat](https://github.com/ropensci/testdat) can be useful for this, though 
-not actively maintained.
+[dlookr](https://cran.r-project.org/web/packages/dlookr/vignettes/diagonosis.html) looks promising for a data quality checker package.
 
 ---
 

@@ -4,7 +4,7 @@
     <title>Parse PDFs and Text as Data</title>
     <meta charset="utf-8" />
     <meta name="author" content="Christopher Gandrud" />
-    <script src="libs/header-attrs-2.7/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.8/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/robot.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # Parse PDFs and Text as Data
 ### Christopher Gandrud
 ### HU DYNAMICS
-### 2020-05-30 (updated: 2021-03-16)
+### 2020-05-30 (updated: 2021-06-06)
 
 ---
 
@@ -48,7 +48,7 @@ background-color: #FB3579
 
 &lt;img src="img/peace-table.png" width="400px" height="300px" style="display: block; margin: auto;" /&gt;
 
-PDF at: &lt;http://visionofhumanity.org/app/uploads/2019/07/GPI-2019web.pdf&gt;
+PDF at: &lt;https://www.visionofhumanity.org/wp-content/uploads/2020/10/GPI_2020_web.pdf&gt;
 
 Example modified from [Ketan Deshpande](https://medium.com/@ketanrd.009/how-to-extract-pdf-tables-in-r-e994c0fe4e28)
 
@@ -93,12 +93,12 @@ head(all_tables_df)[, 1:4]
 
 ```
 ##   RANK     COUNTRY SCORE CHANGE
-## 1    1     Iceland 1.078 \uf07e
-## 2    2 New Zealand 1.198 \uf07e
-## 3    3    Portugal 1.247 \uf07e
-## 4    4     Austria 1.275 \uf07e
-## 5    5     Denmark 1.283 \uf07e
-## 6    6      Canada 1.298 \uf07e
+## 1    1     Iceland 1.078      
+## 2    2 New Zealand 1.198      
+## 3    3    Portugal 1.247      
+## 4    4     Austria 1.275      
+## 5    5     Denmark 1.283      
+## 6    6      Canada 1.298      
 ```
 
 Clean up in the lesson practice.
@@ -207,7 +207,7 @@ announce_page_href_1
 ```
 
 ```
-## [1] "/government/news/move-to-boost-transport-connections-across-the-whole-of-the-uk"
+## [1] "/government/news/pm-announces-plan-for-global-pandemic-radar"
 ```
 
 &lt;br&gt;
@@ -229,33 +229,33 @@ announce_page_href
 ```
 
 ```
-##  [1] "/government/news/move-to-boost-transport-connections-across-the-whole-of-the-uk"                                                  
-##  [2] "/government/speeches/pm-statement-at-coronavirus-press-conference-8-march-2021"                                                   
-##  [3] "/government/news/schools-and-colleges-to-reopen-from-tomorrow-as-part-of-step-one-of-the-roadmap"                                 
-##  [4] "/government/speeches/pm-statement-at-coronavirus-press-conference-22-february-2021"                                               
-##  [5] "/government/speeches/pm-statement-to-the-house-of-commons-on-roadmap-for-easing-lockdown-restrictions-in-england-22-february-2021"
-##  [6] "/government/news/prime-minister-to-publish-roadmap-for-cautiously-easing-covid-restrictions"                                      
-##  [7] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-15-february-2021"                                          
-##  [8] "/government/news/new-commissioner-appointed-to-oversee-education-catch-up"                                                        
-##  [9] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-10-february-2021"                                          
-## [10] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-3-february-2021"                                           
-## [11] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-27-january-2021"                                           
-## [12] "/government/speeches/prime-ministers-statement-to-the-house-of-commons-on-coronavirus-27-january-2021"                            
-## [13] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-26-january-2021"                                           
-## [14] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-22-january-2021"                                           
-## [15] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-15-january-2021"                                           
-## [16] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-7-january-2021"                                            
-## [17] "/government/speeches/prime-ministers-statement-to-the-house-of-commons-on-covid-19-regulations-6-january-2021"                    
-## [18] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-5-january-2021"                                            
-## [19] "/government/news/prime-minister-announces-national-lockdown"                                                                      
-## [20] "/government/speeches/prime-ministers-address-to-the-nation-4-january-2021"
+##  [1] "/government/news/pm-announces-plan-for-global-pandemic-radar"                                                                     
+##  [2] "/government/speeches/pm-statement-at-coronavirus-press-conference-14-may-2021"                                                    
+##  [3] "/government/speeches/pm-house-of-commons-statement-on-covid-12-may-2021"                                                          
+##  [4] "/government/speeches/pm-statement-at-coronavirus-press-conference-10-may-2021"                                                    
+##  [5] "/government/news/uk-sends-further-life-saving-support-to-india"                                                                   
+##  [6] "/government/news/uk-sends-life-saving-medical-equipment-to-india"                                                                 
+##  [7] "/government/speeches/pm-statement-at-coronavirus-press-conference-20-april-2021"                                                  
+##  [8] "/government/news/10-million-people-receive-second-dose-of-covid-19-vaccine"                                                       
+##  [9] "/government/speeches/pm-statement-at-coronavirus-press-conference-5-april-2021"                                                   
+## [10] "/government/news/twice-weekly-rapid-testing-to-be-available-to-everyone-in-england"                                               
+## [11] "/government/speeches/pm-statement-at-coronavirus-press-conference-29-march-2021"                                                  
+## [12] "/government/speeches/pm-statement-at-coronavirus-press-conference-23-march-2021"                                                  
+## [13] "/government/speeches/pm-statement-at-coronavirus-press-conference-18-march-2021"                                                  
+## [14] "/government/speeches/pm-boris-johnson-the-oxford-vaccine-shows-why-we-and-the-world-need-britain-to-be-global"                    
+## [15] "/government/news/move-to-boost-transport-connections-across-the-whole-of-the-uk"                                                  
+## [16] "/government/speeches/pm-statement-at-coronavirus-press-conference-8-march-2021"                                                   
+## [17] "/government/news/schools-and-colleges-to-reopen-from-tomorrow-as-part-of-step-one-of-the-roadmap"                                 
+## [18] "/government/speeches/pm-statement-at-coronavirus-press-conference-22-february-2021"                                               
+## [19] "/government/speeches/pm-statement-to-the-house-of-commons-on-roadmap-for-easing-lockdown-restrictions-in-england-22-february-2021"
+## [20] "/government/news/prime-minister-to-publish-roadmap-for-cautiously-easing-covid-restrictions"
 ```
 
 ---
 
 # Multiple pages
 
-There were 29 search results, but we only have:
+Notice:
 
 
 ```r
@@ -307,7 +307,7 @@ length(all_href)
 ```
 
 ```
-## [1] 92
+## [1] 106
 ```
 
 ```r
@@ -315,98 +315,112 @@ all_href
 ```
 
 ```
-##  [1] "/government/news/move-to-boost-transport-connections-across-the-whole-of-the-uk"                                                  
-##  [2] "/government/speeches/pm-statement-at-coronavirus-press-conference-8-march-2021"                                                   
-##  [3] "/government/news/schools-and-colleges-to-reopen-from-tomorrow-as-part-of-step-one-of-the-roadmap"                                 
-##  [4] "/government/speeches/pm-statement-at-coronavirus-press-conference-22-february-2021"                                               
-##  [5] "/government/speeches/pm-statement-to-the-house-of-commons-on-roadmap-for-easing-lockdown-restrictions-in-england-22-february-2021"
-##  [6] "/government/news/prime-minister-to-publish-roadmap-for-cautiously-easing-covid-restrictions"                                      
-##  [7] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-15-february-2021"                                          
-##  [8] "/government/news/new-commissioner-appointed-to-oversee-education-catch-up"                                                        
-##  [9] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-10-february-2021"                                          
-## [10] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-3-february-2021"                                           
-## [11] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-27-january-2021"                                           
-## [12] "/government/speeches/prime-ministers-statement-to-the-house-of-commons-on-coronavirus-27-january-2021"                            
-## [13] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-26-january-2021"                                           
-## [14] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-22-january-2021"                                           
-## [15] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-15-january-2021"                                           
-## [16] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-7-january-2021"                                            
-## [17] "/government/speeches/prime-ministers-statement-to-the-house-of-commons-on-covid-19-regulations-6-january-2021"                    
-## [18] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-5-january-2021"                                            
-## [19] "/government/news/prime-minister-announces-national-lockdown"                                                                      
-## [20] "/government/speeches/prime-ministers-address-to-the-nation-4-january-2021"                                                        
-## [21] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-30-december-2020"                                          
-## [22] "/government/news/prime-minister-announces-tier-4-stay-at-home-alert-level-in-response-to-new-covid-variant"                       
-## [23] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-19-december-2020"                                          
-## [24] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-16-december-2020"                                          
-## [25] "/government/news/governments-vaccines-taskforce-has-worked-decisively-and-at-great-pace-to-improve-uks-pandemic-preparedness"     
-## [26] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-2-december-2020"                                           
-## [27] "/government/news/prime-minister-announces-1000-christmas-grant-for-wet-led-pubs"                                                  
-## [28] "/government/speeches/prime-ministers-statement-to-the-house-of-commons-on-coronavirus-regulations-1-december-2020"                
-## [29] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-26-november-2020"                                          
-## [30] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-23-november-2020"                                          
-## [31] "/government/news/prime-minister-publishes-covid-winter-plan"                                                                      
-## [32] "/government/speeches/pm-statement-on-covid-19-winter-plan-23-november-2020"                                                       
-## [33] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-9-november-2020"                                           
-## [34] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-5-november-2020"                                           
-## [35] "/government/speeches/prime-ministers-statement-to-the-house-of-commons-on-coronavirus-4-november-2020"                            
-## [36] "/government/speeches/pm-commons-statement-on-coronavirus-2-november"                                                              
-## [37] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-31-october-2020"                                           
-## [38] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-22-october-2020"                                           
-## [39] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-20-october-2020"                                           
-## [40] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-16-october-2020"                                           
-## [41] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-12-october-2020"                                           
-## [42] "/government/news/prime-minister-announces-new-local-covid-alert-levels"                                                           
-## [43] "/government/speeches/pm-commons-statement-on-coronavirus-12-october-2020"                                                         
-## [44] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-30-september-2020"                                         
-## [45] "/government/news/covid-19-honours"                                                                                                
-## [46] "/government/speeches/prime-ministers-speech-to-un-general-assembly-26-september-2020"                                             
-## [47] "/government/news/prime-minister-world-must-unite-to-defeat-covid-and-prevent-future-pandemics"                                    
-## [48] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-22-september-2020"                                         
-## [49] "/government/speeches/pm-commons-statement-on-coronavirus-22-september-2020"                                                       
-## [50] "/government/speeches/pm-press-conference-statement-9-september-2020"                                                              
-## [51] "/government/speeches/standing-side-by-side-well-build-back-better-than-ever"                                                      
-## [52] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-31-july-2020"                                              
-## [53] "/government/news/audiences-back-in-theatres-from-1-august"                                                                        
-## [54] "/government/news/ventilator-challenge-hailed-a-success-as-uk-production-finishes"                                                 
-## [55] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-3-july-2020"                                               
-## [56] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-23-june-2020"                                              
-## [57] "/government/speeches/prime-ministers-statement-to-the-house-on-covid-19-23-june-2020"                                             
-## [58] "/government/news/pm-announces-easing-of-lockdown-restrictions-23-june-2020"                                                       
-## [59] "/government/speeches/pm-statement-at-the-coronavirus-press-conference-16-june-2020"                                               
-## [60] "/government/speeches/pm-statement-at-the-coronavirus-press-conference-10-june-2020"                                               
-## [61] "/government/speeches/pm-statement-at-the-coronavirus-press-conference-3-june-2020"                                                
-## [62] "/government/news/prime-minister-hails-resilience-of-shielders-as-restrictions-set-to-ease"                                        
-## [63] "/government/news/pm-six-people-can-meet-outside-under-new-measures-to-ease-lockdown"                                              
-## [64] "/government/speeches/pm-press-conference-statement-on-the-five-tests-28-may-2020"                                                 
-## [65] "/government/news/prime-minister-sets-out-timeline-for-retail-to-reopen-in-june"                                                   
-## [66] "/government/speeches/pm-press-conference-statement-25-may-2020"                                                                   
-## [67] "/government/speeches/pm-press-conference-statement-24-may-2020"                                                                   
-## [68] "/government/news/pm-confirms-schools-colleges-and-nurseries-on-track-to-begin-phased-reopening"                                   
-## [69] "/government/news/new-measures-announced-ahead-of-hidden-harms-summit"                                                             
-## [70] "/government/speeches/prime-ministers-article-in-the-mail-on-sunday-17-may-2020"                                                   
-## [71] "/government/speeches/pm-statement-on-coronavirus-11-may-2020"                                                                     
-## [72] "/government/speeches/pm-address-to-the-nation-on-coronavirus-10-may-2020"                                                         
-## [73] "/government/news/prime-ministers-statement-on-coronavirus-covid-19-30-april-2020"                                                 
-## [74] "/government/news/pm-call-with-president-trump-27-march-2020"                                                                      
-## [75] "/government/speeches/pm-video-message-on-coronavirus-27-march-2020"                                                               
-## [76] "/government/speeches/pm-statement-on-coronavirus-25-march-2020"                                                                   
-## [77] "/government/speeches/pm-address-to-the-nation-on-coronavirus-23-march-2020"                                                       
-## [78] "/government/speeches/pm-statement-on-coronavirus-22-march-2020"                                                                   
-## [79] "/government/speeches/pm-mothers-day-words-22-march-2020"                                                                          
-## [80] "/government/speeches/pm-statement-on-coronavirus-18-march-2020"                                                                   
-## [81] "/government/news/new-government-structures-to-coordinate-response-to-coronavirus"                                                 
-## [82] "/government/speeches/pm-statement-on-coronavirus-16-march-2020"                                                                   
-## [83] "/government/news/prime-minister-to-lead-cross-government-drive-to-defeat-coronavirus"                                             
-## [84] "/government/news/pm-call-with-crown-prince-mohammed-bin-salman-15-march-2020"                                                     
-## [85] "/government/news/pm-call-with-prime-minister-abe-15-march-2020"                                                                   
-## [86] "/government/news/pm-call-with-president-trump-14-march-2020"                                                                      
-## [87] "/government/news/pm-call-with-prime-minister-of-australia-scott-morrison-14-march-2020"                                           
-## [88] "/government/speeches/pm-statement-on-coronavirus-12-march-2020"                                                                   
-## [89] "/government/speeches/pm-statement-on-coronavirus-9-march-2020"                                                                    
-## [90] "/government/news/pm-announces-new-funding-in-fight-against-spread-of-coronavirus"                                                 
-## [91] "/government/news/sick-pay-from-day-one-for-those-affected-by-coronavirus"                                                         
-## [92] "/government/news/pm-to-chair-cobr-meeting-on-the-coronavirus-outbreak"
+##   [1] "/government/news/pm-announces-plan-for-global-pandemic-radar"                                                                     
+##   [2] "/government/speeches/pm-statement-at-coronavirus-press-conference-14-may-2021"                                                    
+##   [3] "/government/speeches/pm-house-of-commons-statement-on-covid-12-may-2021"                                                          
+##   [4] "/government/speeches/pm-statement-at-coronavirus-press-conference-10-may-2021"                                                    
+##   [5] "/government/news/uk-sends-further-life-saving-support-to-india"                                                                   
+##   [6] "/government/news/uk-sends-life-saving-medical-equipment-to-india"                                                                 
+##   [7] "/government/speeches/pm-statement-at-coronavirus-press-conference-20-april-2021"                                                  
+##   [8] "/government/news/10-million-people-receive-second-dose-of-covid-19-vaccine"                                                       
+##   [9] "/government/speeches/pm-statement-at-coronavirus-press-conference-5-april-2021"                                                   
+##  [10] "/government/news/twice-weekly-rapid-testing-to-be-available-to-everyone-in-england"                                               
+##  [11] "/government/speeches/pm-statement-at-coronavirus-press-conference-29-march-2021"                                                  
+##  [12] "/government/speeches/pm-statement-at-coronavirus-press-conference-23-march-2021"                                                  
+##  [13] "/government/speeches/pm-statement-at-coronavirus-press-conference-18-march-2021"                                                  
+##  [14] "/government/speeches/pm-boris-johnson-the-oxford-vaccine-shows-why-we-and-the-world-need-britain-to-be-global"                    
+##  [15] "/government/news/move-to-boost-transport-connections-across-the-whole-of-the-uk"                                                  
+##  [16] "/government/speeches/pm-statement-at-coronavirus-press-conference-8-march-2021"                                                   
+##  [17] "/government/news/schools-and-colleges-to-reopen-from-tomorrow-as-part-of-step-one-of-the-roadmap"                                 
+##  [18] "/government/speeches/pm-statement-at-coronavirus-press-conference-22-february-2021"                                               
+##  [19] "/government/speeches/pm-statement-to-the-house-of-commons-on-roadmap-for-easing-lockdown-restrictions-in-england-22-february-2021"
+##  [20] "/government/news/prime-minister-to-publish-roadmap-for-cautiously-easing-covid-restrictions"                                      
+##  [21] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-15-february-2021"                                          
+##  [22] "/government/news/new-commissioner-appointed-to-oversee-education-catch-up"                                                        
+##  [23] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-10-february-2021"                                          
+##  [24] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-3-february-2021"                                           
+##  [25] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-27-january-2021"                                           
+##  [26] "/government/speeches/prime-ministers-statement-to-the-house-of-commons-on-coronavirus-27-january-2021"                            
+##  [27] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-26-january-2021"                                           
+##  [28] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-22-january-2021"                                           
+##  [29] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-15-january-2021"                                           
+##  [30] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-7-january-2021"                                            
+##  [31] "/government/speeches/prime-ministers-statement-to-the-house-of-commons-on-covid-19-regulations-6-january-2021"                    
+##  [32] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-5-january-2021"                                            
+##  [33] "/government/news/prime-minister-announces-national-lockdown"                                                                      
+##  [34] "/government/speeches/prime-ministers-address-to-the-nation-4-january-2021"                                                        
+##  [35] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-30-december-2020"                                          
+##  [36] "/government/news/prime-minister-announces-tier-4-stay-at-home-alert-level-in-response-to-new-covid-variant"                       
+##  [37] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-19-december-2020"                                          
+##  [38] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-16-december-2020"                                          
+##  [39] "/government/news/governments-vaccines-taskforce-has-worked-decisively-and-at-great-pace-to-improve-uks-pandemic-preparedness"     
+##  [40] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-2-december-2020"                                           
+##  [41] "/government/news/prime-minister-announces-1000-christmas-grant-for-wet-led-pubs"                                                  
+##  [42] "/government/speeches/prime-ministers-statement-to-the-house-of-commons-on-coronavirus-regulations-1-december-2020"                
+##  [43] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-26-november-2020"                                          
+##  [44] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-23-november-2020"                                          
+##  [45] "/government/news/prime-minister-publishes-covid-winter-plan"                                                                      
+##  [46] "/government/speeches/pm-statement-on-covid-19-winter-plan-23-november-2020"                                                       
+##  [47] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-9-november-2020"                                           
+##  [48] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-5-november-2020"                                           
+##  [49] "/government/speeches/prime-ministers-statement-to-the-house-of-commons-on-coronavirus-4-november-2020"                            
+##  [50] "/government/speeches/pm-commons-statement-on-coronavirus-2-november"                                                              
+##  [51] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-31-october-2020"                                           
+##  [52] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-22-october-2020"                                           
+##  [53] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-20-october-2020"                                           
+##  [54] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-16-october-2020"                                           
+##  [55] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-12-october-2020"                                           
+##  [56] "/government/news/prime-minister-announces-new-local-covid-alert-levels"                                                           
+##  [57] "/government/speeches/pm-commons-statement-on-coronavirus-12-october-2020"                                                         
+##  [58] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-30-september-2020"                                         
+##  [59] "/government/news/covid-19-honours"                                                                                                
+##  [60] "/government/speeches/prime-ministers-speech-to-un-general-assembly-26-september-2020"                                             
+##  [61] "/government/news/prime-minister-world-must-unite-to-defeat-covid-and-prevent-future-pandemics"                                    
+##  [62] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-22-september-2020"                                         
+##  [63] "/government/speeches/pm-commons-statement-on-coronavirus-22-september-2020"                                                       
+##  [64] "/government/speeches/pm-press-conference-statement-9-september-2020"                                                              
+##  [65] "/government/speeches/standing-side-by-side-well-build-back-better-than-ever"                                                      
+##  [66] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-31-july-2020"                                              
+##  [67] "/government/news/audiences-back-in-theatres-from-1-august"                                                                        
+##  [68] "/government/news/ventilator-challenge-hailed-a-success-as-uk-production-finishes"                                                 
+##  [69] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-3-july-2020"                                               
+##  [70] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-23-june-2020"                                              
+##  [71] "/government/speeches/prime-ministers-statement-to-the-house-on-covid-19-23-june-2020"                                             
+##  [72] "/government/news/pm-announces-easing-of-lockdown-restrictions-23-june-2020"                                                       
+##  [73] "/government/speeches/pm-statement-at-the-coronavirus-press-conference-16-june-2020"                                               
+##  [74] "/government/speeches/pm-statement-at-the-coronavirus-press-conference-10-june-2020"                                               
+##  [75] "/government/speeches/pm-statement-at-the-coronavirus-press-conference-3-june-2020"                                                
+##  [76] "/government/news/prime-minister-hails-resilience-of-shielders-as-restrictions-set-to-ease"                                        
+##  [77] "/government/news/pm-six-people-can-meet-outside-under-new-measures-to-ease-lockdown"                                              
+##  [78] "/government/speeches/pm-press-conference-statement-on-the-five-tests-28-may-2020"                                                 
+##  [79] "/government/news/prime-minister-sets-out-timeline-for-retail-to-reopen-in-june"                                                   
+##  [80] "/government/speeches/pm-press-conference-statement-25-may-2020"                                                                   
+##  [81] "/government/speeches/pm-press-conference-statement-24-may-2020"                                                                   
+##  [82] "/government/news/pm-confirms-schools-colleges-and-nurseries-on-track-to-begin-phased-reopening"                                   
+##  [83] "/government/news/new-measures-announced-ahead-of-hidden-harms-summit"                                                             
+##  [84] "/government/speeches/prime-ministers-article-in-the-mail-on-sunday-17-may-2020"                                                   
+##  [85] "/government/speeches/pm-statement-on-coronavirus-11-may-2020"                                                                     
+##  [86] "/government/speeches/pm-address-to-the-nation-on-coronavirus-10-may-2020"                                                         
+##  [87] "/government/news/prime-ministers-statement-on-coronavirus-covid-19-30-april-2020"                                                 
+##  [88] "/government/news/pm-call-with-president-trump-27-march-2020"                                                                      
+##  [89] "/government/speeches/pm-video-message-on-coronavirus-27-march-2020"                                                               
+##  [90] "/government/speeches/pm-statement-on-coronavirus-25-march-2020"                                                                   
+##  [91] "/government/speeches/pm-address-to-the-nation-on-coronavirus-23-march-2020"                                                       
+##  [92] "/government/speeches/pm-statement-on-coronavirus-22-march-2020"                                                                   
+##  [93] "/government/speeches/pm-mothers-day-words-22-march-2020"                                                                          
+##  [94] "/government/speeches/pm-statement-on-coronavirus-18-march-2020"                                                                   
+##  [95] "/government/news/new-government-structures-to-coordinate-response-to-coronavirus"                                                 
+##  [96] "/government/speeches/pm-statement-on-coronavirus-16-march-2020"                                                                   
+##  [97] "/government/news/prime-minister-to-lead-cross-government-drive-to-defeat-coronavirus"                                             
+##  [98] "/government/news/pm-call-with-crown-prince-mohammed-bin-salman-15-march-2020"                                                     
+##  [99] "/government/news/pm-call-with-prime-minister-abe-15-march-2020"                                                                   
+## [100] "/government/news/pm-call-with-president-trump-14-march-2020"                                                                      
+## [101] "/government/news/pm-call-with-prime-minister-of-australia-scott-morrison-14-march-2020"                                           
+## [102] "/government/speeches/pm-statement-on-coronavirus-12-march-2020"                                                                   
+## [103] "/government/speeches/pm-statement-on-coronavirus-9-march-2020"                                                                    
+## [104] "/government/news/pm-announces-new-funding-in-fight-against-spread-of-coronavirus"                                                 
+## [105] "/government/news/sick-pay-from-day-one-for-those-affected-by-coronavirus"                                                         
+## [106] "/government/news/pm-to-chair-cobr-meeting-on-the-coronavirus-outbreak"
 ```
 
 ---
@@ -421,7 +435,7 @@ url_one
 ```
 
 ```
-## [1] "https://www.gov.uk/government/news/move-to-boost-transport-connections-across-the-whole-of-the-uk"
+## [1] "https://www.gov.uk/government/news/pm-announces-plan-for-global-pandemic-radar"
 ```
 
 ---
@@ -464,6 +478,62 @@ for (i in seq(all_href)) {
   tmp_df &lt;- data.frame(url = all_href[i], text = text)
   all_texts &lt;- bind_rows(all_texts, tmp_df)
 }
+```
+
+```
+## https://www.gov.uk/government/news/pm-announces-plan-for-global-pandemic-radar
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-coronavirus-press-conference-14-may-2021
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-house-of-commons-statement-on-covid-12-may-2021
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-coronavirus-press-conference-10-may-2021
+```
+
+```
+## https://www.gov.uk/government/news/uk-sends-further-life-saving-support-to-india
+```
+
+```
+## https://www.gov.uk/government/news/uk-sends-life-saving-medical-equipment-to-india
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-coronavirus-press-conference-20-april-2021
+```
+
+```
+## https://www.gov.uk/government/news/10-million-people-receive-second-dose-of-covid-19-vaccine
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-coronavirus-press-conference-5-april-2021
+```
+
+```
+## https://www.gov.uk/government/news/twice-weekly-rapid-testing-to-be-available-to-everyone-in-england
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-coronavirus-press-conference-29-march-2021
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-coronavirus-press-conference-23-march-2021
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-coronavirus-press-conference-18-march-2021
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-boris-johnson-the-oxford-vaccine-shows-why-we-and-the-world-need-britain-to-be-global
 ```
 
 ```
@@ -839,7 +909,7 @@ nrow(all_texts)
 ```
 
 ```
-## [1] 153
+## [1] 176
 ```
 
 ---
@@ -857,110 +927,133 @@ summary(announce_corpus)
 ```
 
 ```
-## Corpus consisting of 153 documents, showing 100 documents:
+## Corpus consisting of 176 documents, showing 100 documents:
 ## 
 ##     Text Types Tokens Sentences
-##    text1   427   1034        27
+##    text1   335    797        26
 ##    text2    18     18         1
-##    text3   244    528        14
-##    text4   444   1083        34
-##    text5    18     18         1
-##    text6   423    975        24
-##    text7     6      6         1
-##    text8   772   2182        77
-##    text9   255    525        21
+##    text3   422   1077        37
+##    text4     6      6         1
+##    text5   511   1305        37
+##    text6    18     18         1
+##    text7   427    919        30
+##    text8   375    922        32
+##    text9   293    717        25
 ##   text10    18     18         1
-##   text11   247    506        20
-##   text12   299    743        23
+##   text11   317    661        20
+##   text12   342    768        24
 ##   text13    18     18         1
-##   text14   311    657        18
-##   text15    18     18         1
-##   text16   296    592        14
-##   text17    18     18         1
-##   text18   327    807        16
-##   text19     6      6         1
-##   text20   666   1873        45
-##   text21    18     18         1
-##   text22   206    395        10
-##   text23    18     18         1
-##   text24   284    591        17
+##   text14   263    529        16
+##   text15   486   1379        45
+##   text16    18     18         1
+##   text17   278    560        14
+##   text18    18     18         1
+##   text19   237    466        12
+##   text20    18     18         1
+##   text21   295    673        23
+##   text22     6      6         1
+##   text23   432    989        38
+##   text24   427   1034        27
 ##   text25    18     18         1
-##   text26   344    769        24
-##   text27    18     18         1
-##   text28   432    988        23
-##   text29    18     18         1
-##   text30   654   1704        45
-##   text31    18     18         1
-##   text32   275    589        13
-##   text33   414    914        30
-##   text34    18     18         1
-##   text35   528   1275        51
+##   text26   244    528        14
+##   text27   444   1083        34
+##   text28    18     18         1
+##   text29   423    975        24
+##   text30     6      6         1
+##   text31   772   2182        77
+##   text32   255    525        21
+##   text33    18     18         1
+##   text34   247    506        20
+##   text35   299    743        23
 ##   text36    18     18         1
-##   text37   415   1019        30
-##   text38   325    687        24
-##   text39    18     18         1
-##   text40   476   1227        58
-##   text41    18     18         1
-##   text42   368    833        25
-##   text43   498   1380        35
+##   text37   311    657        18
+##   text38    18     18         1
+##   text39   296    592        14
+##   text40    18     18         1
+##   text41   327    807        16
+##   text42     6      6         1
+##   text43   666   1873        45
 ##   text44    18     18         1
-##   text45   336    701        10
-##   text46   229    484        13
-##   text47    18     18         1
-##   text48   664   1930        64
-##   text49    18     18         1
-##   text50   442   1036        39
-##   text51    18     18         1
-##   text52   342    798         1
-##   text53   359    776        27
-##   text54     6      6         1
-##   text55   666   1899        61
-##   text56    18     18         1
-##   text57   425    979        36
-##   text58    18     18         1
-##   text59   408    967        45
-##   text60    18     18         1
-##   text61   670   2009        62
-##   text62     6      6         1
-##   text63   691   1982        66
+##   text45   206    395        10
+##   text46    18     18         1
+##   text47   284    591        17
+##   text48    18     18         1
+##   text49   344    769        24
+##   text50    18     18         1
+##   text51   432    988        23
+##   text52    18     18         1
+##   text53   654   1704        45
+##   text54    18     18         1
+##   text55   275    589        13
+##   text56   414    914        30
+##   text57    18     18         1
+##   text58   528   1275        51
+##   text59    18     18         1
+##   text60   415   1019        30
+##   text61   325    687        24
+##   text62    18     18         1
+##   text63   476   1227        58
 ##   text64    18     18         1
-##   text65   639   1814        49
-##   text66    18     18         1
-##   text67   314    746        33
-##   text68    18     18         1
-##   text69   356    793        38
+##   text65   368    833        25
+##   text66   498   1380        35
+##   text67    18     18         1
+##   text68   336    701        10
+##   text69   229    484        13
 ##   text70    18     18         1
-##   text71   611   1699        74
+##   text71   664   1930        64
 ##   text72    18     18         1
-##   text73   336    696        28
-##   text74   570   1526        51
-##   text75     6      6         1
-##   text76   614   1737        37
-##   text77    18     18         1
-##   text78   363    838        25
-##   text79   183    363        12
-##   text80    18     18         1
-##   text81   878   2381        88
-##   text82   447   1022        36
+##   text73   442   1036        39
+##   text74    18     18         1
+##   text75   342    798         1
+##   text76   359    776        27
+##   text77     6      6         1
+##   text78   666   1899        61
+##   text79    18     18         1
+##   text80   425    979        36
+##   text81    18     18         1
+##   text82   408    967        45
 ##   text83    18     18         1
-##   text84   466   1262        41
-##   text85    18     18         1
-##   text86   686   1891        70
+##   text84   670   2009        62
+##   text85     6      6         1
+##   text86   691   1982        66
 ##   text87    18     18         1
-##   text88   733   2273        94
-##   text89     6      6         1
-##   text90   360    712        23
+##   text88   639   1814        49
+##   text89    18     18         1
+##   text90   314    746        33
 ##   text91    18     18         1
-##   text92   525   1310        56
-##   text93   292    624        26
-##   text94   454   1173        42
+##   text92   356    793        38
+##   text93    18     18         1
+##   text94   611   1699        74
 ##   text95    18     18         1
-##   text96   611   1727        78
-##   text97    18     18         1
-##   text98   643   1904        76
-##   text99    18     18         1
-##  text100   760   2038        69
+##   text96   336    696        28
+##   text97   570   1526        51
+##   text98     6      6         1
+##   text99   614   1737        37
+##  text100    18     18         1
 ##                                                                                                                                url
+##                                                                       /government/news/pm-announces-plan-for-global-pandemic-radar
+##                                                      /government/speeches/pm-statement-at-coronavirus-press-conference-14-may-2021
+##                                                      /government/speeches/pm-statement-at-coronavirus-press-conference-14-may-2021
+##                                                            /government/speeches/pm-house-of-commons-statement-on-covid-12-may-2021
+##                                                            /government/speeches/pm-house-of-commons-statement-on-covid-12-may-2021
+##                                                      /government/speeches/pm-statement-at-coronavirus-press-conference-10-may-2021
+##                                                      /government/speeches/pm-statement-at-coronavirus-press-conference-10-may-2021
+##                                                                     /government/news/uk-sends-further-life-saving-support-to-india
+##                                                                   /government/news/uk-sends-life-saving-medical-equipment-to-india
+##                                                    /government/speeches/pm-statement-at-coronavirus-press-conference-20-april-2021
+##                                                    /government/speeches/pm-statement-at-coronavirus-press-conference-20-april-2021
+##                                                         /government/news/10-million-people-receive-second-dose-of-covid-19-vaccine
+##                                                     /government/speeches/pm-statement-at-coronavirus-press-conference-5-april-2021
+##                                                     /government/speeches/pm-statement-at-coronavirus-press-conference-5-april-2021
+##                                                 /government/news/twice-weekly-rapid-testing-to-be-available-to-everyone-in-england
+##                                                    /government/speeches/pm-statement-at-coronavirus-press-conference-29-march-2021
+##                                                    /government/speeches/pm-statement-at-coronavirus-press-conference-29-march-2021
+##                                                    /government/speeches/pm-statement-at-coronavirus-press-conference-23-march-2021
+##                                                    /government/speeches/pm-statement-at-coronavirus-press-conference-23-march-2021
+##                                                    /government/speeches/pm-statement-at-coronavirus-press-conference-18-march-2021
+##                                                    /government/speeches/pm-statement-at-coronavirus-press-conference-18-march-2021
+##                      /government/speeches/pm-boris-johnson-the-oxford-vaccine-shows-why-we-and-the-world-need-britain-to-be-global
+##                      /government/speeches/pm-boris-johnson-the-oxford-vaccine-shows-why-we-and-the-world-need-britain-to-be-global
 ##                                                    /government/news/move-to-boost-transport-connections-across-the-whole-of-the-uk
 ##                                                     /government/speeches/pm-statement-at-coronavirus-press-conference-8-march-2021
 ##                                                     /government/speeches/pm-statement-at-coronavirus-press-conference-8-march-2021
@@ -1038,29 +1131,6 @@ summary(announce_corpus)
 ##                                                           /government/speeches/pm-commons-statement-on-coronavirus-12-october-2020
 ##                                                           /government/speeches/pm-commons-statement-on-coronavirus-12-october-2020
 ##                                           /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-30-september-2020
-##                                           /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-30-september-2020
-##                                                                                                  /government/news/covid-19-honours
-##                                               /government/speeches/prime-ministers-speech-to-un-general-assembly-26-september-2020
-##                                               /government/speeches/prime-ministers-speech-to-un-general-assembly-26-september-2020
-##                                      /government/news/prime-minister-world-must-unite-to-defeat-covid-and-prevent-future-pandemics
-##                                           /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-22-september-2020
-##                                           /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-22-september-2020
-##                                                         /government/speeches/pm-commons-statement-on-coronavirus-22-september-2020
-##                                                         /government/speeches/pm-commons-statement-on-coronavirus-22-september-2020
-##                                                                /government/speeches/pm-press-conference-statement-9-september-2020
-##                                                                /government/speeches/pm-press-conference-statement-9-september-2020
-##                                                        /government/speeches/standing-side-by-side-well-build-back-better-than-ever
-##                                                        /government/speeches/standing-side-by-side-well-build-back-better-than-ever
-##                                                /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-31-july-2020
-##                                                /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-31-july-2020
-##                                                                          /government/news/audiences-back-in-theatres-from-1-august
-##                                                   /government/news/ventilator-challenge-hailed-a-success-as-uk-production-finishes
-##                                                 /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-3-july-2020
-##                                                 /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-3-july-2020
-##                                                /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-23-june-2020
-##                                                /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-23-june-2020
-##                                               /government/speeches/prime-ministers-statement-to-the-house-on-covid-19-23-june-2020
-##                                               /government/speeches/prime-ministers-statement-to-the-house-on-covid-19-23-june-2020
 ```
 
 ---
@@ -1070,11 +1140,6 @@ summary(announce_corpus)
 None of the documents should have only one sentence.
 
 🐛 We need to debug.
-
-
-```r
-knitr::include_graphics("img/govspeach.png")
-```
 
 &lt;img src="img/govspeach.png" width="3309" style="display: block; margin: auto;" /&gt;
 
@@ -1106,102 +1171,124 @@ summary(announce_corpus)
 ```
 
 ```
-## Corpus consisting of 92 documents, showing 92 documents:
+## Corpus consisting of 106 documents, showing 100 documents:
 ## 
-##    Text Types Tokens Sentences
-##   text1   427   1034        27
-##   text2   244    528        14
-##   text3   444   1083        34
-##   text4   423    975        24
-##   text5   772   2182        77
-##   text6   255    525        21
-##   text7   247    506        20
-##   text8   299    743        23
-##   text9   311    657        18
-##  text10   296    592        14
-##  text11   327    807        16
-##  text12   666   1873        45
-##  text13   206    395        10
-##  text14   284    591        17
-##  text15   344    769        24
-##  text16   432    988        23
-##  text17   654   1704        45
-##  text18   275    589        13
-##  text19   414    914        30
-##  text20   528   1275        51
-##  text21   415   1019        30
-##  text22   325    687        24
-##  text23   476   1227        58
-##  text24   368    833        25
-##  text25   498   1380        35
-##  text26   336    701        10
-##  text27   229    484        13
-##  text28   664   1930        64
-##  text29   442   1036        39
-##  text30   342    798         1
-##  text31   359    776        27
-##  text32   666   1899        61
-##  text33   425    979        36
-##  text34   408    967        45
-##  text35   670   2009        62
-##  text36   691   1982        66
-##  text37   639   1814        49
-##  text38   314    746        33
-##  text39   356    793        38
-##  text40   611   1699        74
-##  text41   336    696        28
-##  text42   570   1526        51
-##  text43   614   1737        37
-##  text44   363    838        25
-##  text45   183    363        12
-##  text46   878   2381        88
-##  text47   447   1022        36
-##  text48   466   1262        41
-##  text49   686   1891        70
-##  text50   733   2273        94
-##  text51   360    712        23
-##  text52   525   1310        56
-##  text53   292    624        26
-##  text54   454   1173        42
-##  text55   611   1727        78
-##  text56   643   1904        76
-##  text57   760   2038        69
-##  text58   205    385        11
-##  text59   449   1112        41
-##  text60   662   2045        87
-##  text61   536   1409        57
-##  text62   591   1673        57
-##  text63   413   1085        35
-##  text64   672   2300        92
-##  text65   402    919        24
-##  text66   415    992        35
-##  text67   482   1248        44
-##  text68   337    782        23
-##  text69   632   1724        43
-##  text70   602   1554        73
-##  text71   384    910        30
-##  text72   655   2187       101
-##  text73   465   1172         6
-##  text74    36     50         3
-##  text75   171    366        21
-##  text76   234    491        27
-##  text77   385    983        48
-##  text78   300    729        33
-##  text79   284    647        29
-##  text80   406   1175        51
-##  text81   181    376         8
-##  text82   405   1165        42
-##  text83   265    592        14
-##  text84    65     97         4
-##  text85    71    124         5
-##  text86    87    133         5
-##  text87    75    117         4
-##  text88   409   1170        49
-##  text89   266    577        21
-##  text90   504   1398        46
-##  text91   163    270        11
-##  text92   214    406        14
+##     Text Types Tokens Sentences
+##    text1   335    797        26
+##    text2   422   1077        37
+##    text3   511   1305        37
+##    text4   427    919        30
+##    text5   375    922        32
+##    text6   293    717        25
+##    text7   317    661        20
+##    text8   342    768        24
+##    text9   263    529        16
+##   text10   486   1379        45
+##   text11   278    560        14
+##   text12   237    466        12
+##   text13   295    673        23
+##   text14   432    989        38
+##   text15   427   1034        27
+##   text16   244    528        14
+##   text17   444   1083        34
+##   text18   423    975        24
+##   text19   772   2182        77
+##   text20   255    525        21
+##   text21   247    506        20
+##   text22   299    743        23
+##   text23   311    657        18
+##   text24   296    592        14
+##   text25   327    807        16
+##   text26   666   1873        45
+##   text27   206    395        10
+##   text28   284    591        17
+##   text29   344    769        24
+##   text30   432    988        23
+##   text31   654   1704        45
+##   text32   275    589        13
+##   text33   414    914        30
+##   text34   528   1275        51
+##   text35   415   1019        30
+##   text36   325    687        24
+##   text37   476   1227        58
+##   text38   368    833        25
+##   text39   498   1380        35
+##   text40   336    701        10
+##   text41   229    484        13
+##   text42   664   1930        64
+##   text43   442   1036        39
+##   text44   342    798         1
+##   text45   359    776        27
+##   text46   666   1899        61
+##   text47   425    979        36
+##   text48   408    967        45
+##   text49   670   2009        62
+##   text50   691   1982        66
+##   text51   639   1814        49
+##   text52   314    746        33
+##   text53   356    793        38
+##   text54   611   1699        74
+##   text55   336    696        28
+##   text56   570   1526        51
+##   text57   614   1737        37
+##   text58   363    838        25
+##   text59   183    363        12
+##   text60   878   2381        88
+##   text61   447   1022        36
+##   text62   466   1262        41
+##   text63   686   1891        70
+##   text64   733   2273        94
+##   text65   360    712        23
+##   text66   525   1310        56
+##   text67   292    624        26
+##   text68   454   1173        42
+##   text69   611   1727        78
+##   text70   643   1904        76
+##   text71   760   2038        69
+##   text72   205    385        11
+##   text73   449   1112        41
+##   text74   662   2045        87
+##   text75   536   1409        57
+##   text76   591   1673        57
+##   text77   413   1085        35
+##   text78   672   2300        92
+##   text79   402    919        24
+##   text80   415    992        35
+##   text81   482   1248        44
+##   text82   337    782        23
+##   text83   632   1724        43
+##   text84   602   1554        73
+##   text85   384    910        30
+##   text86   655   2187       101
+##   text87   465   1172         6
+##   text88    36     50         3
+##   text89   171    366        21
+##   text90   234    491        27
+##   text91   385    983        48
+##   text92   300    729        33
+##   text93   284    647        29
+##   text94   406   1175        51
+##   text95   181    376         8
+##   text96   405   1165        42
+##   text97   265    592        14
+##   text98    65     97         4
+##   text99    71    124         5
+##  text100    87    133         5
 ##                                                                                                                                url
+##                                                                       /government/news/pm-announces-plan-for-global-pandemic-radar
+##                                                      /government/speeches/pm-statement-at-coronavirus-press-conference-14-may-2021
+##                                                            /government/speeches/pm-house-of-commons-statement-on-covid-12-may-2021
+##                                                      /government/speeches/pm-statement-at-coronavirus-press-conference-10-may-2021
+##                                                                     /government/news/uk-sends-further-life-saving-support-to-india
+##                                                                   /government/news/uk-sends-life-saving-medical-equipment-to-india
+##                                                    /government/speeches/pm-statement-at-coronavirus-press-conference-20-april-2021
+##                                                         /government/news/10-million-people-receive-second-dose-of-covid-19-vaccine
+##                                                     /government/speeches/pm-statement-at-coronavirus-press-conference-5-april-2021
+##                                                 /government/news/twice-weekly-rapid-testing-to-be-available-to-everyone-in-england
+##                                                    /government/speeches/pm-statement-at-coronavirus-press-conference-29-march-2021
+##                                                    /government/speeches/pm-statement-at-coronavirus-press-conference-23-march-2021
+##                                                    /government/speeches/pm-statement-at-coronavirus-press-conference-18-march-2021
+##                      /government/speeches/pm-boris-johnson-the-oxford-vaccine-shows-why-we-and-the-world-need-britain-to-be-global
 ##                                                    /government/news/move-to-boost-transport-connections-across-the-whole-of-the-uk
 ##                                                     /government/speeches/pm-statement-at-coronavirus-press-conference-8-march-2021
 ##                                   /government/news/schools-and-colleges-to-reopen-from-tomorrow-as-part-of-step-one-of-the-roadmap
@@ -1288,12 +1375,6 @@ summary(announce_corpus)
 ##                                                       /government/news/pm-call-with-crown-prince-mohammed-bin-salman-15-march-2020
 ##                                                                     /government/news/pm-call-with-prime-minister-abe-15-march-2020
 ##                                                                        /government/news/pm-call-with-president-trump-14-march-2020
-##                                             /government/news/pm-call-with-prime-minister-of-australia-scott-morrison-14-march-2020
-##                                                                     /government/speeches/pm-statement-on-coronavirus-12-march-2020
-##                                                                      /government/speeches/pm-statement-on-coronavirus-9-march-2020
-##                                                   /government/news/pm-announces-new-funding-in-fight-against-spread-of-coronavirus
-##                                                           /government/news/sick-pay-from-day-one-for-those-affected-by-coronavirus
-##                                                              /government/news/pm-to-chair-cobr-meeting-on-the-coronavirus-outbreak
 ```
 
 ---
@@ -1302,23 +1383,26 @@ summary(announce_corpus)
 
 
 ```r
-announce_dtm &lt;- dfm(announce_corpus, 
-                    remove = stopwords("english"), 
-                    stem = TRUE, remove_punct = TRUE) 
+announce_dtm &lt;- announce_corpus %&gt;%
+                  tokens(remove_punct = TRUE) %&gt;%
+                  dfm() %&gt;%
+                  dfm_remove(stopwords("english")) %&gt;%
+                  dfm_wordstem() 
+
 announce_dtm
 ```
 
 ```
-## Document-feature matrix of: 92 documents, 3,907 features (92.5% sparse) and 1 docvar.
+## Document-feature matrix of: 106 documents, 4,146 features (93.07% sparse) and 1 docvar.
 ##        features
-## docs    prime minist set vision boost connect across uk improv transport
-##   text1     5      5   3      2     6      18      8 16      6        18
-##   text2     0      0   0      0     0       0      0  1      0         0
-##   text3     3      3   3      0     1       0      5  0      0         0
-##   text4     0      0   0      0     0       0      3  0      0         0
-##   text5     0      0   6      0     0       0      3  2      0         0
-##   text6     3      3   6      0     0       0      2  0      0         0
-## [ reached max_ndoc ... 86 more documents, reached max_nfeat ... 3,897 more features ]
+## docs    prime minist announc plan new global pandem radar identifi track
+##   text1     6      6       2    3  11     13     11     4        5     4
+##   text2     0      0       0    2   4      0      1     0        0     0
+##   text3     0      2       0    1   2      1      7     0        3     0
+##   text4     0      0       1    0   0      0      1     0        0     1
+##   text5    10     10       2    0   1      1      3     0        0     0
+##   text6     1      1       1    0   2      2      5     0        2     0
+## [ reached max_ndoc ... 100 more documents, reached max_nfeat ... 4,136 more features ]
 ```
 
 ---
@@ -1327,6 +1411,7 @@ announce_dtm
 
 
 ```r
+xfun::pkg_attach2("quanteda.textplots")
 textplot_wordcloud(announce_dtm, min_count = 10)
 ```
 
@@ -1339,7 +1424,7 @@ background-color: #FF8C03
 
 # 🥅 Practice
 
-Scrape and clean up table from &lt;http://visionofhumanity.org/app/uploads/2019/07/GPI-2019web.pdf&gt;
+Scrape and clean up the first table from &lt;https://www.visionofhumanity.org/wp-content/uploads/2020/10/GPI_2020_web.pdf&gt;
 
 ---
 

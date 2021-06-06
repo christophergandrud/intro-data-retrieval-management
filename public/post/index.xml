@@ -57,7 +57,8 @@ numeric_vector &amp;lt;- c(2.</description>
   “It is immoral to collect data before simulating the hypothesized data generating process.” – Andrew Gelman (what I remember of a comment to the Stanford Causal Inference Seminar in 2020).
  📝 Lesson Preview  Why simulate?
  Simple simulation workflow
- Documenting Functions in RMonte Carlo with apply and parallelization</description>
+ Documenting Functions in R
+ Monte Carlo with apply and parallelization</description>
     </item>
     
     <item>

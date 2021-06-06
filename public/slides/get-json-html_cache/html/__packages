@@ -13,3 +13,5 @@ jsonlite
 httr
 xml2
 rvest
+janitor
+DiagrammeR
