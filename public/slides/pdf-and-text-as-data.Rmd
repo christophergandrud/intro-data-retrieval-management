@@ -332,7 +332,7 @@ None of the documents should have only one sentence.
 
 🐛 We need to debug.
 
-```{r}
+```{r echo=FALSE}
 knitr::include_graphics("img/govspeach.png")
 ```
 
@@ -367,10 +367,6 @@ summary(announce_corpus)
 # Create a document-term matrix
 
 ```{r}
-announce_dtm <- dfm(announce_corpus, 
-                    remove = stopwords("english"), 
-                    stem = TRUE, remove_punct = TRUE) 
-
 announce_dtm <- announce_corpus %>%
                   tokens(remove_punct = TRUE) %>%
                   dfm() %>%
@@ -384,7 +380,7 @@ announce_dtm
 
 ## The "mullet" of text analysis
 
-```{r, warning=FALSE}
+```{r, warning=FALSE, cache=TRUE}
 xfun::pkg_attach2("quanteda.textplots")
 textplot_wordcloud(announce_dtm, min_count = 10)
 ```

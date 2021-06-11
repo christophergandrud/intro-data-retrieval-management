@@ -1,7 +1,7 @@
 ---
 title: GET Tidy Data
 author: Christopher Gandrud
-date: '2020-05-22 (updated: `r Sys.Date()`)'
+date: '2021-06-11 (updated: `r Sys.Date()`)'
 slug: get-tidy-data
 categories: []
 weight: 6
@@ -22,7 +22,7 @@ Tags: [R, programming, GET, tidy, data retrieval]
 
 - Retrieving and cleaning (tabular) public data
 
-- APIs
+- Application Programming Interfaces (APIs)
 
 - Cleaning grouped data
 

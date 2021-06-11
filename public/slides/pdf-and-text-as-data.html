@@ -1141,11 +1141,6 @@ None of the documents should have only one sentence.
 
 🐛 We need to debug.
 
-
-```r
-knitr::include_graphics("img/govspeach.png")
-```
-
 &lt;img src="img/govspeach.png" width="3309" style="display: block; margin: auto;" /&gt;
 
 ---
@@ -1386,28 +1381,6 @@ summary(announce_corpus)
 
 # Create a document-term matrix
 
-
-```r
-announce_dtm &lt;- dfm(announce_corpus, 
-                    remove = stopwords("english"), 
-                    stem = TRUE, remove_punct = TRUE) 
-```
-
-```
-## Warning: 'dfm.corpus()' is deprecated. Use 'tokens()' first.
-```
-
-```
-## Warning: '...' should not be used for tokens() arguments; use 'tokens()' first.
-```
-
-```
-## Warning: 'remove' is deprecated; use dfm_remove() instead
-```
-
-```
-## Warning: 'stem' is deprecated; use dfm_wordstem() instead
-```
 
 ```r
 announce_dtm &lt;- announce_corpus %&gt;%

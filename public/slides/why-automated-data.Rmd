@@ -83,7 +83,7 @@ color: #24292F
 
 # Automated data management
 
-> Creation, storage, and modification of structured data (including metadata) for programmatic access .
+> Creation, storage, and modification of structured data (including metadata) for programmatic access.
 
 ---
 
