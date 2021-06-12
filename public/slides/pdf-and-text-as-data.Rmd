@@ -102,7 +102,7 @@ Clean up in the lesson practice.
 
 
 ```R
-tabularize::extract_text
+tabularize::extract_text()
 ```
 
 ---

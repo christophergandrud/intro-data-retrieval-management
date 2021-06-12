@@ -32,3 +32,4 @@ names(medals_table) <- c('country', 'gold', 'silver', 'bronze', 'total')
 
 # Sort by total medals in descending order
 medals_table <- arrange(medals_table, desc(total))
+

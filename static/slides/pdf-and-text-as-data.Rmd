@@ -90,8 +90,6 @@ all_tables_df <- all_tables[[1]]
 head(all_tables_df)[, 1:4]
 ```
 
-Clean up in the lesson practice.
-
 ---
 
 # Note: you can also extract text data from PDFs
@@ -102,7 +100,7 @@ Clean up in the lesson practice.
 
 
 ```R
-tabularize::extract_text
+tabularize::extract_text()
 ```
 
 ---
@@ -263,7 +261,7 @@ all_href
 
 ---
 
-# Get text from one each page
+# Get text from each page
 
 ```{r}
 url_one <- paste0("https://www.gov.uk", all_href[1])
@@ -273,7 +271,7 @@ url_one
 
 ---
 
-# Get text from one each page
+# Get text from each page
 
 ```{r one-announce-text, echo=FALSE}
 knitr::include_graphics("img/one-announce-xpath.gif")
@@ -281,7 +279,7 @@ knitr::include_graphics("img/one-announce-xpath.gif")
 
 ---
 
-# Get text from one each page
+# Get text from each page
 
 ```{r, cache=TRUE}
 one_announcement <- read_html(url_one) %>%
