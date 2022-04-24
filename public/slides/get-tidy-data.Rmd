@@ -354,7 +354,7 @@ class: inverse, center, middle
 
 ---
 
-# 🙇‍♀️ Remember: Tidy data semantics + structure
+# 🙇️ Remember: Tidy data semantics + structure
 
 <br>
 
@@ -366,7 +366,7 @@ class: inverse, center, middle
 
 ---
 
-# 🙇‍♀️ Remember: Tidy data
+# 🙇️ Remember: Tidy data
 
 | Person       | treatment | result |
 | ------------ | --------- | ------ |
@@ -390,7 +390,7 @@ messy
 
 ---
 
-# 🙇‍♀️ Remember: Messy to Tidy data
+# 🙇️ Remember: Messy to Tidy data
 
 First identify what your observations and variables are.
 
@@ -400,7 +400,7 @@ Then use R tools to convert your data into this format.
 
 ---
 
-# 🙇‍♀️ Remember:Messy to tidy data
+# 🙇️ Remember:Messy to tidy data
 
 Using `pivot_longer()`
 
@@ -414,7 +414,7 @@ tidied
 
 ---
 
-# 🙇‍♀️ Remember: Tidy to messy data
+# 🙇️ Remember: Tidy to messy data
 
 Sometimes it is useful to reverse this operation with `pivot_wider`.
 
@@ -428,7 +428,7 @@ messy_again
 
 ---
 
-# 🙇‍♀️ Remember: Other issues cleaning data
+# 🙇️ Remember: Other issues cleaning data
 
 Always **look at** and **poke your data**.
 
