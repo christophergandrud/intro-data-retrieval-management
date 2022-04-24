@@ -473,23 +473,8 @@ You need to be **defensive**, i.e. save/cache copies of the data on your side an
 
 # 👀 Course preview: from structured to unstructured data
 
-```{dot struct-to-unstruct, echo=FALSE, fig.width=10, fig.retina=2, fig.align='center'}
-digraph stricttpimstruct {
-    graph [layout = dot, rankdir = LR, overlap = true, fontsize = 30];
-    edge [arrowsize = 0.5];
-    node [shape = plaintext];
-
-    d1   [label = "Tidy data"];
-    d2   [label = "Tabular Data"];
-    d3   [label = "HTML Tabular Data"];
-    d4   [label = "Nested Data"];
-    d5   [label = "Text Data"];
-
-    d1 -> d2;
-    d2 -> d3;
-    d3 -> d4;
-    d4 -> d5
-}
+```
+Tidy Data -> Tabular Data -> HTML Tabular Data -> Nested Data -> Text Data
 ```
 
 ---

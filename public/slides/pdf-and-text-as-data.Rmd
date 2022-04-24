@@ -15,9 +15,8 @@ bibliography: main.bib
 ---
 
 ```{r setup, include=FALSE}
-library(xfun)
-pkg_attach2("pdftools", "tidyverse", "rvest", "httr", "roperators", "quanteda",
-            "xml2")
+xfun::pkg_attach2("pdftools", "tidyverse", "rvest", "httr", "roperators", 
+                  "quanteda", "xml2")
 knitr::opts_chunk$set(fig.align = 'center')
 ```
 

@@ -14,7 +14,6 @@ Tags: [R, simulation, distributed, functions]
 bibliography: main.bib
 ---
 
-<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 <script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
 <script src="/rmarkdown-libs/d3/d3.min.js"></script>
 <script src="/rmarkdown-libs/dagre/dagre-d3.min.js"></script>
@@ -65,8 +64,8 @@ bibliography: main.bib
 <p><span class="math display">\[Y \sim \mathrm{Binomial}(0.1)\]</span> To simulate one draw from this binomial distribution in R use:</p>
 <pre class="r"><code>control_y_1 &lt;- rbinom(n = 1, size = 1, prob = 0.1)
 control_y_1</code></pre>
-<pre><code>## [1] 1</code></pre>
-<p>Let’s walk through this code. <code>rbinom()</code> is the function to randomly (the <code>r</code> in <code>rbinom</code>) draw from the binomial distribution (<code>binom</code>). <code>n</code> is the number of draws for this simulation, <code>size</code> is the “number of trials.” Basically it means that you want the “success” outcome to be 1 and 0 otherwise. <code>prob</code> is the probability of “success.”</p>
+<pre><code>## [1] 0</code></pre>
+<p>Let’s walk through this code. <code>rbinom()</code> is the function to randomly (the <code>r</code> in <code>rbinom</code>) draw from the binomial distribution (<code>binom</code>). <code>n</code> is the number of draws for this simulation, <code>size</code> is the “number of trials”. Basically it means that you want the “success” outcome to be 1 and 0 otherwise. <code>prob</code> is the probability of “success”.</p>
 <p>It’s unlikely that we will run an A/B test with only one participant in the control group (this would be hilariously under-powered). So, let’s simulate a test with 2,000,000 draws<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> and plot the results.</p>
 <pre class="r"><code># number of observations variable to ensure consistency across sims
 n_obs &lt;- 2e6
@@ -122,7 +121,7 @@ plot_histogram(treatment_y, subtitle = &quot;Treatment Group&quot;)</code></pre>
 <p><img src="/post/2021-03-11-simulation_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>Finally, we compare the means of the two groups:</p>
 <pre class="r"><code>mean(treatment_y) - mean(control_y) </code></pre>
-<pre><code>## [1] 0.001354</code></pre>
+<pre><code>## [1] 0.0006575</code></pre>
 <p>That’s one simulation. Let’s wrap it up in a function so it will be easy to run <span class="math inline">\(n\)</span> simulations</p>
 <pre class="r"><code># @param n integer number of draws per treatment arm
 # @param control_prob numeric probability of control success [0, 1]
@@ -140,7 +139,7 @@ one_sim &lt;- function(n, control_prob, rel_effect) {
 <p>Let’s test it to make sure it works.</p>
 <pre class="r"><code>one_sim(n = n_obs, control_prob = control_prob, 
         rel_effect = rel_effect)</code></pre>
-<pre><code>## [1] 0.001492</code></pre>
+<pre><code>## [1] 0.00041</code></pre>
 <p>This is very close to the true increase of 0.001`.</p>
 <hr />
 </div>
@@ -198,7 +197,7 @@ hist(mean_diff)</code></pre>
                                        rel_effect = rel_effect))
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##  13.915   0.293  14.770</code></pre>
+##   5.328   0.169   5.499</code></pre>
 <p>I wrapped this call in <code>system.time()</code> so that we can keep track of how much computation time we spend on the call. Monte Carlo simulations are just doing the same thing over and over. This computation time can add up.</p>
 <p>We can see that the the <code>apply</code> version in this case is pretty much as slow as the <code>for</code> loop.<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a></p>
 <pre class="r"><code>system.time(
@@ -208,7 +207,7 @@ hist(mean_diff)</code></pre>
   }
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##  13.862   0.188  14.457</code></pre>
+##   5.320   0.136   5.458</code></pre>
 <p>So far we have been running all of our simulations in sequence. However, each simulation, by construction, is independent of the others. This is a perfect use case for parallelization.</p>
 <p>There is a <code>mc_replicate()</code> helper function (originally from the <em>rethinking</em> package) that makes this easy for the code we have written so far. <em>Note more than 1 core will not work on Windows, so you will see no performance difference.</em></p>
 <pre class="r"><code># Run the following code if mcreplicate is not already installed
@@ -224,7 +223,7 @@ system.time(
               mc.cores = 4)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   6.787   0.176   4.215</code></pre>
+##   4.310   0.175   1.521</code></pre>
 <p>As we would expect from running the simulations across 4 rather than one core, the <code>elapsed</code> time is roughly 4 times faster with <code>mc_replicate()</code>.</p>
 <p>Finally, let’s see if the difference of means is a useful way of estimating the treatment effect for a binary outcome? Let’s run a few more simulations. We should see normally distributed difference of means centered on 0.001:</p>
 <pre class="r"><code>diff_means_1000 &lt;- mc_replicate(1e3, one_sim(n = n_obs, 
@@ -254,13 +253,13 @@ ggplot(diff_means_1000_tbl, aes(value)) +
 <div id="being-mindful-of-your-feelings" class="section level3">
 <h3>Being mindful of your feelings</h3>
 <p>We’ll cover the the technical debugging tools available in R. But I first want to first mention a crucial part of effective (and less stressful) debugging: <em>being mindful of your feelings about the bug</em>.</p>
-<p>A bug is frustrating. Our first encounter with a bug is an experience of disassociation between how we think the world should work and how it is working. It’s as if we want to put a plate in the cupboard, but each time we try to put the plate in the cupboard it flies out. Frustration inclines us to look for the cause of a bug in–almost always–the wrong place: “the stupid computer is broken.”</p>
+<p>A bug is frustrating. Our first encounter with a bug is an experience of disassociation between how we think the world should work and how it is working. It’s as if we want to put a plate in the cupboard, but each time we try to put the plate in the cupboard it flies out. Frustration inclines us to look for the cause of a bug in–almost always–the wrong place: “the stupid computer is broken”.</p>
 <p>The best way to resolve bugs, as we’ll see, is to create testable hypotheses about what could be causing the bug. “The stupid computer is broken” is vague and so not a testable hypothesis.</p>
 <p>So, it is crucial that when you find a bug, to take a step back and ask:</p>
 <blockquote>
 <p>how does this bug make me feel?</p>
 </blockquote>
-<p>If the answer is “angry, I want to throw my computer out the window,” your best next step is to <em>take a break</em>. Grab a tea or whatever. Then, with a piece of paper (or some other tool that gets you away from the temptation to just begin slamming out code on your keyboard) write down hypotheses about the cause of the bug and ways to test them.</p>
+<p>If the answer is “angry, I want to throw my computer out the window”, your best next step is to <em>take a break</em>. Grab a tea or whatever. Then, with a piece of paper (or some other tool that gets you away from the temptation to just begin slamming out code on your keyboard) write down hypotheses about the cause of the bug and ways to test them.</p>
 <p>Unlike social phenomena, most computer bugs are deterministic. The cause of a bug will usually cause the bug. So your chances of definitively finding the bug are high with the following process and tools.</p>
 </div>
 <div id="clear-and-testable-program-specifications" class="section level3">
@@ -383,10 +382,10 @@ Gelman, Andrew, Jennifer Hill, and Aki Vehtari. 2021. <em>Regression and Other S
 </div>
 </div>
 </div>
-<div class="footnotes">
+<div class="footnotes footnotes-end-of-document">
 <hr />
 <ol>
-<li id="fn1"><p>This example is modified from <span class="citation"><a href="#ref-gelmanhillaki2021" role="doc-biblioref">Gelman, Hill, and Vehtari</a> (<a href="#ref-gelmanhillaki2021" role="doc-biblioref">2021</a> Ch. 5, p.69-70)</span>.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>This example is modified from <span class="citation">Gelman, Hill, and Vehtari (<a href="#ref-gelmanhillaki2021" role="doc-biblioref">2021</a> Ch. 5, p.69-70)</span>.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
 <li id="fn2"><p>We can express this in R using scientific notation, e.g. <code>2e6</code>.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
 <li id="fn3"><p>These conventions are established by the <a href="https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html">roxygen2</a> package. If you create an R package to contain your functions, you can use roxygen2 to automatically generate package documentation. For more details see <a href="https://r-pkgs.org/">R Packages</a>.<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
 <li id="fn4"><p>If you ever need to kill an R process (e.g. because it is taking way longer than you expected, use <code>Ctrl + c</code> in your R console.<a href="#fnref4" class="footnote-back">↩︎</a></p></li>

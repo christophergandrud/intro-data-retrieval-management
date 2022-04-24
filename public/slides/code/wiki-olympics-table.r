@@ -10,6 +10,8 @@ library(dplyr)
 library(purrr)
 library(janitor)
 
+xfun::pkg_attach2("rvest", "dplyr", "purrr", "janitor")
+
 # URL with the medals table
 URL <- 'https://en.wikipedia.org/wiki/2012_Summer_Olympics_medal_table'
 

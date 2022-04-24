@@ -4,7 +4,7 @@
     <title>File Organisation and Tidy Data Structures</title>
     <meta charset="utf-8" />
     <meta name="author" content="Christopher Gandrud" />
-    <script src="libs/header-attrs-2.8/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.13/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/robot.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # File Organisation and Tidy Data Structures
 ### Christopher Gandrud
 ### HU DYNAMICS
-### 2021-06-12 (updated: 2021-06-05)
+### 2021-06-12 (updated: 2022-04-24)
 
 ---
 
@@ -130,7 +130,7 @@ US, United States, 1.050
 
 Makes:
 
-&lt;img src="img/CSVBasic.png" width="299" /&gt;
+![](img/CSVBasic.png)&lt;!-- --&gt;
 
 ---
 
@@ -224,7 +224,7 @@ getwd()
 ```
 
 ```
-## [1] "/Users/cgandrud/git_repos/intro-data-retrieval-management/static/slides"
+## [1] "/Users/cgandrud/git_repos/intro-data-retrieval-management/public/slides"
 ```
 
 ```r
@@ -502,7 +502,7 @@ tidied
 ```
 
 ```
-## # A tibble: 6 x 3
+## # A tibble: 6 × 3
 ##   person       treatment result
 ##   &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt;
 ## 1 John Smith   a             NA
@@ -529,7 +529,7 @@ messy_again
 ```
 
 ```
-## # A tibble: 3 x 3
+## # A tibble: 3 × 3
 ##   person           a     b
 ##   &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;
 ## 1 John Smith      NA     2

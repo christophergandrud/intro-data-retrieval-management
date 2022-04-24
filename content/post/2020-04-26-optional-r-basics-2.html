@@ -14,7 +14,6 @@ Description: ''
 Tags: [R, functions, if, loops, basics]
 ---
 
-<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
 <div id="lesson-preview" class="section level2">
@@ -144,7 +143,7 @@ greater_than_5</code></pre>
     swiss[, i] %&gt;%
     mean() %&gt;%
     round(digits = 1) %&gt;%
-    paste(names(swiss)[i], ., &#39;\n&#39;) %&gt;%  # the . directs the pipe
+    paste(names(swiss)[i], ., &quot;\n&quot;) %&gt;%  # the . directs the pipe
     cat()
 }</code></pre>
 <pre><code>## Fertility 70.1 
@@ -153,6 +152,24 @@ greater_than_5</code></pre>
 ## Education 11 
 ## Catholic 41.1 
 ## Infant.Mortality 19.9</code></pre>
+<pre class="r"><code># To do over lunch
+means_df &lt;- data.frame()
+swiss_names &lt;- names(swiss)
+
+for (i in 1:ncol(swiss)) {
+  tmp &lt;- data.frame(name = swiss_names[i], 
+                    mean_value = mean_rounder(swiss[, i]))
+  means_df &lt;- rbind(tmp, means_df)
+  
+}
+means_df</code></pre>
+<pre><code>##               name mean_value
+## 1 Infant.Mortality       19.9
+## 2         Catholic       41.1
+## 3        Education       11.0
+## 4      Examination       16.5
+## 5      Agriculture       50.7
+## 6        Fertility       70.1</code></pre>
 <p>The first line reads: “for each <code>i</code> in the vector 1 through the number of columns in the <strong>swiss</strong> data frame . . .”</p>
 <p>We then use <code>i</code> in the subscripts <code>[]</code> to select each column of <strong>swiss</strong> to find and print its mean.</p>
 </div>
@@ -160,11 +177,15 @@ greater_than_5</code></pre>
 <h3>Apply</h3>
 <p>Loops in R are <em>notoriously slow</em>. The <code>apply</code> family of functions does a something similar and is usually faster.</p>
 <p>For example, let’s find the mean of each column in <strong>swiss</strong>:</p>
-<pre class="r"><code>apply(swiss, MARGIN = 2, mean)</code></pre>
-<pre><code>##        Fertility      Agriculture      Examination        Education 
-##         70.14255         50.65957         16.48936         10.97872 
-##         Catholic Infant.Mortality 
-##         41.14383         19.94255</code></pre>
+<pre class="r"><code>means_apply &lt;- apply(swiss, MARGIN = 2, mean_rounder)
+as.data.frame(means_apply)</code></pre>
+<pre><code>##                  means_apply
+## Fertility               70.1
+## Agriculture             50.7
+## Examination             16.5
+## Education               11.0
+## Catholic                41.1
+## Infant.Mortality        19.9</code></pre>
 <p>For data frames and matrices, we need to specify whether we are applying the function to each row (<code>MARGIN = 1</code>) or each column (<code>MARGIN = 2</code>).</p>
 </div>
 </div>
@@ -174,7 +195,7 @@ greater_than_5</code></pre>
 <p>To find the number of cores on your computer use:</p>
 <pre class="r"><code>library(parallel)
 detectCores()</code></pre>
-<pre><code>## [1] 4</code></pre>
+<pre><code>## [1] 8</code></pre>
 <p>Not all computation can be done in parallel. Somethings have to be done in sequence, because the output of one operation is needed for the computation of the subsequent operations. However, pretty much anything that can be looped or applied can be done in parallel. This will often improve the speed of the computation.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
 <p><code>mclapply()</code> from base R’s <em>parallel</em> package works like <code>lapply</code> (list apply) for. Imagine we have a list with 3 numeric vectors:</p>
 <pre class="r"><code>three_list &lt;- list(A = rnorm(n = 100, mean = 1),
@@ -184,13 +205,13 @@ detectCores()</code></pre>
 <p>Let’s compute the mean of each vector in the list in parallel:</p>
 <pre class="r"><code>mclapply(three_list, mean, mc.cores = 3)</code></pre>
 <pre><code>## $A
-## [1] 1.169381
+## [1] 1.184262
 ## 
 ## $B
-## [1] 2.052606
+## [1] 2.07397
 ## 
 ## $C
-## [1] 4.839364</code></pre>
+## [1] 5.202402</code></pre>
 <p><code>mc.cores</code> sets the number of cores to use. Usually use 1 - the number of cores you have available.</p>
 </div>
 <div id="exercises" class="section level2">
@@ -198,7 +219,32 @@ detectCores()</code></pre>
 <ul>
 <li><p>Create a new function to summarise numeric vectors in a method of your choosing (explore R’s built in statistical capabilities).</p></li>
 <li><p>Create a data frame with numeric and character columns. Then, for each column find the standard deviation (<code>sd()</code>) if it is numeric and return the <code>message()</code> <code>"This column has characters"</code> if it is a character type column.</p></li>
-<li><p><code>nchar()</code> counts the number of characters in a string. Create a list of character vectors with strings of different lengths. In parallel, count the number of characters in each vector.</p></li>
+</ul>
+<pre class="r"><code># Create data frame with numeric and character columns
+means_df</code></pre>
+<pre><code>##               name mean_value
+## 1 Infant.Mortality       19.9
+## 2         Catholic       41.1
+## 3        Education       11.0
+## 4      Examination       16.5
+## 5      Agriculture       50.7
+## 6        Fertility       70.1</code></pre>
+<pre class="r"><code>for (i in seq_along(means_df)) {
+  # extract column
+  tmp &lt;- means_df[, i]
+  if (is.numeric(tmp)) {
+    message(sd(tmp))
+  }
+  else if (is.character(tmp)) {
+    message(&quot;This is a character vector&quot;)
+  }
+  else
+    warning(&quot;Not Character or Numeric&quot;)
+}</code></pre>
+<pre><code>## This is a character vector</code></pre>
+<pre><code>## 23.0733107001719</code></pre>
+<ul>
+<li><code>nchar()</code> counts the number of characters in a string. Create a list of character vectors with strings of different lengths. In parallel, count the number of characters in each vector.</li>
 </ul>
 </div>
 <div id="additional-materials" class="section level2">
@@ -223,26 +269,30 @@ detectCores()</code></pre>
 <td>or</td>
 </tr>
 <tr class="odd">
+<td><code>==</code></td>
+<td>equality</td>
+</tr>
+<tr class="even">
 <td><code>&lt;</code></td>
 <td>less than</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>&gt;</code></td>
 <td>greater than</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>&gt;=</code></td>
 <td>greater than or equal to</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>&lt;=</code></td>
 <td>less than or equal to</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>!=</code></td>
 <td>not equal</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>isTRUE(x)</code></td>
 <td>test if <code>x</code> is <code>TRUE</code></td>
 </tr>
@@ -252,7 +302,7 @@ detectCores()</code></pre>
 <div id="references" class="section level2">
 <h2>📚 References</h2>
 </div>
-<div class="footnotes">
+<div class="footnotes footnotes-end-of-document">
 <hr />
 <ol>
 <li id="fn1"><p>This stands for “parameter”, a more general programming term for “argument”. If you want to go deep on documenting functions, see the <a href="https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html">roxygen2</a> package.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
