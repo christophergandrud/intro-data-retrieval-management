@@ -283,14 +283,11 @@ system.time(
 
 So far we have been running all of our simulations in sequence. However, each simulation, by construction, is independent of the others. This is a perfect use case for parallelization.
 
-There is a `mc_replicate()` helper function (originally from the *rethinking* package) that makes this easy for the code we have written so far. *Note more than 1 core will not work on Windows, so you will see no performance difference.*
+There is a `mc_replicate()` helper function (originally from the *rethinking* package) that makes this easy for the code we have written so far.
 
 ```{r cache=TRUE}
 # Run the following code if mcreplicate is not already installed
-# xfun::pkg_attach2("remotes")
-# install_github("christophergandrud/mcreplicate")
-
-library(mcreplicate)
+xfun::pkg_attach2("mcreplicate")
 
 system.time(
   mc_replicate(n_sims, one_sim(n = n_obs, 

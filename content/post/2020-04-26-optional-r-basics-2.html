@@ -195,7 +195,7 @@ as.data.frame(means_apply)</code></pre>
 <p>To find the number of cores on your computer use:</p>
 <pre class="r"><code>library(parallel)
 detectCores()</code></pre>
-<pre><code>## [1] 8</code></pre>
+<pre><code>## [1] 4</code></pre>
 <p>Not all computation can be done in parallel. Somethings have to be done in sequence, because the output of one operation is needed for the computation of the subsequent operations. However, pretty much anything that can be looped or applied can be done in parallel. This will often improve the speed of the computation.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
 <p><code>mclapply()</code> from base R’s <em>parallel</em> package works like <code>lapply</code> (list apply) for. Imagine we have a list with 3 numeric vectors:</p>
 <pre class="r"><code>three_list &lt;- list(A = rnorm(n = 100, mean = 1),
@@ -205,13 +205,13 @@ detectCores()</code></pre>
 <p>Let’s compute the mean of each vector in the list in parallel:</p>
 <pre class="r"><code>mclapply(three_list, mean, mc.cores = 3)</code></pre>
 <pre><code>## $A
-## [1] 1.184262
+## [1] 0.8984921
 ## 
 ## $B
-## [1] 2.07397
+## [1] 2.071879
 ## 
 ## $C
-## [1] 5.202402</code></pre>
+## [1] 5.047866</code></pre>
 <p><code>mc.cores</code> sets the number of cores to use. Usually use 1 - the number of cores you have available.</p>
 </div>
 <div id="exercises" class="section level2">

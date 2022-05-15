@@ -1,6 +1,5 @@
-base
 xfun
-tabulizer
+pdftools
 tidyverse
 ggplot2
 tibble
@@ -10,10 +9,9 @@ purrr
 dplyr
 stringr
 forcats
-xml2
 rvest
 httr
 roperators
 quanteda
-pdftools
+xml2
 quanteda.textplots

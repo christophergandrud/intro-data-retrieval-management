@@ -15,7 +15,7 @@ output:
 
 ```{r setup, include=FALSE}
 library(xfun)
-pkg_attach2("tidyverse", "devtools", "rio", "WDI", "countrycode")
+pkg_attach2("tidyverse", "devtools", "rio", "WDI", "countrycode", "ggmap")
 ```
 
 # 📝 Lesson Preview

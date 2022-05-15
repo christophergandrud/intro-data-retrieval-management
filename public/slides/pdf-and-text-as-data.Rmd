@@ -15,8 +15,9 @@ bibliography: main.bib
 ---
 
 ```{r setup, include=FALSE}
-xfun::pkg_attach2("pdftools", "tidyverse", "rvest", "httr", "roperators", 
-                  "quanteda", "xml2")
+library(xfun)
+pkg_attach2("pdftools", "tidyverse", "rvest", "httr", "roperators", "quanteda",
+            "xml2")
 knitr::opts_chunk$set(fig.align = 'center')
 ```
 
@@ -54,7 +55,7 @@ Example modified from [Ketan Deshpande](https://medium.com/@ketanrd.009/how-to-e
 
 ---
 
-# parse PDF in R
+# parse PDF in R [REWRITE!!!!]
 
 Use the [tabulizer](https://github.com/ropensci/tabulizer) package to parse PDFs in R.
 
@@ -64,16 +65,16 @@ If you can't get tabularizer to install, you can also use [pdftools](https://doc
 
 ---
 
-# Download PDF and extract table
+# Download PDF and extract table [REWRITE!!!!]
 
-```{r download-pdf, cache=TRUE, warning=FALSE, message=FALSE}
-library(tabulizer)
+```{r download-pdf, cache=TRUE, warning=FALSE, message=FALSE, eval=FALSE}
+# library(tabulizer)
 
-url <- "https://www.visionofhumanity.org/wp-content/uploads/2020/10/GPI_2020_web.pdf"
+# url <- "https://www.visionofhumanity.org/wp-content/uploads/2020/10/GPI_2020_web.pdf"
 
-all_tables <- extract_tables(file = url,
-                             pages = 10, # tenth page of the PDF
-                             output = "data.frame") 
+# all_tables <- extract_tables(file = url,
+#                             pages = 10, # tenth page of # the PDF
+#                             output = "data.frame") 
 ```
 
 By default, `extract_tables` guesses where the tables are on the page. Use `guess = FALSE` and `areas` argument to specify the areas of the page to extract the table from.
@@ -82,18 +83,16 @@ Use `locate_areas(file = url)` to find the areas.
 
 ---
 
-# Clean up
+# Clean up [REWRITE!!!!]
 
-```{r}
-all_tables_df <- all_tables[[1]]
-head(all_tables_df)[, 1:4]
+```{r, eval=FALSE}
+# all_tables_df <- all_tables[[1]]
+# head(all_tables_df)[, 1:4]
 ```
-
-Clean up in the lesson practice.
 
 ---
 
-# Note: you can also extract text data from PDFs
+# Note: you can also extract text data from PDFs [REWRITE!!!!]
 
 <br>
 <br>
@@ -101,7 +100,7 @@ Clean up in the lesson practice.
 
 
 ```R
-tabularize::extract_text()
+# tabularizer::extract_text()
 ```
 
 ---
@@ -229,7 +228,7 @@ Notice URL `page` reference: <https://www.gov.uk/search/news-and-communications?
 # While loops to download multiple pages
 
 ```{r}
-library(roperators) # use infix operator %+=%
+xfun::pkg_attach2("roperators") # use infix operator %+=%
 
 all_href <- character() # initialise all results object
 tmp_href <- 1 # initalise temp object
@@ -262,7 +261,7 @@ all_href
 
 ---
 
-# Get text from one each page
+# Get text from each page
 
 ```{r}
 url_one <- paste0("https://www.gov.uk", all_href[1])
@@ -272,7 +271,7 @@ url_one
 
 ---
 
-# Get text from one each page
+# Get text from each page
 
 ```{r one-announce-text, echo=FALSE}
 knitr::include_graphics("img/one-announce-xpath.gif")
@@ -280,7 +279,7 @@ knitr::include_graphics("img/one-announce-xpath.gif")
 
 ---
 
-# Get text from one each page
+# Get text from each page
 
 ```{r, cache=TRUE}
 one_announcement <- read_html(url_one) %>%
@@ -317,7 +316,7 @@ nrow(all_texts)
 Convert to a corpus object
 
 ```{r}
-library(quanteda)
+xfun::pkg_attach2("quanteda")
 announce_corpus <- corpus(all_texts)
 
 summary(announce_corpus)
@@ -348,7 +347,7 @@ for (i in seq(all_href)) {
   
   text <-  full_html %>% 
     html_nodes(xpath = 
-      paste0('//*[@id="content"]/div[3]/div[1]',
+      paste0('//*[@id="content"]/div[3]/div[1]/div',
              '/div[1]/div[contains(@data-module, "govspeak")]')) %>% 
     html_text()
   

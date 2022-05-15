@@ -4,7 +4,7 @@
     <title>Get and Clean Tidy Data</title>
     <meta charset="utf-8" />
     <meta name="author" content="Christopher Gandrud" />
-    <script src="libs/header-attrs-2.13/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.8/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/robot.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # Get and Clean Tidy Data
 ### Christopher Gandrud
 ### HU DYNAMICS
-### 2020-05-22 (updated: 2022-04-24)
+### 2020-05-22 (updated: 2021-06-06)
 
 ---
 
@@ -373,7 +373,7 @@ class: inverse, center, middle
 
 ---
 
-# 🙇️ Remember: Tidy data semantics + structure
+# 🙇‍♀️ Remember: Tidy data semantics + structure
 
 &lt;br&gt;
 
@@ -385,7 +385,7 @@ class: inverse, center, middle
 
 ---
 
-# 🙇️ Remember: Tidy data
+# 🙇‍♀️ Remember: Tidy data
 
 | Person       | treatment | result |
 | ------------ | --------- | ------ |
@@ -400,7 +400,7 @@ class: inverse, center, middle
 
 ---
 
-# 🙇️ Remember: Messy to Tidy data
+# 🙇‍♀️ Remember: Messy to Tidy data
 
 First identify what your observations and variables are.
 
@@ -410,7 +410,7 @@ Then use R tools to convert your data into this format.
 
 ---
 
-# 🙇️ Remember:Messy to tidy data
+# 🙇‍♀️ Remember:Messy to tidy data
 
 Using `pivot_longer()`
 
@@ -424,7 +424,7 @@ tidied
 ```
 
 ```
-## # A tibble: 6 × 3
+## # A tibble: 6 x 3
 ##   person       treatment result
 ##   &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt;
 ## 1 John Smith   a             NA
@@ -437,7 +437,7 @@ tidied
 
 ---
 
-# 🙇️ Remember: Tidy to messy data
+# 🙇‍♀️ Remember: Tidy to messy data
 
 Sometimes it is useful to reverse this operation with `pivot_wider`.
 
@@ -451,7 +451,7 @@ messy_again
 ```
 
 ```
-## # A tibble: 3 × 3
+## # A tibble: 3 x 3
 ##   person           a     b
 ##   &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;
 ## 1 John Smith      NA     2
@@ -461,7 +461,7 @@ messy_again
 
 ---
 
-# 🙇️ Remember: Other issues cleaning data
+# 🙇‍♀️ Remember: Other issues cleaning data
 
 Always **look at** and **poke your data**.
 
@@ -523,9 +523,9 @@ tail(alt_energy, n = 3)
 
 ```
 ##       iso2c  country EG.USE.COMM.CL.ZS year
-## 16224    ZW Zimbabwe                NA 1962
-## 16225    ZW Zimbabwe                NA 1961
-## 16226    ZW Zimbabwe                NA 1960
+## 15838    ZW Zimbabwe                NA 1962
+## 15839    ZW Zimbabwe                NA 1961
+## 15840    ZW Zimbabwe                NA 1960
 ```
 
 ```r
@@ -645,10 +645,10 @@ head(combined, n = 3)
 ```
 
 ```
-##   iso2c                     country EG.USE.COMM.CL.ZS year median
-## 1    ZH Africa Eastern and Southern                NA 2020     NA
-## 2    ZH Africa Eastern and Southern                NA 2019     NA
-## 3    ZH Africa Eastern and Southern                NA 2018     NA
+##   iso2c    country EG.USE.COMM.CL.ZS year median
+## 1    1A Arab World                NA 2019     NA
+## 2    1A Arab World                NA 2018     NA
+## 3    1A Arab World                NA 2017     NA
 ```
 
 ---
@@ -699,13 +699,13 @@ head(combined)
 ```
 
 ```
-##                       country iso2c EG.USE.COMM.CL.ZS new_year median
-## 1 Africa Eastern and Southern    ZH                NA     2020     NA
-## 2 Africa Eastern and Southern    ZH                NA     2019     NA
-## 3 Africa Eastern and Southern    ZH                NA     2018     NA
-## 4 Africa Eastern and Southern    ZH                NA     2017     NA
-## 5 Africa Eastern and Southern    ZH                NA     2016     NA
-## 6 Africa Eastern and Southern    ZH                NA     2015     NA
+##      country iso2c EG.USE.COMM.CL.ZS new_year median
+## 1 Arab World    1A                NA     2019     NA
+## 2 Arab World    1A                NA     2018     NA
+## 3 Arab World    1A                NA     2017     NA
+## 4 Arab World    1A                NA     2016     NA
+## 5 Arab World    1A                NA     2015     NA
+## 6 Arab World    1A         0.4144132     2014     NA
 ```
 
 ---
@@ -745,13 +745,13 @@ head(data)
 ```
 
 ```
-##            people year   income
-## 1 Ablan, Schuyler 2010 42243.40
-## 2 Ablan, Schuyler 2011 35809.04
-## 3 Ablan, Schuyler 2012 27518.97
-## 4 Ablan, Schuyler 2013 50316.70
-## 5  Abraha, Tamara 2010 70656.34
-## 6  Abraha, Tamara 2011 21004.43
+##            people year    income
+## 1  Abeyta, Alexis 2010 25280.929
+## 2  Abeyta, Alexis 2011  3412.657
+## 3  Abeyta, Alexis 2012 46945.584
+## 4  Abeyta, Alexis 2013 35673.256
+## 5 Ablay, Jayratna 2010 35067.262
+## 6 Ablay, Jayratna 2011 57199.922
 ```
 
 ---
@@ -768,13 +768,13 @@ head(higher_income)
 ```
 
 ```
-##                 people year   income
-## 1       Abraha, Tamara 2010 70656.34
-## 2        Adams, Collin 2011 70515.79
-## 3     al-Abbas, Farhat 2010 62407.17
-## 4 al-Abdallah, Zubaida 2013 66061.82
-## 5      al-Abu, Hameeda 2012 62070.93
-## 6      al-Amber, Hilmi 2010 87288.64
+##                people year   income
+## 1       Adams, Alyssa 2012 83563.99
+## 2       Adams, Alyssa 2013 70118.56
+## 3        Adams, Kayla 2011 60520.46
+## 4    al-Abdoo, Jubair 2011 65245.64
+## 5    al-Amara, Muhsin 2011 69877.64
+## 6 al-Chahine, Mamdooh 2013 62381.04
 ```
 
 ---
@@ -794,13 +794,13 @@ head(people_income)
 ```
 
 ```
-##            people   income
-## 1 Ablan, Schuyler 42243.40
-## 2 Ablan, Schuyler 35809.04
-## 3 Ablan, Schuyler 27518.97
-## 4 Ablan, Schuyler 50316.70
-## 5  Abraha, Tamara 70656.34
-## 6  Abraha, Tamara 21004.43
+##            people    income
+## 1  Abeyta, Alexis 25280.929
+## 2  Abeyta, Alexis  3412.657
+## 3  Abeyta, Alexis 46945.584
+## 4  Abeyta, Alexis 35673.256
+## 5 Ablay, Jayratna 35067.262
+## 6 Ablay, Jayratna 57199.922
 ```
 
 ---
@@ -817,15 +817,15 @@ head(group_data)[1:5, ]
 ```
 
 ```
-## # A tibble: 5 × 3
+## # A tibble: 5 x 3
 ## # Groups:   people [2]
 ##   people           year income
 ##   &lt;chr&gt;           &lt;int&gt;  &lt;dbl&gt;
-## 1 Ablan, Schuyler  2010 42243.
-## 2 Ablan, Schuyler  2011 35809.
-## 3 Ablan, Schuyler  2012 27519.
-## 4 Ablan, Schuyler  2013 50317.
-## 5 Abraha, Tamara   2010 70656.
+## 1 Abeyta, Alexis   2010 25281.
+## 2 Abeyta, Alexis   2011  3413.
+## 3 Abeyta, Alexis   2012 46946.
+## 4 Abeyta, Alexis   2013 35673.
+## 5 Ablay, Jayratna  2010 35067.
 ```
 
 Note: the following functions work on **non-grouped data** as well.
@@ -848,12 +848,12 @@ head(min_max_income)[1:3, ]
 ```
 
 ```
-## # A tibble: 3 × 3
-##   people          min_income max_income
-##   &lt;chr&gt;                &lt;dbl&gt;      &lt;dbl&gt;
-## 1 Ablan, Schuyler     27519.     50317.
-## 2 Abraha, Tamara      19474.     70656.
-## 3 Acosta, Mariah      27928.     38364.
+## # A tibble: 3 x 3
+##   people               min_income max_income
+##   &lt;chr&gt;                     &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Abeyta, Alexis            3413.     46946.
+## 2 Ablay, Jayratna          28828.     57200.
+## 3 Abrams, Laquisheanna      5044.     56898.
 ```
 
 ---
@@ -871,12 +871,12 @@ head(ascending)[1:3, ]
 ```
 
 ```
-## # A tibble: 3 × 3
-##   people             min_income max_income
-##   &lt;chr&gt;                   &lt;dbl&gt;      &lt;dbl&gt;
-## 1 Adams, Emily            4130.     12956.
-## 2 el-Greiss, Hishaam         0      17092.
-## 3 Lange, May                 0      19442.
+## # A tibble: 3 x 3
+##   people          min_income max_income
+##   &lt;chr&gt;                &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Neff, Shyloah           0       6497.
+## 2 Johnson, Rachel       537.     16331.
+## 3 Spears, Taylor      14227.     18891.
 ```
 
 ---
@@ -893,12 +893,12 @@ head(descending)[1:3, ]
 ```
 
 ```
-## # A tibble: 3 × 3
-##   people         min_income max_income
-##   &lt;chr&gt;               &lt;dbl&gt;      &lt;dbl&gt;
-## 1 Sanchez, Noely     18638.    111425.
-## 2 Garcia, Josiah     24863.    103468.
-## 3 Reaves, Naim        6359.     93859.
+## # A tibble: 3 x 3
+##   people             min_income max_income
+##   &lt;chr&gt;                   &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Vasquez, Luis          11541.    100425.
+## 2 el-Mina, Fateen        31031.     96586.
+## 3 Greenlee, Tyneasha     21682.     95820.
 ```
 
 ---
@@ -919,13 +919,13 @@ head(data)[1:3, ]
 ```
 
 ```
-## # A tibble: 3 × 5
+## # A tibble: 3 x 5
 ## # Groups:   people [1]
-##   people           year income min_income max_income
-##   &lt;chr&gt;           &lt;int&gt;  &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
-## 1 Ablan, Schuyler  2010 42243.     27519.     50317.
-## 2 Ablan, Schuyler  2011 35809.     27519.     50317.
-## 3 Ablan, Schuyler  2012 27519.     27519.     50317.
+##   people          year income min_income max_income
+##   &lt;chr&gt;          &lt;int&gt;  &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Abeyta, Alexis  2010 25281.      3413.     46946.
+## 2 Abeyta, Alexis  2011  3413.      3413.     46946.
+## 3 Abeyta, Alexis  2012 46946.      3413.     46946.
 ```
 
 ---
