@@ -1,7 +1,7 @@
 ---
 title: '[Intro to Computational Thinking] R Basics 1'
 author: Christopher Gandrud
-date: '2020-04-26'
+date: '2022-05-15'
 slug: optional-r-basics-1
 weight: 2
 categories:
@@ -73,9 +73,9 @@ It is also a good idea to become familiar with the command line terminal
 outside of R. We will touch on this, especially in Part II of the
 course.
 
-💁 Tip: in the R Console or the Terminal, you can cancel a process with `Ctrl + c`.
+💁 Tip: in the R Console or the Terminal, you can cancel a process with `Ctrl + c`. You can clear your Console with `Ctrl + l`. Note, the content wasn't actually deleted, just scroll up to see the previous content.
 
-### Jupyter Lab
+### [Optional RStudio Alternative] Jupyter Lab
 
 Jupyter Lab is a popular alternative to RStudio. It is less tailored to
 R, but is used in many especially industry settings. If you would like
@@ -135,9 +135,9 @@ some analysis, and so on. Saying that R is object-oriented means that R
 is focused on doing actions to objects. We will talk about the actions,
 functions, later in this section. Now let's create a few objects.
 
-#### Numeric and string objects {#numeric-string-type}
+#### Numeric and string type objects {#numeric-string-type}
 
-Objects can have a number of different types. Let's make two simple
+Objects can have a number of different *types*. Let's make two simple
 objects. The first is a **numeric**-type object. The other is a
 **character** object.
 
@@ -199,7 +199,7 @@ the `class()` function. For example:
 class(words)
 ```
 
-#### Vector and data frame objects {#vectors-data-frames}
+#### Vector and data frame type objects {#vectors-data-frames}
 
 So far, we have only looked at objects with a single number or character
 string. Clearly we often want to use objects that have many strings and

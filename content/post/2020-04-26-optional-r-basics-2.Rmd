@@ -1,7 +1,7 @@
 ---
 title: '[Intro to Computational Thinking] R Basics 2'
 author: Christopher Gandrud
-date: '2020-04-26'
+date: '2020-05-15'
 slug: optional-r-basics-2
 weight: 3
 categories:
@@ -94,6 +94,7 @@ Stacking functions inside of each other can create code that is difficult to rea
 ```{r Ch3Pipe, echo=TRUE}
 # Load magrittr package
 library(magrittr)
+
 # Find mean of numeric_vector and round to 1 decimal place
 mean(numeric_vector) %>%
     round(digits = 1)
@@ -215,7 +216,7 @@ We then use `i` in the subscripts `[]` to select each column of **swiss** to fin
 
 ### Apply {#apply-intro}
 
-Loops in R are *notoriously slow*. The `apply` family of functions does a something similar and is usually faster.
+Loops in R are easy-ish to read, but can be *slow* for many iterations. The `apply` family of functions does a something similar and is usually faster.
 
 For example, let's find the mean of each column in **swiss**:
 
@@ -239,7 +240,7 @@ detectCores()
 
 Not all computation can be done in parallel. Somethings have to be done in sequence, because the output of one operation is needed for the computation of the subsequent operations. However, pretty much anything that can be looped or applied can be done in parallel. This will often improve the speed of the computation.[^2]
 
-[^2]: It won't necessarily be faster as there is "overhead" for breaking up the operation into parallel computation. Also, while the computation time can go down, the enegery usage will be the same as in total the same computation will have happened.
+[^2]: It won't necessarily be faster as there is "overhead" for breaking up the operation into parallel computation. Also, while the computation time can go down, the energy usage will be the same as in total the same computation will have happened.
 
 `mclapply()` from base R's *parallel* package works like `lapply` (list apply) for. Imagine we have a list with 3 numeric vectors:
 

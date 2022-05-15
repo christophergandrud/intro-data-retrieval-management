@@ -144,7 +144,7 @@ plot_histogram <- function(outcomes, subtitle) {
   ggtitle("Simple Simulation Histogram", subtitle = subtitle)
 }
 
-plot_histogram(outcomes = control_y, subtitle = "asfkjnsdl;fij")
+plot_histogram(outcomes = control_y, subtitle = "Control Group")
 ```
 
 ------------------------------------------------------------------------
@@ -190,7 +190,7 @@ one_sim(n = n_obs, control_prob = control_prob,
         rel_effect = rel_effect)
 ```
 
-This is very close to the true increase of 0.001\`.
+This is very close to the true increase absolute of `0.001` (i.e. 1% of the `control_prob` of 0.1).
 
 ------------------------------------------------------------------------
 
@@ -268,7 +268,7 @@ system.time(
 
 I wrapped this call in `system.time()` so that we can keep track of how much computation time we spend on the call. Monte Carlo simulations are just doing the same thing over and over. This computation time can add up.
 
-We can see that the the `apply` version in this case is pretty much as slow as the `for` loop.[^6]
+We can see that the the `apply` version (above) in this case is pretty much as slow as the `for` loop (below).[^6]
 
 [^6]: Note that there is random variation in computation time. So if you want to get a more accurate sense of computation time use the [microbenchmark](https://cran.r-project.org/web/packages/microbenchmark/microbenchmark.pdf) package. This does repeated runs of the call and reports the distribution of run times.
 
@@ -283,7 +283,7 @@ system.time(
 
 So far we have been running all of our simulations in sequence. However, each simulation, by construction, is independent of the others. This is a perfect use case for parallelization.
 
-There is a `mc_replicate()` helper function (originally from the *rethinking* package) that makes this easy for the code we have written so far.
+There is a `mc_replicate()` helper function (originally from the [*rethinking*](https://github.com/rmcelreath/rethinking) package) that makes this easy for the code we have written so far.
 
 ```{r cache=TRUE}
 xfun::pkg_attach2("mcreplicate")
@@ -296,7 +296,7 @@ system.time(
 )
 ```
 
-As we would expect from running the simulations across 4 rather than one core, the `elapsed` time is roughly 4 times faster with `mc_replicate()`.
+As we would expect from running the simulations across 4 rather than one core, the `elapsed` time is faster with `mc_replicate()`. Note it is not 4 times faster in this case, because there is overhead in setting up the parallelization. With more samples we the overhead as a proportion of total computation time will decrease and we will approach 4x computation time. 
 
 Finally, let's see if the difference of means is a useful way of estimating the treatment effect for a binary outcome? Let's run a few more simulations. We should see normally distributed difference of means centered on 0.001:
 
@@ -344,7 +344,7 @@ So, it is crucial that when you find a bug, to take a step back and ask:
 
 If the answer is "angry, I want to throw my computer out the window", your best next step is to *take a break*. Grab a tea or whatever. Then, with a piece of paper (or some other tool that gets you away from the temptation to just begin slamming out code on your keyboard) write down hypotheses about the cause of the bug and ways to test them.
 
-Unlike social phenomena, most computer bugs are deterministic. The cause of a bug will usually cause the bug. So your chances of definitively finding the bug are high with the following process and tools.
+**Unlike social phenomena, many computer bugs are deterministic**. The cause of a bug will usually cause the bug. So your chances of definitively finding the bug are high with the following process and tools.
 
 ### Clear and testable program specifications
 
@@ -352,7 +352,7 @@ Unlike social phenomena, most computer bugs are deterministic. The cause of a bu
 >
 > ---Norm Matloff (quote from [Advanced R](https://adv-r.hadley.nz/debugging.html#debugging-strategy))
 
-Great debugging is driven by having great expectations of what the program should return. Having a well defined expectation of what a program should do is important to knowing if you have a bug to begin with. One way to approach software development is to write tests for a function *before* you write the function. This is called [test drive development](https://en.wikipedia.org/wiki/Test-driven_development).
+Great debugging is driven by having great expectations of what the program should return. Having a well defined expectation of what a program should do is important to knowing if you have a bug to begin with. One way to approach software development is to write tests for a function *before* you write the function. This is called [test driven development](https://en.wikipedia.org/wiki/Test-driven_development).
 
 Both in your functions, to test incremental expectations, and for the output of your functions you include automated tests. Here is a silly example. Imagine that we have a function that should add 2 + 2 and then divide by 2 to return 2. We can create an automated test like this:
 
