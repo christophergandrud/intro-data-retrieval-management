@@ -150,6 +150,8 @@ each object a unique name to avoid confusion and conflicts. For example,
 if you reuse an object name in an R session, you could easily
 accidentally overwrite it.
 
+Good object names also help your code be **self documenting**, enhancing review, reproducibility, and reuse.
+
 Let's begin working with numeric objects by creating a new object called
 *number* with the number 10 in it. Use the **assignment operator**
 (`<-`) to put something into the object:
