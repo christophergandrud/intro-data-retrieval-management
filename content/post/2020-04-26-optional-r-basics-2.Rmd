@@ -266,32 +266,7 @@ mclapply(three_list, mean, mc.cores = 3)
 
 -   Create a data frame with numeric and character columns. Then, for each column find the standard deviation (`sd()`) if it is numeric and return the `message()` `"This column has characters"` if it is a character type column.
 
-```{r}
-# Create data frame with numeric and character columns
-means_df
-
-for (i in seq_along(means_df)) {
-  # extract column
-  tmp <- means_df[, i]
-  if (is.numeric(tmp)) {
-    message(sd(tmp))
-  }
-  else if (is.character(tmp)) {
-    message("This is a character vector")
-  }
-  else
-    warning("Not Character or Numeric")
-}
-
-
-```
-
 -   `nchar()` counts the number of characters in a string. Create a list of character vectors with strings of different lengths. In parallel, count the number of characters in each vector.
-
-```{r}
-
-
-```
 
 ## Additional Materials
 
