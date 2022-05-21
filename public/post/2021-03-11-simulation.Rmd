@@ -411,7 +411,7 @@ browser()
 
 ```
 
-Ok, we've found the typo. We should have used `i` instead of `u` to index the output of `one_sim`. To leave the browser environment type `c + Enter`. Are we done? We'll let's check the output:
+Ok, we've found the typo. We should have used `i` instead of `u` to index the output of `one_sim`. To leave the browser environment type `c + Enter` (or on some Windows machines `Q + Enter`). Are we done? We'll let's check the output:
 
 ```{r eval=FALSE}
 for (i in seq_along(mean_diff)) {

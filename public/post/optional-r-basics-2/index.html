@@ -244,7 +244,7 @@ as.data.frame(means_apply)</code></pre>
 detectCores()</code></pre>
 <pre><code>## [1] 4</code></pre>
 <p>Not all computation can be done in parallel. Somethings have to be done in sequence, because the output of one operation is needed for the computation of the subsequent operations. However, pretty much anything that can be looped or applied can be done in parallel. This will often improve the speed of the computation.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
-<p><code>mclapply()</code> from base R’s <em>parallel</em> package works like <code>lapply</code> (list apply) for. Imagine we have a list with 3 numeric vectors:</p>
+<p><code>mclapply()</code> for macOS and Linux and <code>parLapply()</code> for Windows from base R’s <em>parallel</em> package works like <code>lapply</code> (list apply) for lists. Imagine we have a list with 3 numeric vectors:</p>
 <pre class="r"><code>three_list &lt;- list(A = rnorm(n = 100, mean = 1),
                    B = rnorm(n = 100, mean = 2),
                    C = rnorm(n = 100, mean = 5))</code></pre>
@@ -252,19 +252,20 @@ detectCores()</code></pre>
 <p>Let’s compute the mean of each vector in the list in parallel:</p>
 <pre class="r"><code>mclapply(three_list, mean, mc.cores = 3)</code></pre>
 <pre><code>## $A
-## [1] 1.129669
+## [1] 1.012051
 ## 
 ## $B
-## [1] 2.173475
+## [1] 1.877143
 ## 
 ## $C
-## [1] 4.854764</code></pre>
-<p><code>mc.cores</code> sets the number of cores to use. Usually use 1 - the number of cores you have available.</p>
+## [1] 4.92534</code></pre>
+<p><code>mc.cores</code> sets the number of cores to use. Usually use 1 minus <em>n</em>, the number of cores you have available.</p>
+<p>For Windows, we need to use <code>parLapply()</code>. First create a cluster with <code>cl &lt;- makeCluster(cores = 2)</code> (for 2 cores) and then run the function.</p>
 </div>
 <div id="exercises" class="section level2">
 <h2>🥅 Exercises</h2>
 <ul>
-<li><p>Create a new function to summarise numeric vectors in a method of your choosing (explore R’s built in statistical capabilities).</p></li>
+<li><p>Create a new function to summarise numeric vectors in a method other than <code>mean()</code> of your choosing (explore R’s built in statistical capabilities).</p></li>
 <li><p>Create a data frame with numeric and character columns. Then, for each column find the standard deviation (<code>sd()</code>) if it is numeric and return the <code>message()</code> <code>"This column has characters"</code> if it is a character type column.</p></li>
 <li><p><code>nchar()</code> counts the number of characters in a string. Create a list of character vectors with strings of different lengths. In parallel, count the number of characters in each vector.</p></li>
 </ul>

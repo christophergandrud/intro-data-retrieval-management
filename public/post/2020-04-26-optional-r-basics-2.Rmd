@@ -250,7 +250,7 @@ three_list <- list(A = rnorm(n = 100, mean = 1),
                    C = rnorm(n = 100, mean = 5))
 ```
 
-Note `rnorm()` simulates data from the normal distribution. For `parLapply()` we need to first create a cluster with `cl <- makeCluster(cores = 2)` (for 2 cores) and then run the function.
+Note `rnorm()` simulates data from the normal distribution.
 
 Let's compute the mean of each vector in the list in parallel:
 
@@ -259,6 +259,8 @@ mclapply(three_list, mean, mc.cores = 3)
 ```
 
 `mc.cores` sets the number of cores to use. Usually use 1 minus *n*, the number of cores you have available.
+
+For Windows, we need to use `parLapply()`. First create a cluster with `cl <- makeCluster(cores = 2)` (for 2 cores) and then run the function.
 
 ## 🥅 Exercises
 
