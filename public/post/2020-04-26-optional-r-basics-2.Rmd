@@ -242,7 +242,7 @@ Not all computation can be done in parallel. Somethings have to be done in seque
 
 [^2]: It won't necessarily be faster as there is "overhead" for breaking up the operation into parallel computation. Also, while the computation time can go down, the energy usage will be the same as in total the same computation will have happened.
 
-`mclapply()` from base R's *parallel* package works like `lapply` (list apply) for. Imagine we have a list with 3 numeric vectors:
+`mclapply()` for macOS and Linux and `parLapply()` for Windows from base R's *parallel* package works like `lapply` (list apply) for lists. Imagine we have a list with 3 numeric vectors:
 
 ```{r sim-list}
 three_list <- list(A = rnorm(n = 100, mean = 1),
@@ -250,7 +250,7 @@ three_list <- list(A = rnorm(n = 100, mean = 1),
                    C = rnorm(n = 100, mean = 5))
 ```
 
-Note `rnorm()` simulates data from the normal distribution.
+Note `rnorm()` simulates data from the normal distribution. For `parLapply()` we need to first create a cluster with `cl <- makeCluster(cores = 2)` (for 2 cores) and then run the function.
 
 Let's compute the mean of each vector in the list in parallel:
 
@@ -258,11 +258,11 @@ Let's compute the mean of each vector in the list in parallel:
 mclapply(three_list, mean, mc.cores = 3)
 ```
 
-`mc.cores` sets the number of cores to use. Usually use 1 - the number of cores you have available.
+`mc.cores` sets the number of cores to use. Usually use 1 minus *n*, the number of cores you have available.
 
 ## 🥅 Exercises
 
--   Create a new function to summarise numeric vectors in a method of your choosing (explore R's built in statistical capabilities).
+-   Create a new function to summarise numeric vectors in a method other than `mean()` of your choosing (explore R's built in statistical capabilities).
 
 -   Create a data frame with numeric and character columns. Then, for each column find the standard deviation (`sd()`) if it is numeric and return the `message()` `"This column has characters"` if it is a character type column.
 

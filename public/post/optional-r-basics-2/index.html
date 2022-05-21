@@ -252,13 +252,13 @@ detectCores()</code></pre>
 <p>Let’s compute the mean of each vector in the list in parallel:</p>
 <pre class="r"><code>mclapply(three_list, mean, mc.cores = 3)</code></pre>
 <pre><code>## $A
-## [1] 1.081145
+## [1] 1.129669
 ## 
 ## $B
-## [1] 1.881384
+## [1] 2.173475
 ## 
 ## $C
-## [1] 5.001349</code></pre>
+## [1] 4.854764</code></pre>
 <p><code>mc.cores</code> sets the number of cores to use. Usually use 1 - the number of cores you have available.</p>
 </div>
 <div id="exercises" class="section level2">
@@ -266,32 +266,7 @@ detectCores()</code></pre>
 <ul>
 <li><p>Create a new function to summarise numeric vectors in a method of your choosing (explore R’s built in statistical capabilities).</p></li>
 <li><p>Create a data frame with numeric and character columns. Then, for each column find the standard deviation (<code>sd()</code>) if it is numeric and return the <code>message()</code> <code>"This column has characters"</code> if it is a character type column.</p></li>
-</ul>
-<pre class="r"><code># Create data frame with numeric and character columns
-means_df</code></pre>
-<pre><code>##               name mean_value
-## 1 Infant.Mortality       19.9
-## 2         Catholic       41.1
-## 3        Education       11.0
-## 4      Examination       16.5
-## 5      Agriculture       50.7
-## 6        Fertility       70.1</code></pre>
-<pre class="r"><code>for (i in seq_along(means_df)) {
-  # extract column
-  tmp &lt;- means_df[, i]
-  if (is.numeric(tmp)) {
-    message(sd(tmp))
-  }
-  else if (is.character(tmp)) {
-    message(&quot;This is a character vector&quot;)
-  }
-  else
-    warning(&quot;Not Character or Numeric&quot;)
-}</code></pre>
-<pre><code>## This is a character vector</code></pre>
-<pre><code>## 23.0733107001719</code></pre>
-<ul>
-<li><code>nchar()</code> counts the number of characters in a string. Create a list of character vectors with strings of different lengths. In parallel, count the number of characters in each vector.</li>
+<li><p><code>nchar()</code> counts the number of characters in a string. Create a list of character vectors with strings of different lengths. In parallel, count the number of characters in each vector.</p></li>
 </ul>
 </div>
 <div id="additional-materials" class="section level2">
