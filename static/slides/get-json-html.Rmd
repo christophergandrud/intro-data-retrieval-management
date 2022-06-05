@@ -414,13 +414,6 @@ Response [https://en.wikipedia.org/wiki/URL]
 ---
 
 class: inverse, center, middle
-background-color: #FB3579
-
-# What is a HTML head?
-
----
-
-class: inverse, center, middle
 
 # Introduction to HTML
 
@@ -916,7 +909,7 @@ background-color: #FF8C03
 **Scrape** and **clean** the Medals Table from
 <https://en.wikipedia.org/wiki/2012_Summer_Olympics_medal_table>.
 
-Hint: it is the second `table` on the page.
+Hint: it is the third `table` on the page.
 
 Also, sort by total medals in **descending order**.
 
