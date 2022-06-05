@@ -2,7 +2,7 @@
 title: "Parse PDFs and Text as Data"
 author: "Christopher Gandrud"
 institute: "HU DYNAMICS"
-date: "2020-05-30 (updated: `r Sys.Date()`)"
+date: "2022-06-10 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
     css: [robot, metropolis-fonts]
@@ -15,9 +15,8 @@ bibliography: main.bib
 ---
 
 ```{r setup, include=FALSE}
-library(xfun)
-pkg_attach2("pdftools", "tidyverse", "rvest", "httr", "roperators", "quanteda",
-            "xml2")
+xfun::pkg_attach2("pdftools", "tidyverse", "rvest", "httr", "roperators",
+                  "quanteda", "quanteda.textplots", "xml2")
 knitr::opts_chunk$set(fig.align = 'center')
 ```
 
@@ -51,57 +50,43 @@ knitr::include_graphics("img/peace-table.png")
 
 PDF at: <https://www.visionofhumanity.org/wp-content/uploads/2020/10/GPI_2020_web.pdf>
 
-Example modified from [Ketan Deshpande](https://medium.com/@ketanrd.009/how-to-extract-pdf-tables-in-r-e994c0fe4e28)
+Example modified from [Ketan Deshpande](https://medium.com/@ketanrd.009/how-to-extract-pdf-tables-in-r-e994c0fe4e28) and then updated to use Python.
 
 ---
 
-# parse PDF in R [REWRITE!!!!]
+# parse PDF 
 
-Use the [tabulizer](https://github.com/ropensci/tabulizer) package to parse PDFs in R.
+There used to an R package called [tabulizer](https://github.com/ropensci/tabulizer) package to parse PDFs in R. But it is not currently downloadable on CRAN.
 
-⚠️ This package requires [rJava](https://cran.r-project.org/web/packages/rJava/index.html). This can be a real pain to install. See [tabulizer README](https://github.com/ropensci/tabulizer/README.md). However, tabulizer is more powerful for extracting tables from PDF docs.
+There are at least two alternatives:
 
-If you can't get tabularizer to install, you can also use [pdftools](https://docs.ropensci.org/pdftools/) package to parse PDFs in R. This does not require rJava, but is less powerful for extracting tables from PDFs.
+- (the one I don't recommend) [pdftools](https://docs.ropensci.org/pdftools/) package to parse PDFs in R. This does not require rJava, but its `pdf_data()` function is less powerful for extracting tables from PDFs.
+
+- tabula-py: a Python version of tabulizer that. But this requires setting up Java, Python, and calling the two from R. See set up instructions [here](https://github.com/christophergandrud/hu-live-coding-course-examples/blob/main/src/set-up-tabula-python.md).
 
 ---
 
-# Download PDF and extract table [REWRITE!!!!]
+# Download PDF and extract table
 
 ```{r download-pdf, cache=TRUE, warning=FALSE, message=FALSE, eval=FALSE}
-# library(tabulizer)
+xfun::pkg_attach2("tidyverse", "reticulate")
 
-# url <- "https://www.visionofhumanity.org/wp-content/uploads/2020/10/GPI_2020_web.pdf"
+# Find the the location of Python on your computer with `which python3` in the Terminal
+use_python("/opt/homebrew/bin/python3")
 
-# all_tables <- extract_tables(file = url,
-#                             pages = 10, # tenth page of # the PDF
-#                             output = "data.frame") 
+# Load tabula package as tb
+tabula <- import("tabula")
+
+table_list <- tabula$read_pdf("https://www.visionofhumanity.org/wp-content/uploads/2020/10/GPI_2020_web.pdf", 
+                        user_agent="Mozilla/5.0", pages="10")
+
+df <- table_list[[1]] # Extract data table from list
+head(df)
 ```
 
-By default, `extract_tables` guesses where the tables are on the page. Use `guess = FALSE` and `areas` argument to specify the areas of the page to extract the table from.
+[GitHub](https://github.com/christophergandrud/hu-live-coding-course-examples/blob/main/src/tabula-reticulate-example.R)
 
-Use `locate_areas(file = url)` to find the areas.
-
----
-
-# Clean up [REWRITE!!!!]
-
-```{r, eval=FALSE}
-# all_tables_df <- all_tables[[1]]
-# head(all_tables_df)[, 1:4]
-```
-
----
-
-# Note: you can also extract text data from PDFs [REWRITE!!!!]
-
-<br>
-<br>
-<br>
-
-
-```R
-# tabularizer::extract_text()
-```
+Note: you can also extract text data from PDFs 
 
 ---
 
