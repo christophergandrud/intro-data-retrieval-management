@@ -196,7 +196,7 @@ as.data.frame(means_apply)</code></pre>
 <p>To find the number of cores on your computer use:</p>
 <pre class="r"><code>library(parallel)
 detectCores()</code></pre>
-<pre><code>## [1] 4</code></pre>
+<pre><code>## [1] 8</code></pre>
 <p>Not all computation can be done in parallel. Somethings have to be done in sequence, because the output of one operation is needed for the computation of the subsequent operations. However, pretty much anything that can be looped or applied can be done in parallel. This will often improve the speed of the computation.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
 <p><code>mclapply()</code> for macOS and Linux and <code>parLapply()</code> for Windows from base R’s <em>parallel</em> package works like <code>lapply</code> (list apply) for lists. Imagine we have a list with 3 numeric vectors:</p>
 <pre class="r"><code>three_list &lt;- list(A = rnorm(n = 100, mean = 1),
@@ -206,13 +206,13 @@ detectCores()</code></pre>
 <p>Let’s compute the mean of each vector in the list in parallel:</p>
 <pre class="r"><code>mclapply(three_list, mean, mc.cores = 3)</code></pre>
 <pre><code>## $A
-## [1] 1.012051
+## [1] 1.022425
 ## 
 ## $B
-## [1] 1.877143
+## [1] 2.109696
 ## 
 ## $C
-## [1] 4.92534</code></pre>
+## [1] 5.152018</code></pre>
 <p><code>mc.cores</code> sets the number of cores to use. Usually use 1 minus <em>n</em>, the number of cores you have available.</p>
 <p>For Windows, we need to use <code>parLapply()</code>. First create a cluster with <code>cl &lt;- makeCluster(cores = 2)</code> (for 2 cores) and then run the function.</p>
 </div>
