@@ -4,7 +4,7 @@
     <title>Why Automated Data Retrieval and Management?</title>
     <meta charset="utf-8" />
     <meta name="author" content="Christopher Gandrud" />
-    <script src="libs/header-attrs-2.8/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.14/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/robot.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
   </head>
@@ -12,10 +12,18 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Why Automated Data Retrieval and Management?
+]
+.author[
 ### Christopher Gandrud
+]
+.institute[
 ### HU DYNAMICS
-### 2020-06-12 (updated: 2021-06-11)
+]
+.date[
+### 2022-06-10 (updated: 2022-06-05)
+]
 
 ---
 
@@ -177,7 +185,7 @@ We don't just want to solve a customer problem once, we want to solve it many ti
 
 So, being able to scale data science--automate data retrieval and management--is highly valued. E.g. on [PayScale](https://www.payscale.com/research/DE/Job=Data_Scientist/Salary):
 
-&lt;img src="img/pay-by-experience.png" width="1819" /&gt;
+![](img/pay-by-experience.png)&lt;!-- --&gt;
 
 ---
 
@@ -458,7 +466,9 @@ You need to be **defensive**, i.e. save/cache copies of the data on your side an
 
 # 👀 Course preview: from structured to unstructured data
 
-&lt;img src="why-automated-data_files/figure-html/struct-to-unstruct-1.png" width="720" style="display: block; margin: auto;" /&gt;
+```
+Tidy Data -&gt; Tabular Data -&gt; HTML Data -&gt; Nested Data -&gt; Text Data
+```
 
 ---
 
@@ -524,6 +534,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable
