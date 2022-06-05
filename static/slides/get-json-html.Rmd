@@ -2,7 +2,7 @@
 title: "Get and Parse HTML Data"
 author: "Christopher Gandrud"
 institute: "HU DYNAMICS"
-date: "2020-05-30 (updated: `r Sys.Date()`)"
+date: "2022-06-10 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
     css: [robot, metropolis-fonts]
@@ -24,7 +24,7 @@ knitr::opts_chunk$set(fig.align = 'center')
 
 - Parse JSON (nested data formats)
 
-- HTTP verbs (GET, POST, HEAD, PUT) and httr
+- HTTP verbs (GET, POST, HEAD, PUT) and *httr*
 
 - Parse HTML tables
 
@@ -647,8 +647,7 @@ knitr::include_graphics("img/expenses-table.gif")
 # Web scraping example
 
 ```{r, message=FALSE, cache=TRUE}
-library(rvest)
-library(dplyr)
+xfun::pkg_attach2("dplyr", "rvest")
 
 URL <- 'http://news.bbc.co.uk/2/hi/uk_news/politics/8044207.stm'
 
