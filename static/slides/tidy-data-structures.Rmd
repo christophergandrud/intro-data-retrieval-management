@@ -283,7 +283,7 @@ Easier for your collaborators. Easier for you when you use another computer.
 
 ---
 
-# Back up
+# Back up with `../`
 
 You can refer to files in the working directory and further down by stating them, in reference to the working directory. E.g.
 

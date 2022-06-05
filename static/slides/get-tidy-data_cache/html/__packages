@@ -1,5 +1,3 @@
-base
-WDI
 xfun
 tidyverse
 ggplot2
@@ -13,8 +11,8 @@ forcats
 usethis
 devtools
 repmis
-ggmap
 countrycode
+WDI
 zoo
 xts
 TTR

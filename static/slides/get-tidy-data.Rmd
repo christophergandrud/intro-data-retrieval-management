@@ -2,7 +2,7 @@
 title: "Get and Clean Tidy Data"
 author: "Christopher Gandrud"
 institute: "HU DYNAMICS"
-date: "2020-05-22 (updated: `r Sys.Date()`)"
+date: "2022-06-10 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
     css: [robot, metropolis-fonts]
@@ -16,7 +16,8 @@ bibliography: main.bib
 
 ```{r setup, include=FALSE}
 library(xfun)
-pkg_attach2("tidyverse", "devtools", "repmis", "ggmap", "countrycode", "WDI", "quantmod", "lubridate")
+pkg_attach2("tidyverse", "devtools", "repmis", "countrycode", "WDI", 
+            "quantmod", "lubridate")
 ```
 
 # 📝 Lesson Preview
@@ -41,9 +42,7 @@ class: inverse, center, middle
 
 Janssen (2012, 258):
 
-"Non-privacy-restricted and non-confidential
-data which is produced with public money and is made available without any
-restrictions on its usage or distribution."
+> "Non-privacy-restricted and non-confidential data which is produced with public money and is made available without any restrictions on its usage or distribution."
 
 ---
 
@@ -67,8 +66,7 @@ See Janssen (2012, 261) for more.
 
   + Not always a correct assumption. E.g. there are reasons why it is basically impossible to get US-wide data on deaths by police.
 
-- Results in government **giving up** (some) control and more **actively interacting**
-with its environment.
+- Results in government **giving up** (some) control and more **actively interacting** with its environment.
 
 ---
 
@@ -104,7 +102,7 @@ for the City of Boston with Code for America (<https://changelog.com/rfc/6>).
 
 # Accessing data
 
-Social science and public data is becoming **increasingly open** and **accessible**.
+[Maybe -- added 2022] Social science and public data is becoming **increasingly open** and **accessible**.
 
 However, the level of **accessibility varies**:
 
@@ -327,6 +325,8 @@ YenDollar <- getSymbols(Symbols = 'DEXJPUS', src = 'FRED')
 head(YenDollar)
 ```
 
+See also [tidyquant](https://business-science.github.io/tidyquant/).
+
 ---
 
 # Other API-R packages
@@ -354,7 +354,7 @@ class: inverse, center, middle
 
 ---
 
-# 🙇‍♀️ Remember: Tidy data semantics + structure
+# 🙇 Remember: Tidy data semantics + structure
 
 <br>
 
@@ -366,7 +366,7 @@ class: inverse, center, middle
 
 ---
 
-# 🙇‍♀️ Remember: Tidy data
+# 🙇 Remember: Tidy data
 
 | Person       | treatment | result |
 | ------------ | --------- | ------ |
@@ -390,7 +390,7 @@ messy
 
 ---
 
-# 🙇‍♀️ Remember: Messy to Tidy data
+# 🙇 Remember: Messy to Tidy data
 
 First identify what your observations and variables are.
 
@@ -400,7 +400,7 @@ Then use R tools to convert your data into this format.
 
 ---
 
-# 🙇‍♀️ Remember:Messy to tidy data
+# 🙇 Remember: Messy to tidy data
 
 Using `pivot_longer()`
 
@@ -414,7 +414,7 @@ tidied
 
 ---
 
-# 🙇‍♀️ Remember: Tidy to messy data
+# 🙇 Remember: Tidy to messy data
 
 Sometimes it is useful to reverse this operation with `pivot_wider`.
 
@@ -428,7 +428,7 @@ messy_again
 
 ---
 
-# 🙇‍♀️ Remember: Other issues cleaning data
+# 🙇 Remember: Other issues cleaning data
 
 Always **look at** and **poke your data**.
 
@@ -440,7 +440,7 @@ For example, see if:
 
 - Distributions are what you expect them to be.
 
-[dlookr](https://cran.r-project.org/web/packages/dlookr/vignettes/diagonosis.html) looks promising for a data quality checker package.
+[dlookr](https://cran.r-project.org/web/packages/dlookr/vignettes/diagonosis.html)   a data quality checker package.
 
 ---
 
@@ -448,8 +448,8 @@ For example, see if:
 
 Once you have tidy data frames, you can merge them for analysis.
 
-In general: **each observation** must have a **unique key identifier** to merge them
-on.
+In general: **each observation** must have a **unique key identifier** to merge 
+them on.
 
 These identifiers **must match exactly across the data frames**.
 
@@ -556,8 +556,7 @@ times <- c('Sep. 17 1980', 'March 23 2000', 'Nov. 3 2003')
 mdy(times)
 ```
 
-Note: Times should always go from **longest to shortest** unit (e.g. YEAR-MONTH-DAY). 
-Makes dates **sortable**.
+Note: Times should always go from **longest to shortest** unit (e.g. YEAR-MONTH-DAY). Makes dates **sortable**.
 
 ---
 
@@ -760,5 +759,4 @@ background-color: #FF8C03
 # 🥅 Practice
 
 Download two data sets (that conceivable could be merged) using the API-based packages discussed today. Either in the same or a linked R script  **clean** and **merge** the data.
-
 
