@@ -4,7 +4,7 @@
     <title>File Organisation and Tidy Data Structures</title>
     <meta charset="utf-8" />
     <meta name="author" content="Christopher Gandrud" />
-    <script src="libs/header-attrs-2.8/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.14/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/robot.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
   </head>
@@ -12,10 +12,18 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # File Organisation and Tidy Data Structures
+]
+.author[
 ### Christopher Gandrud
+]
+.institute[
 ### HU DYNAMICS
-### 2021-06-12 (updated: 2021-06-05)
+]
+.date[
+### 2022-06-10 (updated: 2022-06-05)
+]
 
 ---
 
@@ -32,7 +40,7 @@ class: center, middle, inverse, title-slide
 
 ---
 
-# 🙇‍♀️ Remember: Practical tips for reproducible research
+# 🙇 Remember: Practical tips for reproducible research
 
 - ✏️ Document Everything!
 
@@ -42,7 +50,7 @@ class: center, middle, inverse, title-slide
 
 - ⋈ Explicitly tie your files together.
 
-- 🗂 Have a plan to organise, store, and make your files available.
+- 🗂 Have a plan to organise, store, and make your files available. [And iterate on this plan -- refactor regularly]
 
 ---
 
@@ -130,7 +138,7 @@ US, United States, 1.050
 
 Makes:
 
-&lt;img src="img/CSVBasic.png" width="299" /&gt;
+![](img/CSVBasic.png)&lt;!-- --&gt;
 
 ---
 
@@ -242,7 +250,8 @@ list.files()
 ## [13] "pdf-and-text-as-data.html"  "pdf-and-text-as-data.Rmd"  
 ## [15] "tidy-data-structures_cache" "tidy-data-structures.html" 
 ## [17] "tidy-data-structures.Rmd"   "why-automated-data_cache"  
-## [19] "why-automated-data.html"    "why-automated-data.Rmd"
+## [19] "why-automated-data_files"   "why-automated-data.html"   
+## [21] "why-automated-data.Rmd"
 ```
 
 ```R
@@ -302,6 +311,26 @@ Why?
 
 - **Enhances reproducibility**.
 Easier for your collaborators. Easier for you when you use another computer.
+
+---
+
+# Back up
+
+You can refer to files in the working directory and further down by stating them, in reference to the working directory. E.g.
+
+```
+list.files("child")
+```
+
+Will show the files in the *child* directory, which is in the working directory.
+
+You can also back up the tree from the working directory with `../`. For example,
+
+```
+list.files("../") 
+```
+
+will list the files in the directory above the working directory.
 
 ---
 
@@ -502,7 +531,7 @@ tidied
 ```
 
 ```
-## # A tibble: 6 x 3
+## # A tibble: 6 × 3
 ##   person       treatment result
 ##   &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt;
 ## 1 John Smith   a             NA
@@ -529,7 +558,7 @@ messy_again
 ```
 
 ```
-## # A tibble: 3 x 3
+## # A tibble: 3 × 3
 ##   person           a     b
 ##   &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;
 ## 1 John Smith      NA     2
@@ -547,7 +576,7 @@ For example, see if:
 
 - Missing values are designated with `NA`
 
-- Variable classes are what you expect them to be.
+- Variable types are what you expect them to be.
 
 - Distributions are what you expect them to be.
 
@@ -622,6 +651,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable

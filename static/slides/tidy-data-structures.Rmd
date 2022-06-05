@@ -2,7 +2,7 @@
 title: "File Organisation and Tidy Data Structures"
 author: "Christopher Gandrud"
 institute: "HU DYNAMICS"
-date: "2021-06-12 (updated: `r Sys.Date()`)"
+date: "2022-06-10 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
     css: [robot, metropolis-fonts]
@@ -15,7 +15,7 @@ output:
 
 ```{r setup, include=FALSE}
 library(xfun)
-pkg_attach2("tidyverse", "devtools", "rio", "WDI", "countrycode", "ggmap")
+pkg_attach2("tidyverse", "devtools", "rio", "WDI", "countrycode")
 ```
 
 # 📝 Lesson Preview
@@ -28,7 +28,7 @@ pkg_attach2("tidyverse", "devtools", "rio", "WDI", "countrycode", "ggmap")
 
 ---
 
-# 🙇‍♀️ Remember: Practical tips for reproducible research
+# 🙇 Remember: Practical tips for reproducible research
 
 - ✏️ Document Everything!
 
@@ -38,7 +38,7 @@ pkg_attach2("tidyverse", "devtools", "rio", "WDI", "countrycode", "ggmap")
 
 - ⋈ Explicitly tie your files together.
 
-- 🗂 Have a plan to organise, store, and make your files available.
+- 🗂 Have a plan to organise, store, and make your files available. [And iterate on this plan -- refactor regularly]
 
 ---
 
@@ -218,6 +218,7 @@ directories.
 ```{r}
 # Find working directory
 getwd()
+
 # List all files in the working directory
 list.files()
 ```
@@ -279,6 +280,26 @@ Why?
 
 - **Enhances reproducibility**.
 Easier for your collaborators. Easier for you when you use another computer.
+
+---
+
+# Back up
+
+You can refer to files in the working directory and further down by stating them, in reference to the working directory. E.g.
+
+```
+list.files("child")
+```
+
+Will show the files in the *child* directory, which is in the working directory.
+
+You can also back up the tree from the working directory with `../`. For example,
+
+```
+list.files("../") 
+```
+
+will list the files in the directory above the working directory.
 
 ---
 
@@ -481,7 +502,7 @@ For example, see if:
 
 - Missing values are designated with `NA`
 
-- Variable classes are what you expect them to be.
+- Variable types are what you expect them to be.
 
 - Distributions are what you expect them to be.
 

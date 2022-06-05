@@ -444,7 +444,7 @@ the data subjects' rights pursuant to Articles 12 to 222
 class: inverse, centre, middle
 background-color: #FF8C03
 
-# Automation has trade offs
+# Automation has trade offs. 
 
 ---
 
@@ -478,7 +478,9 @@ You need to be **defensive**, i.e. save/cache copies of the data on your side an
 
 ---
 
-If we have time, we'll look into more details on how to thinking about software design to help future proof your work/avoid technical debt. See slides [here](https://github.com/christophergandrud/misc-speaking-notes/blob/main/reproducible-research-as-software-design.pdf).
+# More on how to think about trade off decisions
+
+If we have time, we'll look into more details on how to thinking about software design to help you structure your automation/research software. See slides [here](https://github.com/christophergandrud/misc-speaking-notes/blob/main/reproducible-research-as-software-design.pdf).
 
 ---
 
