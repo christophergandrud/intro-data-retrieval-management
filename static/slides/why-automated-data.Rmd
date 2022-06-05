@@ -2,7 +2,7 @@
 title: "Why Automated Data Retrieval and Management?"
 author: "Christopher Gandrud"
 institute: "HU DYNAMICS"
-date: "2020-06-12 (updated: `r Sys.Date()`)"
+date: "2022-06-10 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
     css: [robot, metropolis-fonts]
@@ -178,7 +178,7 @@ ggplot(returns_to_scale, aes(x, y)) +
 <br>
 <br>
 
-> "It's not interesting if it doesn't scale." -- Jim Freeman
+> "It's not interesting if it doesn't scale." -- A mentor
 
 ---
 
