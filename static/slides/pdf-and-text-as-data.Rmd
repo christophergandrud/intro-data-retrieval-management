@@ -62,7 +62,7 @@ There are at least two alternatives:
 
 - (the one I don't recommend) [pdftools](https://docs.ropensci.org/pdftools/) package to parse PDFs in R. This does not require rJava, but its `pdf_data()` function is less powerful for extracting tables from PDFs.
 
-- tabula-py: a Python version of tabulizer that. But this requires setting up Java, Python, and calling the two from R. See set up instructions [here](https://github.com/christophergandrud/hu-live-coding-course-examples/blob/main/src/set-up-tabula-python.md).
+- tabula-py: a Python version of tabulizer. It's more powerful than pdftools, but harder to set up. It requires setting up Java, Python, and calling the two from R. See set up instructions [here](https://github.com/christophergandrud/hu-live-coding-course-examples/blob/main/src/set-up-tabula-python.md).
 
 ---
 
@@ -86,7 +86,9 @@ head(df)
 
 [GitHub](https://github.com/christophergandrud/hu-live-coding-course-examples/blob/main/src/tabula-reticulate-example.R)
 
-Note: you can also extract text data from PDFs 
+The data frame still needs cleaning using the tools we covered in previous sessions.
+
+Note: you can also extract text data from PDFs using tabula.
 
 ---
 
