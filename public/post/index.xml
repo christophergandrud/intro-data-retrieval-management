@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Programming Methods for Data Retrieval &amp; Management</title>
+    <link>https://brave-pasteur-c09ffa.netlify.app/post/</link>
+    <description>Recent content in Posts on Programming Methods for Data Retrieval &amp; Management</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 15 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://brave-pasteur-c09ffa.netlify.app/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Syllabus</title>
+      <link>https://brave-pasteur-c09ffa.netlify.app/post/syllabus/</link>
+      <pubDate>Sun, 15 May 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://brave-pasteur-c09ffa.netlify.app/post/syllabus/</guid>
+      <description>[Core Methods: Data Science] Programming Methods for Data Retrieval &amp;amp; Management Instructor: Christopher Gandrud, PhD
+Email: christopher.gandrud@gmail.com
+Location: Virtual
+📜 Course Description Part I: Introduction to programming and statistical simulation
+Social scientists increasingly rely on computational methods and tools to help understand social phenomena. Computational tools are crucial for making sense of large new social data sets and computational thinking can aid scientists in modelling social processes. In this hands on workshop, we start from the basics of programming in R, e.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,17 @@
+xfun
+pdftools
+tidyverse
+ggplot2
+tibble
+tidyr
+readr
+purrr
+dplyr
+stringr
+forcats
+rvest
+httr
+roperators
+quanteda
+xml2
+quanteda.textplots

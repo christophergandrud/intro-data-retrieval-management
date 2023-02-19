@@ -74,7 +74,7 @@ xfun::pkg_attach2("tidyverse", "reticulate")
 # Find the the location of Python on your computer with `which python3` in the Terminal
 use_python("/opt/homebrew/bin/python3")
 
-# Load tabula package as tb
+# Load tabula package
 tabula <- import("tabula")
 
 table_list <- tabula$read_pdf("https://www.visionofhumanity.org/wp-content/uploads/2020/10/GPI_2020_web.pdf", 

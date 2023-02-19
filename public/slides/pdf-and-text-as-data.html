@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Parse PDFs and Text as Data</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Christopher Gandrud" />
+    <script src="libs/header-attrs-2.20/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/robot.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Parse PDFs and Text as Data
+]
+.author[
+### Christopher Gandrud
+]
+.institute[
+### HU DYNAMICS
+]
+.date[
+### 2022-06-10 (updated: 2023-02-18)
+]
+
+---
+
+
+
+
+## 📝 Lesson Preview
+
+- Scraping tables in PDFs
+
+- Text as data
+
+---
+
+class: inverse, center, middle
+background-color: #FFC400
+
+# Scraping tables in PDFs
+
+---
+
+class: inverse, center, middle
+background-color: #FB3579
+
+## "Please send the data in a PDF" -- *no one ever*
+
+---
+
+# Table in a PDF
+
+&lt;img src="img/peace-table.png" width="400px" height="300px" style="display: block; margin: auto;" /&gt;
+
+PDF at: &lt;https://www.visionofhumanity.org/wp-content/uploads/2020/10/GPI_2020_web.pdf&gt;
+
+Example modified from [Ketan Deshpande](https://medium.com/@ketanrd.009/how-to-extract-pdf-tables-in-r-e994c0fe4e28) and then updated to use Python.
+
+---
+
+# parse PDF 
+
+There used to an R package called [tabulizer](https://github.com/ropensci/tabulizer) package to parse PDFs in R. But it is not currently downloadable on CRAN.
+
+There are at least two alternatives:
+
+- (the one I don't recommend) [pdftools](https://docs.ropensci.org/pdftools/) package to parse PDFs in R. This does not require rJava, but its `pdf_data()` function is less powerful for extracting tables from PDFs.
+
+- tabula-py: a Python version of tabulizer. It's more powerful than pdftools, but harder to set up. It requires setting up Java, Python, and calling the two from R. See set up instructions [here](https://github.com/christophergandrud/hu-live-coding-course-examples/blob/main/src/set-up-tabula-python.md).
+
+---
+
+# Download PDF and extract table
+
+
+```r
+xfun::pkg_attach2("tidyverse", "reticulate")
+
+# Find the the location of Python on your computer with `which python3` in the Terminal
+use_python("/opt/homebrew/bin/python3")
+
+# Load tabula package
+tabula &lt;- import("tabula")
+
+table_list &lt;- tabula$read_pdf("https://www.visionofhumanity.org/wp-content/uploads/2020/10/GPI_2020_web.pdf", 
+                        user_agent="Mozilla/5.0", pages="10")
+
+df &lt;- table_list[[1]] # Extract data table from list
+head(df)
+```
+
+[GitHub](https://github.com/christophergandrud/hu-live-coding-course-examples/blob/main/src/tabula-reticulate-example.R)
+
+The data frame still needs cleaning using the tools we covered in previous sessions.
+
+Note: you can also extract text data from PDFs using tabula.
+
+---
+
+class: inverse, center, middle
+background-color: #FFC400
+
+# 📑 Text as data
+
+---
+
+# 📑 Text as data
+
+So far we have assumed that we want to get data into tidy data format, probably for a standard statistical analysis (e.g. linear regression). 
+
+But, we may want to conduct an analysis of the text itself, e.g. [Grimmer and Stewart (2013)](https://www.cambridge.org/core/journals/political-analysis/article/text-as-data-the-promise-and-pitfalls-of-automatic-content-analysis-methods-for-political-texts/F7AAC8B2909441603FEB25C156448F20), using **natural language processing** (NPL) methods. 
+
+Key tools include the [quanteda](https://github.com/quanteda/quanteda) and [tm](https://cran.r-project.org/web/packages/tm/tm.pdf) (text mining) packages. 
+
+---
+
+# Example
+
+Let's scrape COVID-19 press releases from the British Government.
+
+Navigate to &lt;https://www.gov.uk/search/news-and-communications&gt;.
+
+&lt;img src="img/uk-gov-announcements.png" width="400px" height="400px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Checkout URL structure
+
+Imagine we want to study the Prime Minister's communications regarding COVID-19. 
+
+Understand the URL structure:
+
+&lt;img src="img/boris-news.png" width="200px" height="200px" style="display: block; margin: auto;" /&gt;
+
+&lt;https://www.gov.uk/search/news-and-communications?level_one_taxon=5b7b9532-a775-4bd2-a3aa-6ce380184b6c&amp;people%5B%5D=boris-johnson&amp;order=updated-newest&gt;
+
+---
+
+# Checkout URL structure for announcements
+
+
+&lt;img src="img/list-item.png" width="2752" style="display: block; margin: auto;" /&gt;
+
+Links to each announcement are stored in the `href` of anchor tags (`&lt;a&gt;`).
+
+---
+
+# Download the search page
+
+
+```r
+library(rvest)
+
+url &lt;- "https://www.gov.uk/search/news-and-communications?level_one_taxon=5b7b9532-a775-4bd2-a3aa-6ce380184b6c&amp;people%5B%5D=boris-johnson&amp;order=updated-newest"
+
+announce_page &lt;- read_html(url)
+
+announce_page
+```
+
+```
+## {html_document}
+## &lt;html class="govuk-template" lang="en"&gt;
+## [1] &lt;head&gt;\n&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8 ...
+## [2] &lt;body class="gem-c-layout-for-public govuk-template__body "&gt;\n    &lt;script ...
+```
+
+---
+
+# Extract the partial URLS with xpath
+
+**xpath** (XML Path Language) allows you to query nodes in an html document.
+
+&lt;img src="img/xpath-copy.gif" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Extract the partial URLs with xpath
+
+
+```r
+announce_page_href_1 &lt;- html_elements(announce_page,
+                        xpath = '//*[@id="js-results"]/div/ul/li[1]/a') %&gt;%
+                        html_attr('href') # we want the href element
+announce_page_href_1
+```
+
+```
+## [1] "/government/news/moderna-to-open-vaccine-research-and-manufacturing-centre-in-uk"
+```
+
+&lt;br&gt;
+&lt;br&gt;
+
+This only extracted the first href because we explicitly referenced the first list item (`li[1]`)
+---
+
+# 🔥 Wild cards
+
+Use the `*` wild card to match all of the list items. 
+
+
+```r
+announce_page_href &lt;- html_elements(announce_page,
+                                 xpath = '//*[@id="js-results"]/div/ul/li[*]/a') %&gt;%
+  html_attr('href') # we want the href element
+announce_page_href
+```
+
+```
+##  [1] "/government/news/moderna-to-open-vaccine-research-and-manufacturing-centre-in-uk"                                                
+##  [2] "/government/news/prime-minister-announces-covid-19-inquiry-chair"                                                                
+##  [3] "/government/speeches/pm-statement-at-covid-press-conference-21-february-2022"                                                    
+##  [4] "/government/news/prime-minister-sets-out-plan-for-living-with-covid"                                                             
+##  [5] "/government/speeches/pm-statement-on-living-with-covid-21-february-2022"                                                         
+##  [6] "/government/news/prime-minister-declares-uk-one-of-the-most-open-countries-in-europe-and-ready-for-an-international-tourism-boom"
+##  [7] "/government/speeches/pm-statement-to-the-house-of-commons-on-covid-19-19-january-2022"                                           
+##  [8] "/government/speeches/pm-statement-to-the-house-of-commons-on-covid-19-5-january-2022"                                            
+##  [9] "/government/speeches/pm-opening-statement-at-covid-19-press-conference-4-january-2022"                                           
+## [10] "/government/news/prime-minister-reissues-call-for-public-to-get-boosted-and-announces-new-critical-workforce-testing-measures"   
+## [11] "/government/news/prime-minister-celebrates-success-of-vaccine-programme-in-new-years-message"                                    
+## [12] "/government/news/pm-call-with-first-minister-paul-givan-and-deputy-first-minister-michelle-oneill-17-december-2021"              
+## [13] "/government/news/pm-call-with-first-minister-of-scotland-17-december-2021"                                                       
+## [14] "/government/news/pm-call-with-first-minister-of-wales-17-december-2021"                                                          
+## [15] "/government/speeches/pm-opening-statement-at-covid-19-press-conference-15-december-2021"                                         
+## [16] "/government/news/prime-ministeer-and-head-of-the-nhs-call-for-volunteers-to-support-national-booster-effort"                     
+## [17] "/government/news/urgent-omicron-appeal-get-boosted-now"                                                                          
+## [18] "/government/news/prime-minister-confirms-move-to-plan-b-in-england"                                                              
+## [19] "/government/speeches/pm-opening-statement-at-covid-19-press-conference-8-december-2021"                                          
+## [20] "/government/news/uk-marks-one-year-since-deploying-worlds-first-covid-19-vaccine"
+```
+
+---
+
+# Multiple pages
+
+Notice:
+
+
+```r
+length(announce_page_href)
+```
+
+```
+## [1] 20
+```
+
+We are missing the additional pages.
+
+Notice URL `page` reference: &lt;https://www.gov.uk/search/news-and-communications?level_one_taxon=5b7b9532-a775-4bd2-a3aa-6ce380184b6c&amp;order=updated-newest&amp;page=2&amp;people%5B%5D=boris-johnson&gt;
+
+---
+
+# While loops to download multiple pages
+
+
+```r
+xfun::pkg_attach2("roperators") # use infix operator %+=%
+
+all_href &lt;- character() # initialise all results object
+tmp_href &lt;- 1 # initalise temp object
+i &lt;- 0 # initalise counter
+while (length(tmp_href) &gt; 0 ) {
+  i %+=% 1
+  url &lt;- paste0("https://www.gov.uk/search/news-and-communications?",
+                "level_one_taxon=5b7b9532-a775-4bd2-a3aa-6ce380184b6c&amp;",
+                "order=updated-newest&amp;page=", 
+                as.character(i), 
+                "&amp;people%5B%5D=boris-johnson")
+
+  tmp_href &lt;- read_html(url) %&gt;%
+              html_elements(xpath = '//*[@id="js-results"]/div/ul/li[*]/a') %&gt;%
+                         html_attr('href')
+  
+  all_href &lt;- c(all_href, tmp_href)
+}
+```
+
+---
+
+# While loops to download multiple pages
+
+
+```r
+length(all_href)
+```
+
+```
+## [1] 155
+```
+
+```r
+all_href
+```
+
+```
+##   [1] "/government/news/moderna-to-open-vaccine-research-and-manufacturing-centre-in-uk"                                                                  
+##   [2] "/government/news/prime-minister-announces-covid-19-inquiry-chair"                                                                                  
+##   [3] "/government/speeches/pm-statement-at-covid-press-conference-21-february-2022"                                                                      
+##   [4] "/government/news/prime-minister-sets-out-plan-for-living-with-covid"                                                                               
+##   [5] "/government/speeches/pm-statement-on-living-with-covid-21-february-2022"                                                                           
+##   [6] "/government/news/prime-minister-declares-uk-one-of-the-most-open-countries-in-europe-and-ready-for-an-international-tourism-boom"                  
+##   [7] "/government/speeches/pm-statement-to-the-house-of-commons-on-covid-19-19-january-2022"                                                             
+##   [8] "/government/speeches/pm-statement-to-the-house-of-commons-on-covid-19-5-january-2022"                                                              
+##   [9] "/government/speeches/pm-opening-statement-at-covid-19-press-conference-4-january-2022"                                                             
+##  [10] "/government/news/prime-minister-reissues-call-for-public-to-get-boosted-and-announces-new-critical-workforce-testing-measures"                     
+##  [11] "/government/news/prime-minister-celebrates-success-of-vaccine-programme-in-new-years-message"                                                      
+##  [12] "/government/news/pm-call-with-first-minister-paul-givan-and-deputy-first-minister-michelle-oneill-17-december-2021"                                
+##  [13] "/government/news/pm-call-with-first-minister-of-scotland-17-december-2021"                                                                         
+##  [14] "/government/news/pm-call-with-first-minister-of-wales-17-december-2021"                                                                            
+##  [15] "/government/speeches/pm-opening-statement-at-covid-19-press-conference-15-december-2021"                                                           
+##  [16] "/government/news/prime-ministeer-and-head-of-the-nhs-call-for-volunteers-to-support-national-booster-effort"                                       
+##  [17] "/government/news/urgent-omicron-appeal-get-boosted-now"                                                                                            
+##  [18] "/government/news/prime-minister-confirms-move-to-plan-b-in-england"                                                                                
+##  [19] "/government/speeches/pm-opening-statement-at-covid-19-press-conference-8-december-2021"                                                            
+##  [20] "/government/news/uk-marks-one-year-since-deploying-worlds-first-covid-19-vaccine"                                                                  
+##  [21] "/government/speeches/pm-opening-statement-at-covid-19-press-conference-30-november-2021"                                                           
+##  [22] "/government/news/measures-against-omicron-variant-come-into-effect-30-november-2021"                                                               
+##  [23] "/government/speeches/pm-opening-statement-at-covid-19-press-conference-27-november-2021"                                                           
+##  [24] "/government/news/uk-government-publishes-union-connectivity-review-proposed-transport-investments-for-stronger-and-better-connected-united-kingdom"
+##  [25] "/government/news/uk-government-and-overseas-territories-leaders-gather-to-discuss-covid-19-climate-change-and-economic-resilience"                 
+##  [26] "/government/speeches/pm-opening-statement-at-covid-19-press-conference-15-november-2021"                                                           
+##  [27] "/government/news/prime-minister-issues-vaccine-call-to-arms-ahead-of-winter"                                                                       
+##  [28] "/government/news/pm-covid-recovery-meeting-with-the-first-ministers-and-deputy-first-minister-18-october"                                          
+##  [29] "/government/news/pm-meeting-with-representatives-of-bereaved-families-4-justice-28-september-2021"                                                 
+##  [30] "/government/news/prime-minister-sets-out-autumn-and-winter-covid-plan"                                                                             
+##  [31] "/government/speeches/pm-statement-at-coronavirus-press-conference-14-september-2021"                                                               
+##  [32] "/government/news/prime-minister-to-set-out-autumn-and-winter-plan-for-covid"                                                                       
+##  [33] "/government/news/prime-minister-to-set-out-next-steps-in-covid-response"                                                                           
+##  [34] "/government/news/record-36-billion-investment-to-reform-nhs-and-social-care"                                                                       
+##  [35] "/government/news/additional-54-billion-for-nhs-covid-19-response-over-next-six-months"                                                             
+##  [36] "/government/news/3-in-4-uk-adults-receive-both-doses-of-a-covid-19-vaccine"                                                                        
+##  [37] "/government/speeches/pm-statement-at-coronavirus-press-conference-19-july-2021"                                                                    
+##  [38] "/government/news/every-adult-in-uk-offered-covid-19-vaccine"                                                                                       
+##  [39] "/government/news/prime-minister-urges-caution-as-england-moves-to-step-4"                                                                          
+##  [40] "/government/news/more-than-two-in-three-adults-receive-both-doses-of-vaccine"                                                                      
+##  [41] "/government/speeches/pm-statement-at-coronavirus-press-conference-12-july-2021"                                                                    
+##  [42] "/government/news/prime-minister-confirms-move-to-step-4"                                                                                           
+##  [43] "/government/speeches/pm-statement-at-coronavirus-press-conference-5-july-2021"                                                                     
+##  [44] "/government/news/prime-minister-to-set-out-plans-ahead-of-step-4"                                                                                  
+##  [45] "/government/news/uk-to-donate-100-million-coronavirus-vaccine-doses"                                                                               
+##  [46] "/government/news/vaccination-programme-accelerated-as-step-4-is-paused"                                                                            
+##  [47] "/government/speeches/pm-statement-at-coronavirus-press-conference-14-june-2021"                                                                    
+##  [48] "/government/news/the-queens-birthday-honours-list-2021"                                                                                            
+##  [49] "/government/speeches/pm-boris-johnsons-remarks-at-the-first-session-of-the-g7-summit-11-june-2021"                                                 
+##  [50] "/government/news/pm-announces-plan-for-global-pandemic-radar"                                                                                      
+##  [51] "/government/speeches/pm-statement-at-coronavirus-press-conference-14-may-2021"                                                                     
+##  [52] "/government/speeches/pm-house-of-commons-statement-on-covid-12-may-2021"                                                                           
+##  [53] "/government/speeches/pm-statement-at-coronavirus-press-conference-10-may-2021"                                                                     
+##  [54] "/government/news/uk-sends-further-life-saving-support-to-india"                                                                                    
+##  [55] "/government/news/uk-sends-life-saving-medical-equipment-to-india"                                                                                  
+##  [56] "/government/speeches/pm-statement-at-coronavirus-press-conference-20-april-2021"                                                                   
+##  [57] "/government/news/10-million-people-receive-second-dose-of-covid-19-vaccine"                                                                        
+##  [58] "/government/speeches/pm-statement-at-coronavirus-press-conference-5-april-2021"                                                                    
+##  [59] "/government/news/twice-weekly-rapid-testing-to-be-available-to-everyone-in-england"                                                                
+##  [60] "/government/speeches/pm-statement-at-coronavirus-press-conference-29-march-2021"                                                                   
+##  [61] "/government/speeches/pm-statement-at-coronavirus-press-conference-23-march-2021"                                                                   
+##  [62] "/government/speeches/pm-statement-at-coronavirus-press-conference-18-march-2021"                                                                   
+##  [63] "/government/speeches/pm-boris-johnson-the-oxford-vaccine-shows-why-we-and-the-world-need-britain-to-be-global"                                     
+##  [64] "/government/news/move-to-boost-transport-connections-across-the-whole-of-the-uk"                                                                   
+##  [65] "/government/speeches/pm-statement-at-coronavirus-press-conference-8-march-2021"                                                                    
+##  [66] "/government/news/schools-and-colleges-to-reopen-from-tomorrow-as-part-of-step-one-of-the-roadmap"                                                  
+##  [67] "/government/speeches/pm-statement-at-coronavirus-press-conference-22-february-2021"                                                                
+##  [68] "/government/speeches/pm-statement-to-the-house-of-commons-on-roadmap-for-easing-lockdown-restrictions-in-england-22-february-2021"                 
+##  [69] "/government/news/prime-minister-to-publish-roadmap-for-cautiously-easing-covid-restrictions"                                                       
+##  [70] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-15-february-2021"                                                           
+##  [71] "/government/news/new-commissioner-appointed-to-oversee-education-catch-up"                                                                         
+##  [72] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-10-february-2021"                                                           
+##  [73] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-3-february-2021"                                                            
+##  [74] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-27-january-2021"                                                            
+##  [75] "/government/speeches/prime-ministers-statement-to-the-house-of-commons-on-coronavirus-27-january-2021"                                             
+##  [76] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-26-january-2021"                                                            
+##  [77] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-22-january-2021"                                                            
+##  [78] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-15-january-2021"                                                            
+##  [79] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-7-january-2021"                                                             
+##  [80] "/government/speeches/prime-ministers-statement-to-the-house-of-commons-on-covid-19-regulations-6-january-2021"                                     
+##  [81] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-5-january-2021"                                                             
+##  [82] "/government/news/prime-minister-announces-national-lockdown"                                                                                       
+##  [83] "/government/speeches/prime-ministers-address-to-the-nation-4-january-2021"                                                                         
+##  [84] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-30-december-2020"                                                           
+##  [85] "/government/news/prime-minister-announces-tier-4-stay-at-home-alert-level-in-response-to-new-covid-variant"                                        
+##  [86] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-19-december-2020"                                                           
+##  [87] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-16-december-2020"                                                           
+##  [88] "/government/news/governments-vaccines-taskforce-has-worked-decisively-and-at-great-pace-to-improve-uks-pandemic-preparedness"                      
+##  [89] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-2-december-2020"                                                            
+##  [90] "/government/news/prime-minister-announces-1000-christmas-grant-for-wet-led-pubs"                                                                   
+##  [91] "/government/speeches/prime-ministers-statement-to-the-house-of-commons-on-coronavirus-regulations-1-december-2020"                                 
+##  [92] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-26-november-2020"                                                           
+##  [93] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-23-november-2020"                                                           
+##  [94] "/government/news/prime-minister-publishes-covid-winter-plan"                                                                                       
+##  [95] "/government/speeches/pm-statement-on-covid-19-winter-plan-23-november-2020"                                                                        
+##  [96] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-9-november-2020"                                                            
+##  [97] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-5-november-2020"                                                            
+##  [98] "/government/speeches/prime-ministers-statement-to-the-house-of-commons-on-coronavirus-4-november-2020"                                             
+##  [99] "/government/speeches/pm-commons-statement-on-coronavirus-2-november"                                                                               
+## [100] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-31-october-2020"                                                            
+## [101] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-22-october-2020"                                                            
+## [102] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-20-october-2020"                                                            
+## [103] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-16-october-2020"                                                            
+## [104] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-12-october-2020"                                                            
+## [105] "/government/news/prime-minister-announces-new-local-covid-alert-levels"                                                                            
+## [106] "/government/speeches/pm-commons-statement-on-coronavirus-12-october-2020"                                                                          
+## [107] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-30-september-2020"                                                          
+## [108] "/government/news/covid-19-honours"                                                                                                                 
+## [109] "/government/speeches/prime-ministers-speech-to-un-general-assembly-26-september-2020"                                                              
+## [110] "/government/news/prime-minister-world-must-unite-to-defeat-covid-and-prevent-future-pandemics"                                                     
+## [111] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-22-september-2020"                                                          
+## [112] "/government/speeches/pm-commons-statement-on-coronavirus-22-september-2020"                                                                        
+## [113] "/government/speeches/pm-press-conference-statement-9-september-2020"                                                                               
+## [114] "/government/speeches/standing-side-by-side-well-build-back-better-than-ever"                                                                       
+## [115] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-31-july-2020"                                                               
+## [116] "/government/news/audiences-back-in-theatres-from-1-august"                                                                                         
+## [117] "/government/news/ventilator-challenge-hailed-a-success-as-uk-production-finishes"                                                                  
+## [118] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-3-july-2020"                                                                
+## [119] "/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-23-june-2020"                                                               
+## [120] "/government/speeches/prime-ministers-statement-to-the-house-on-covid-19-23-june-2020"                                                              
+## [121] "/government/news/pm-announces-easing-of-lockdown-restrictions-23-june-2020"                                                                        
+## [122] "/government/speeches/pm-statement-at-the-coronavirus-press-conference-16-june-2020"                                                                
+## [123] "/government/speeches/pm-statement-at-the-coronavirus-press-conference-10-june-2020"                                                                
+## [124] "/government/speeches/pm-statement-at-the-coronavirus-press-conference-3-june-2020"                                                                 
+## [125] "/government/news/prime-minister-hails-resilience-of-shielders-as-restrictions-set-to-ease"                                                         
+## [126] "/government/news/pm-six-people-can-meet-outside-under-new-measures-to-ease-lockdown"                                                               
+## [127] "/government/speeches/pm-press-conference-statement-on-the-five-tests-28-may-2020"                                                                  
+## [128] "/government/news/prime-minister-sets-out-timeline-for-retail-to-reopen-in-june"                                                                    
+## [129] "/government/speeches/pm-press-conference-statement-25-may-2020"                                                                                    
+## [130] "/government/speeches/pm-press-conference-statement-24-may-2020"                                                                                    
+## [131] "/government/news/pm-confirms-schools-colleges-and-nurseries-on-track-to-begin-phased-reopening"                                                    
+## [132] "/government/news/new-measures-announced-ahead-of-hidden-harms-summit"                                                                              
+## [133] "/government/speeches/prime-ministers-article-in-the-mail-on-sunday-17-may-2020"                                                                    
+## [134] "/government/speeches/pm-statement-on-coronavirus-11-may-2020"                                                                                      
+## [135] "/government/speeches/pm-address-to-the-nation-on-coronavirus-10-may-2020"                                                                          
+## [136] "/government/news/prime-ministers-statement-on-coronavirus-covid-19-30-april-2020"                                                                  
+## [137] "/government/news/pm-call-with-president-trump-27-march-2020"                                                                                       
+## [138] "/government/speeches/pm-video-message-on-coronavirus-27-march-2020"                                                                                
+## [139] "/government/speeches/pm-statement-on-coronavirus-25-march-2020"                                                                                    
+## [140] "/government/speeches/pm-address-to-the-nation-on-coronavirus-23-march-2020"                                                                        
+## [141] "/government/speeches/pm-statement-on-coronavirus-22-march-2020"                                                                                    
+## [142] "/government/speeches/pm-mothers-day-words-22-march-2020"                                                                                           
+## [143] "/government/speeches/pm-statement-on-coronavirus-18-march-2020"                                                                                    
+## [144] "/government/news/new-government-structures-to-coordinate-response-to-coronavirus"                                                                  
+## [145] "/government/speeches/pm-statement-on-coronavirus-16-march-2020"                                                                                    
+## [146] "/government/news/prime-minister-to-lead-cross-government-drive-to-defeat-coronavirus"                                                              
+## [147] "/government/news/pm-call-with-crown-prince-mohammed-bin-salman-15-march-2020"                                                                      
+## [148] "/government/news/pm-call-with-prime-minister-abe-15-march-2020"                                                                                    
+## [149] "/government/news/pm-call-with-president-trump-14-march-2020"                                                                                       
+## [150] "/government/news/pm-call-with-prime-minister-of-australia-scott-morrison-14-march-2020"                                                            
+## [151] "/government/speeches/pm-statement-on-coronavirus-12-march-2020"                                                                                    
+## [152] "/government/speeches/pm-statement-on-coronavirus-9-march-2020"                                                                                     
+## [153] "/government/news/pm-announces-new-funding-in-fight-against-spread-of-coronavirus"                                                                  
+## [154] "/government/news/sick-pay-from-day-one-for-those-affected-by-coronavirus"                                                                          
+## [155] "/government/news/pm-to-chair-cobr-meeting-on-the-coronavirus-outbreak"
+```
+
+---
+
+# Get text from each page
+
+
+```r
+url_one &lt;- paste0("https://www.gov.uk", all_href[1])
+
+url_one
+```
+
+```
+## [1] "https://www.gov.uk/government/news/moderna-to-open-vaccine-research-and-manufacturing-centre-in-uk"
+```
+
+---
+
+# Get text from each page
+
+&lt;img src="img/one-announce-xpath.gif" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Get text from each page
+
+
+```r
+one_announcement &lt;- read_html(url_one) %&gt;%
+          html_nodes(xpath = '//*[@id="content"]/div[3]/div[1]/div[1]/div') %&gt;%
+          html_text()
+
+one_announcement
+```
+
+```
+## [1] "\n        \n    \n          \n\nUpdate: 28 February 2022\n\nThe Inquiry now has its own independent website.\n\nVisit the UK COVID-19 Inquiry website for the latest news and updates.\n\n\nToday (Wednesday 15 December) the Prime Minister has appointed the Rt Hon Baroness Heather Hallett DBE as Chair of the forthcoming public inquiry into the COVID-19 pandemic.\n\nThe Inquiry, set to begin its work in spring 2022, will be established under the Inquiries Act 2005, with full powers, including the power to compel the production of documents and to summon witnesses to give evidence on oath. Additional panel members will be appointed in the new year to make sure the Inquiry has access to the full range of expertise needed to complete its important work.\n\nThe Inquiry will play a key role in examining the UK’s pandemic response and ensuring that we learn the right lessons for the future. The Prime Minister will now consult Baroness Hallett and ministers from the devolved administrations on the terms of reference for the Inquiry and will publish them in draft in the new year.\n\nThose most affected by the pandemic - including those who have sadly lost loved ones - must also have an opportunity to play their proper role in the process. Once the terms of reference have been published in draft, Baroness Hallett will take forward a process of public engagement and consultation - including with bereaved families and other affected groups - before the terms of reference are finalised.\n\nPrime Minister Boris Johnson said:\n\n\n  I want to thank Baroness Hallett for agreeing to take on the position of Chair of the COVID-19 Inquiry.\n\n\n\n  She brings a wealth of experience to the role and I know shares my determination that the inquiry examines in a forensic and thoroughgoing way the government’s response to the pandemic.\n\n\nThe Rt Hon Baroness Heather Hallett DBE, said:\n\n\n  I am honoured to be appointed to chair the COVID-19 Inquiry. The pandemic has affected us all, some much worse than others. I am acutely conscious of the suffering it has caused to so many.\n\n\n\n  In the new year I shall be seeking views from those who have lost loved ones and all other affected groups about the Inquiry’s terms of reference.\n\n\n\n  I want to assure the British public that, once the terms of reference are finalised, I shall do my utmost to ensure the Inquiry answers as many questions as possible about the UK’s response to the pandemic so that we can all learn lessons for the future.\n\n\nBaroness Hallett retired from the Court of Appeal in 2019 and was made a crossbench life peer. She has previously conducted a range of high-profile and complex inquests, inquiries and reviews, including acting as coroner for the inquests into the deaths of the 52 victims of the 7 July 2005 London bombings; as chair of the Iraq Fatalities Investigations; and as chair of the 2014 Hallett Review of the administrative scheme to deal with ‘on the runs’ in Northern Ireland.\n\nBaroness Hallett is currently acting as coroner in the inquest into the death of Dawn Sturgess, who died in July 2018 following exposure to the nerve agent Novichok. A new chair for that inquiry will be appointed early in the new year.\n\n\n\n      "
+## [2] "\n          \n      Share this page\n\n    \n          \n            \n                          \n              Share on\n          \n          Facebook\n\n        \n        \n          \n            \n                          \n              Share on\n          \n          Twitter\n\n        \n    \n      "                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+## [3] "\n    Published 15 December 2021\n    Last updated 28 February 2022\n      + show all updates\n      \n        \n              28 February 2022The Inquiry now has its own independent website. You can visit it at: https://covid19.public-inquiry.uk.\n            \n            \n              15 December 2021First published.\n            \n        \n"
+```
+
+---
+
+# Get text from all pages
+
+
+```r
+all_texts &lt;- data.frame()
+for (i in seq(all_href)) {
+  url_one &lt;- paste0("https://www.gov.uk", all_href[i])
+  message(url_one)
+  
+  text &lt;- read_html(url_one) %&gt;%
+      html_nodes(xpath = '//*[@id="content"]/div[3]/div[1]/div[1]/div') %&gt;%
+      html_text()
+  tmp_df &lt;- data.frame(url = all_href[i], text = text)
+  all_texts &lt;- bind_rows(all_texts, tmp_df)
+}
+```
+
+```
+## https://www.gov.uk/government/news/moderna-to-open-vaccine-research-and-manufacturing-centre-in-uk
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-announces-covid-19-inquiry-chair
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-covid-press-conference-21-february-2022
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-sets-out-plan-for-living-with-covid
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-on-living-with-covid-21-february-2022
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-declares-uk-one-of-the-most-open-countries-in-europe-and-ready-for-an-international-tourism-boom
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-to-the-house-of-commons-on-covid-19-19-january-2022
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-to-the-house-of-commons-on-covid-19-5-january-2022
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-opening-statement-at-covid-19-press-conference-4-january-2022
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-reissues-call-for-public-to-get-boosted-and-announces-new-critical-workforce-testing-measures
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-celebrates-success-of-vaccine-programme-in-new-years-message
+```
+
+```
+## https://www.gov.uk/government/news/pm-call-with-first-minister-paul-givan-and-deputy-first-minister-michelle-oneill-17-december-2021
+```
+
+```
+## https://www.gov.uk/government/news/pm-call-with-first-minister-of-scotland-17-december-2021
+```
+
+```
+## https://www.gov.uk/government/news/pm-call-with-first-minister-of-wales-17-december-2021
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-opening-statement-at-covid-19-press-conference-15-december-2021
+```
+
+```
+## https://www.gov.uk/government/news/prime-ministeer-and-head-of-the-nhs-call-for-volunteers-to-support-national-booster-effort
+```
+
+```
+## https://www.gov.uk/government/news/urgent-omicron-appeal-get-boosted-now
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-confirms-move-to-plan-b-in-england
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-opening-statement-at-covid-19-press-conference-8-december-2021
+```
+
+```
+## https://www.gov.uk/government/news/uk-marks-one-year-since-deploying-worlds-first-covid-19-vaccine
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-opening-statement-at-covid-19-press-conference-30-november-2021
+```
+
+```
+## https://www.gov.uk/government/news/measures-against-omicron-variant-come-into-effect-30-november-2021
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-opening-statement-at-covid-19-press-conference-27-november-2021
+```
+
+```
+## https://www.gov.uk/government/news/uk-government-publishes-union-connectivity-review-proposed-transport-investments-for-stronger-and-better-connected-united-kingdom
+```
+
+```
+## https://www.gov.uk/government/news/uk-government-and-overseas-territories-leaders-gather-to-discuss-covid-19-climate-change-and-economic-resilience
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-opening-statement-at-covid-19-press-conference-15-november-2021
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-issues-vaccine-call-to-arms-ahead-of-winter
+```
+
+```
+## https://www.gov.uk/government/news/pm-covid-recovery-meeting-with-the-first-ministers-and-deputy-first-minister-18-october
+```
+
+```
+## https://www.gov.uk/government/news/pm-meeting-with-representatives-of-bereaved-families-4-justice-28-september-2021
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-sets-out-autumn-and-winter-covid-plan
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-coronavirus-press-conference-14-september-2021
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-to-set-out-autumn-and-winter-plan-for-covid
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-to-set-out-next-steps-in-covid-response
+```
+
+```
+## https://www.gov.uk/government/news/record-36-billion-investment-to-reform-nhs-and-social-care
+```
+
+```
+## https://www.gov.uk/government/news/additional-54-billion-for-nhs-covid-19-response-over-next-six-months
+```
+
+```
+## https://www.gov.uk/government/news/3-in-4-uk-adults-receive-both-doses-of-a-covid-19-vaccine
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-coronavirus-press-conference-19-july-2021
+```
+
+```
+## https://www.gov.uk/government/news/every-adult-in-uk-offered-covid-19-vaccine
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-urges-caution-as-england-moves-to-step-4
+```
+
+```
+## https://www.gov.uk/government/news/more-than-two-in-three-adults-receive-both-doses-of-vaccine
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-coronavirus-press-conference-12-july-2021
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-confirms-move-to-step-4
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-coronavirus-press-conference-5-july-2021
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-to-set-out-plans-ahead-of-step-4
+```
+
+```
+## https://www.gov.uk/government/news/uk-to-donate-100-million-coronavirus-vaccine-doses
+```
+
+```
+## https://www.gov.uk/government/news/vaccination-programme-accelerated-as-step-4-is-paused
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-coronavirus-press-conference-14-june-2021
+```
+
+```
+## https://www.gov.uk/government/news/the-queens-birthday-honours-list-2021
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-boris-johnsons-remarks-at-the-first-session-of-the-g7-summit-11-june-2021
+```
+
+```
+## https://www.gov.uk/government/news/pm-announces-plan-for-global-pandemic-radar
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-coronavirus-press-conference-14-may-2021
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-house-of-commons-statement-on-covid-12-may-2021
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-coronavirus-press-conference-10-may-2021
+```
+
+```
+## https://www.gov.uk/government/news/uk-sends-further-life-saving-support-to-india
+```
+
+```
+## https://www.gov.uk/government/news/uk-sends-life-saving-medical-equipment-to-india
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-coronavirus-press-conference-20-april-2021
+```
+
+```
+## https://www.gov.uk/government/news/10-million-people-receive-second-dose-of-covid-19-vaccine
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-coronavirus-press-conference-5-april-2021
+```
+
+```
+## https://www.gov.uk/government/news/twice-weekly-rapid-testing-to-be-available-to-everyone-in-england
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-coronavirus-press-conference-29-march-2021
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-coronavirus-press-conference-23-march-2021
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-coronavirus-press-conference-18-march-2021
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-boris-johnson-the-oxford-vaccine-shows-why-we-and-the-world-need-britain-to-be-global
+```
+
+```
+## https://www.gov.uk/government/news/move-to-boost-transport-connections-across-the-whole-of-the-uk
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-coronavirus-press-conference-8-march-2021
+```
+
+```
+## https://www.gov.uk/government/news/schools-and-colleges-to-reopen-from-tomorrow-as-part-of-step-one-of-the-roadmap
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-coronavirus-press-conference-22-february-2021
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-to-the-house-of-commons-on-roadmap-for-easing-lockdown-restrictions-in-england-22-february-2021
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-to-publish-roadmap-for-cautiously-easing-covid-restrictions
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-15-february-2021
+```
+
+```
+## https://www.gov.uk/government/news/new-commissioner-appointed-to-oversee-education-catch-up
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-10-february-2021
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-3-february-2021
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-27-january-2021
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-to-the-house-of-commons-on-coronavirus-27-january-2021
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-26-january-2021
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-22-january-2021
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-15-january-2021
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-7-january-2021
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-to-the-house-of-commons-on-covid-19-regulations-6-january-2021
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-5-january-2021
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-announces-national-lockdown
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-address-to-the-nation-4-january-2021
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-30-december-2020
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-announces-tier-4-stay-at-home-alert-level-in-response-to-new-covid-variant
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-19-december-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-16-december-2020
+```
+
+```
+## https://www.gov.uk/government/news/governments-vaccines-taskforce-has-worked-decisively-and-at-great-pace-to-improve-uks-pandemic-preparedness
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-2-december-2020
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-announces-1000-christmas-grant-for-wet-led-pubs
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-to-the-house-of-commons-on-coronavirus-regulations-1-december-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-26-november-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-23-november-2020
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-publishes-covid-winter-plan
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-on-covid-19-winter-plan-23-november-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-9-november-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-5-november-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-to-the-house-of-commons-on-coronavirus-4-november-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-commons-statement-on-coronavirus-2-november
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-31-october-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-22-october-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-20-october-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-16-october-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-12-october-2020
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-announces-new-local-covid-alert-levels
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-commons-statement-on-coronavirus-12-october-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-30-september-2020
+```
+
+```
+## https://www.gov.uk/government/news/covid-19-honours
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-speech-to-un-general-assembly-26-september-2020
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-world-must-unite-to-defeat-covid-and-prevent-future-pandemics
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-22-september-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-commons-statement-on-coronavirus-22-september-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-press-conference-statement-9-september-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/standing-side-by-side-well-build-back-better-than-ever
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-31-july-2020
+```
+
+```
+## https://www.gov.uk/government/news/audiences-back-in-theatres-from-1-august
+```
+
+```
+## https://www.gov.uk/government/news/ventilator-challenge-hailed-a-success-as-uk-production-finishes
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-3-july-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-on-coronavirus-covid-19-23-june-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-statement-to-the-house-on-covid-19-23-june-2020
+```
+
+```
+## https://www.gov.uk/government/news/pm-announces-easing-of-lockdown-restrictions-23-june-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-the-coronavirus-press-conference-16-june-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-the-coronavirus-press-conference-10-june-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-at-the-coronavirus-press-conference-3-june-2020
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-hails-resilience-of-shielders-as-restrictions-set-to-ease
+```
+
+```
+## https://www.gov.uk/government/news/pm-six-people-can-meet-outside-under-new-measures-to-ease-lockdown
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-press-conference-statement-on-the-five-tests-28-may-2020
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-sets-out-timeline-for-retail-to-reopen-in-june
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-press-conference-statement-25-may-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-press-conference-statement-24-may-2020
+```
+
+```
+## https://www.gov.uk/government/news/pm-confirms-schools-colleges-and-nurseries-on-track-to-begin-phased-reopening
+```
+
+```
+## https://www.gov.uk/government/news/new-measures-announced-ahead-of-hidden-harms-summit
+```
+
+```
+## https://www.gov.uk/government/speeches/prime-ministers-article-in-the-mail-on-sunday-17-may-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-on-coronavirus-11-may-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-address-to-the-nation-on-coronavirus-10-may-2020
+```
+
+```
+## https://www.gov.uk/government/news/prime-ministers-statement-on-coronavirus-covid-19-30-april-2020
+```
+
+```
+## https://www.gov.uk/government/news/pm-call-with-president-trump-27-march-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-video-message-on-coronavirus-27-march-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-on-coronavirus-25-march-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-address-to-the-nation-on-coronavirus-23-march-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-on-coronavirus-22-march-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-mothers-day-words-22-march-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-on-coronavirus-18-march-2020
+```
+
+```
+## https://www.gov.uk/government/news/new-government-structures-to-coordinate-response-to-coronavirus
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-on-coronavirus-16-march-2020
+```
+
+```
+## https://www.gov.uk/government/news/prime-minister-to-lead-cross-government-drive-to-defeat-coronavirus
+```
+
+```
+## https://www.gov.uk/government/news/pm-call-with-crown-prince-mohammed-bin-salman-15-march-2020
+```
+
+```
+## https://www.gov.uk/government/news/pm-call-with-prime-minister-abe-15-march-2020
+```
+
+```
+## https://www.gov.uk/government/news/pm-call-with-president-trump-14-march-2020
+```
+
+```
+## https://www.gov.uk/government/news/pm-call-with-prime-minister-of-australia-scott-morrison-14-march-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-on-coronavirus-12-march-2020
+```
+
+```
+## https://www.gov.uk/government/speeches/pm-statement-on-coronavirus-9-march-2020
+```
+
+```
+## https://www.gov.uk/government/news/pm-announces-new-funding-in-fight-against-spread-of-coronavirus
+```
+
+```
+## https://www.gov.uk/government/news/sick-pay-from-day-one-for-those-affected-by-coronavirus
+```
+
+```
+## https://www.gov.uk/government/news/pm-to-chair-cobr-meeting-on-the-coronavirus-outbreak
+```
+
+```r
+nrow(all_texts)
+```
+
+```
+## [1] 379
+```
+
+---
+
+# Simple analysis
+
+Convert to a corpus object
+
+
+```r
+xfun::pkg_attach2("quanteda")
+announce_corpus &lt;- corpus(all_texts)
+
+summary(announce_corpus)
+```
+
+```
+## Corpus consisting of 379 documents, showing 100 documents:
+## 
+##     Text Types Tokens Sentences
+##    text1   394   1072        33
+##    text2    17     30         1
+##    text3     4      4         1
+##    text4   251    578        20
+##    text5    17     30         1
+##    text6    31     36         3
+##    text7   419    986        35
+##    text8     4      4         1
+##    text9   518   1230        45
+##   text10    17     30         1
+##   text11     4      4         1
+##   text12   647   1717        59
+##   text13     4      4         1
+##   text14   591   1537        42
+##   text15    17     30         1
+##   text16     4      4         1
+##   text17   572   1459        53
+##   text18     4      4         1
+##   text19   514   1309        42
+##   text20     4      4         1
+##   text21   476   1110        35
+##   text22     4      4         1
+##   text23   263    468        15
+##   text24    17     30         1
+##   text25     4      4         1
+##   text26   353    882        30
+##   text27    17     30         1
+##   text28     4      4         1
+##   text29    62     89         4
+##   text30    17     30         1
+##   text31     4      4         1
+##   text32    59     89         4
+##   text33    17     30         1
+##   text34     4      4         1
+##   text35    62     86         4
+##   text36    17     30         1
+##   text37     4      4         1
+##   text38   455   1022        35
+##   text39     4      4         1
+##   text40   339    841        28
+##   text41    17     30         1
+##   text42     4      4         1
+##   text43   377    910        30
+##   text44    17     30         1
+##   text45     4      4         1
+##   text46   411    983        34
+##   text47    17     30         1
+##   text48     4      4         1
+##   text49   423   1001        31
+##   text50     4      4         1
+##   text51   470   1248        36
+##   text52    17     30         1
+##   text53     4      4         1
+##   text54   324    692        25
+##   text55     4      4         1
+##   text56   312    700        25
+##   text57    17     30         1
+##   text58     4      4         1
+##   text59   358    885        33
+##   text60     4      4         1
+##   text61   361    907        19
+##   text62    17     30         1
+##   text63     4      4         1
+##   text64   313    635        20
+##   text65    17     30         1
+##   text66     4      4         1
+##   text67   359    779        27
+##   text68     4      4         1
+##   text69   291    710        26
+##   text70    17     30         1
+##   text71     4      4         1
+##   text72   211    499        14
+##   text73    17     30         1
+##   text74     4      4         1
+##   text75   114    214         8
+##   text76    17     30         1
+##   text77     4      4         1
+##   text78   341    708        22
+##   text79    17     30         1
+##   text80     4      4         1
+##   text81   359    799        42
+##   text82     4      4         1
+##   text83   147    274        11
+##   text84    17     30         1
+##   text85     4      4         1
+##   text86   310    706        29
+##   text87    17     30         1
+##   text88     4      4         1
+##   text89   502   1513        53
+##   text90    17     30         1
+##   text91     4      4         1
+##   text92   359    975        28
+##   text93    17     30         1
+##   text94     4      4         1
+##   text95   452   1244        35
+##   text96    17     30         1
+##   text97     4      4         1
+##   text98   390    983        32
+##   text99     4      4         1
+##  text100   420   1007        33
+##                                                                                                                                                 url
+##                                                                    /government/news/moderna-to-open-vaccine-research-and-manufacturing-centre-in-uk
+##                                                                    /government/news/moderna-to-open-vaccine-research-and-manufacturing-centre-in-uk
+##                                                                    /government/news/moderna-to-open-vaccine-research-and-manufacturing-centre-in-uk
+##                                                                                    /government/news/prime-minister-announces-covid-19-inquiry-chair
+##                                                                                    /government/news/prime-minister-announces-covid-19-inquiry-chair
+##                                                                                    /government/news/prime-minister-announces-covid-19-inquiry-chair
+##                                                                        /government/speeches/pm-statement-at-covid-press-conference-21-february-2022
+##                                                                        /government/speeches/pm-statement-at-covid-press-conference-21-february-2022
+##                                                                                 /government/news/prime-minister-sets-out-plan-for-living-with-covid
+##                                                                                 /government/news/prime-minister-sets-out-plan-for-living-with-covid
+##                                                                                 /government/news/prime-minister-sets-out-plan-for-living-with-covid
+##                                                                             /government/speeches/pm-statement-on-living-with-covid-21-february-2022
+##                                                                             /government/speeches/pm-statement-on-living-with-covid-21-february-2022
+##                    /government/news/prime-minister-declares-uk-one-of-the-most-open-countries-in-europe-and-ready-for-an-international-tourism-boom
+##                    /government/news/prime-minister-declares-uk-one-of-the-most-open-countries-in-europe-and-ready-for-an-international-tourism-boom
+##                    /government/news/prime-minister-declares-uk-one-of-the-most-open-countries-in-europe-and-ready-for-an-international-tourism-boom
+##                                                               /government/speeches/pm-statement-to-the-house-of-commons-on-covid-19-19-january-2022
+##                                                               /government/speeches/pm-statement-to-the-house-of-commons-on-covid-19-19-january-2022
+##                                                                /government/speeches/pm-statement-to-the-house-of-commons-on-covid-19-5-january-2022
+##                                                                /government/speeches/pm-statement-to-the-house-of-commons-on-covid-19-5-january-2022
+##                                                               /government/speeches/pm-opening-statement-at-covid-19-press-conference-4-january-2022
+##                                                               /government/speeches/pm-opening-statement-at-covid-19-press-conference-4-january-2022
+##                       /government/news/prime-minister-reissues-call-for-public-to-get-boosted-and-announces-new-critical-workforce-testing-measures
+##                       /government/news/prime-minister-reissues-call-for-public-to-get-boosted-and-announces-new-critical-workforce-testing-measures
+##                       /government/news/prime-minister-reissues-call-for-public-to-get-boosted-and-announces-new-critical-workforce-testing-measures
+##                                                        /government/news/prime-minister-celebrates-success-of-vaccine-programme-in-new-years-message
+##                                                        /government/news/prime-minister-celebrates-success-of-vaccine-programme-in-new-years-message
+##                                                        /government/news/prime-minister-celebrates-success-of-vaccine-programme-in-new-years-message
+##                                  /government/news/pm-call-with-first-minister-paul-givan-and-deputy-first-minister-michelle-oneill-17-december-2021
+##                                  /government/news/pm-call-with-first-minister-paul-givan-and-deputy-first-minister-michelle-oneill-17-december-2021
+##                                  /government/news/pm-call-with-first-minister-paul-givan-and-deputy-first-minister-michelle-oneill-17-december-2021
+##                                                                           /government/news/pm-call-with-first-minister-of-scotland-17-december-2021
+##                                                                           /government/news/pm-call-with-first-minister-of-scotland-17-december-2021
+##                                                                           /government/news/pm-call-with-first-minister-of-scotland-17-december-2021
+##                                                                              /government/news/pm-call-with-first-minister-of-wales-17-december-2021
+##                                                                              /government/news/pm-call-with-first-minister-of-wales-17-december-2021
+##                                                                              /government/news/pm-call-with-first-minister-of-wales-17-december-2021
+##                                                             /government/speeches/pm-opening-statement-at-covid-19-press-conference-15-december-2021
+##                                                             /government/speeches/pm-opening-statement-at-covid-19-press-conference-15-december-2021
+##                                         /government/news/prime-ministeer-and-head-of-the-nhs-call-for-volunteers-to-support-national-booster-effort
+##                                         /government/news/prime-ministeer-and-head-of-the-nhs-call-for-volunteers-to-support-national-booster-effort
+##                                         /government/news/prime-ministeer-and-head-of-the-nhs-call-for-volunteers-to-support-national-booster-effort
+##                                                                                              /government/news/urgent-omicron-appeal-get-boosted-now
+##                                                                                              /government/news/urgent-omicron-appeal-get-boosted-now
+##                                                                                              /government/news/urgent-omicron-appeal-get-boosted-now
+##                                                                                  /government/news/prime-minister-confirms-move-to-plan-b-in-england
+##                                                                                  /government/news/prime-minister-confirms-move-to-plan-b-in-england
+##                                                                                  /government/news/prime-minister-confirms-move-to-plan-b-in-england
+##                                                              /government/speeches/pm-opening-statement-at-covid-19-press-conference-8-december-2021
+##                                                              /government/speeches/pm-opening-statement-at-covid-19-press-conference-8-december-2021
+##                                                                    /government/news/uk-marks-one-year-since-deploying-worlds-first-covid-19-vaccine
+##                                                                    /government/news/uk-marks-one-year-since-deploying-worlds-first-covid-19-vaccine
+##                                                                    /government/news/uk-marks-one-year-since-deploying-worlds-first-covid-19-vaccine
+##                                                             /government/speeches/pm-opening-statement-at-covid-19-press-conference-30-november-2021
+##                                                             /government/speeches/pm-opening-statement-at-covid-19-press-conference-30-november-2021
+##                                                                 /government/news/measures-against-omicron-variant-come-into-effect-30-november-2021
+##                                                                 /government/news/measures-against-omicron-variant-come-into-effect-30-november-2021
+##                                                                 /government/news/measures-against-omicron-variant-come-into-effect-30-november-2021
+##                                                             /government/speeches/pm-opening-statement-at-covid-19-press-conference-27-november-2021
+##                                                             /government/speeches/pm-opening-statement-at-covid-19-press-conference-27-november-2021
+##  /government/news/uk-government-publishes-union-connectivity-review-proposed-transport-investments-for-stronger-and-better-connected-united-kingdom
+##  /government/news/uk-government-publishes-union-connectivity-review-proposed-transport-investments-for-stronger-and-better-connected-united-kingdom
+##  /government/news/uk-government-publishes-union-connectivity-review-proposed-transport-investments-for-stronger-and-better-connected-united-kingdom
+##                   /government/news/uk-government-and-overseas-territories-leaders-gather-to-discuss-covid-19-climate-change-and-economic-resilience
+##                   /government/news/uk-government-and-overseas-territories-leaders-gather-to-discuss-covid-19-climate-change-and-economic-resilience
+##                   /government/news/uk-government-and-overseas-territories-leaders-gather-to-discuss-covid-19-climate-change-and-economic-resilience
+##                                                             /government/speeches/pm-opening-statement-at-covid-19-press-conference-15-november-2021
+##                                                             /government/speeches/pm-opening-statement-at-covid-19-press-conference-15-november-2021
+##                                                                         /government/news/prime-minister-issues-vaccine-call-to-arms-ahead-of-winter
+##                                                                         /government/news/prime-minister-issues-vaccine-call-to-arms-ahead-of-winter
+##                                                                         /government/news/prime-minister-issues-vaccine-call-to-arms-ahead-of-winter
+##                                            /government/news/pm-covid-recovery-meeting-with-the-first-ministers-and-deputy-first-minister-18-october
+##                                            /government/news/pm-covid-recovery-meeting-with-the-first-ministers-and-deputy-first-minister-18-october
+##                                            /government/news/pm-covid-recovery-meeting-with-the-first-ministers-and-deputy-first-minister-18-october
+##                                                   /government/news/pm-meeting-with-representatives-of-bereaved-families-4-justice-28-september-2021
+##                                                   /government/news/pm-meeting-with-representatives-of-bereaved-families-4-justice-28-september-2021
+##                                                   /government/news/pm-meeting-with-representatives-of-bereaved-families-4-justice-28-september-2021
+##                                                                               /government/news/prime-minister-sets-out-autumn-and-winter-covid-plan
+##                                                                               /government/news/prime-minister-sets-out-autumn-and-winter-covid-plan
+##                                                                               /government/news/prime-minister-sets-out-autumn-and-winter-covid-plan
+##                                                                 /government/speeches/pm-statement-at-coronavirus-press-conference-14-september-2021
+##                                                                 /government/speeches/pm-statement-at-coronavirus-press-conference-14-september-2021
+##                                                                         /government/news/prime-minister-to-set-out-autumn-and-winter-plan-for-covid
+##                                                                         /government/news/prime-minister-to-set-out-autumn-and-winter-plan-for-covid
+##                                                                         /government/news/prime-minister-to-set-out-autumn-and-winter-plan-for-covid
+##                                                                             /government/news/prime-minister-to-set-out-next-steps-in-covid-response
+##                                                                             /government/news/prime-minister-to-set-out-next-steps-in-covid-response
+##                                                                             /government/news/prime-minister-to-set-out-next-steps-in-covid-response
+##                                                                         /government/news/record-36-billion-investment-to-reform-nhs-and-social-care
+##                                                                         /government/news/record-36-billion-investment-to-reform-nhs-and-social-care
+##                                                                         /government/news/record-36-billion-investment-to-reform-nhs-and-social-care
+##                                                               /government/news/additional-54-billion-for-nhs-covid-19-response-over-next-six-months
+##                                                               /government/news/additional-54-billion-for-nhs-covid-19-response-over-next-six-months
+##                                                               /government/news/additional-54-billion-for-nhs-covid-19-response-over-next-six-months
+##                                                                          /government/news/3-in-4-uk-adults-receive-both-doses-of-a-covid-19-vaccine
+##                                                                          /government/news/3-in-4-uk-adults-receive-both-doses-of-a-covid-19-vaccine
+##                                                                          /government/news/3-in-4-uk-adults-receive-both-doses-of-a-covid-19-vaccine
+##                                                                      /government/speeches/pm-statement-at-coronavirus-press-conference-19-july-2021
+##                                                                      /government/speeches/pm-statement-at-coronavirus-press-conference-19-july-2021
+##                                                                                         /government/news/every-adult-in-uk-offered-covid-19-vaccine
+```
+
+---
+
+# A problem
+
+None of the documents should have only one sentence.
+
+🐛 We need to debug.
+
+&lt;img src="img/govspeach.png" width="3309" style="display: block; margin: auto;" /&gt;
+
+---
+
+# xpath [contains](https://developer.mozilla.org/en-US/docs/Web/XPath/Functions/contains) function
+
+
+```r
+all_texts &lt;- data.frame()
+for (i in seq(all_href)) {
+  url_one &lt;- paste0("https://www.gov.uk", all_href[i])
+  # message(url_one)
+  full_html &lt;- read_html(url_one)
+  
+  text &lt;-  full_html %&gt;% 
+    html_nodes(xpath = 
+      paste0('//*[@id="content"]/div[3]/div[1]/div',
+             '/div[1]/div[contains(@data-module, "govspeak")]')) %&gt;% 
+    html_text()
+  
+  tmp_df &lt;- data.frame(url = all_href[i], text = text)
+  all_texts &lt;- bind_rows(all_texts, tmp_df)
+}
+
+announce_corpus &lt;- corpus(all_texts)
+
+summary(announce_corpus)
+```
+
+```
+## Corpus consisting of 155 documents, showing 100 documents:
+## 
+##     Text Types Tokens Sentences
+##    text1   394   1072        33
+##    text2   251    578        20
+##    text3   405    963        35
+##    text4   518   1230        45
+##    text5   642   1706        59
+##    text6   587   1514        41
+##    text7   565   1448        53
+##    text8   509   1298        42
+##    text9   464   1087        35
+##   text10   263    468        15
+##   text11   353    882        30
+##   text12    62     89         4
+##   text13    59     89         4
+##   text14    62     86         4
+##   text15   446   1004        35
+##   text16   339    841        28
+##   text17   377    910        30
+##   text18   411    983        34
+##   text19   408    978        31
+##   text20   470   1248        36
+##   text21   314    674        25
+##   text22   312    700        25
+##   text23   349    867        33
+##   text24   361    907        19
+##   text25   312    624        19
+##   text26   347    761        27
+##   text27   291    710        26
+##   text28   211    499        14
+##   text29   114    214         8
+##   text30   341    708        22
+##   text31   350    781        42
+##   text32   147    274        11
+##   text33   310    706        29
+##   text34   502   1513        53
+##   text35   359    975        28
+##   text36   452   1244        35
+##   text37   379    965        32
+##   text38   420   1007        33
+##   text39   273    620        24
+##   text40   368    884        28
+##   text41   373    802        34
+##   text42   341    779        34
+##   text43   462   1090        33
+##   text44   293    666        24
+##   text45   343    887        31
+##   text46   313    747        27
+##   text47   359    838        26
+##   text48   423    955        30
+##   text49   184    390        19
+##   text50   335    797        26
+##   text51   422   1077        37
+##   text52   511   1305        37
+##   text53   427    919        30
+##   text54   375    922        32
+##   text55   293    717        25
+##   text56   317    661        20
+##   text57   342    768        24
+##   text58   263    529        16
+##   text59   485   1379        45
+##   text60   278    560        14
+##   text61   237    466        12
+##   text62   295    673        23
+##   text63   432    989        38
+##   text64   427   1034        27
+##   text65   244    528        14
+##   text66   444   1083        34
+##   text67   423    975        24
+##   text68   772   2182        77
+##   text69   255    525        21
+##   text70   247    506        20
+##   text71   299    743        23
+##   text72   311    657        18
+##   text73   296    592        14
+##   text74   327    807        16
+##   text75   666   1873        45
+##   text76   206    395        10
+##   text77   284    591        17
+##   text78   344    769        24
+##   text79   432    988        23
+##   text80   654   1704        45
+##   text81   275    589        13
+##   text82   414    914        30
+##   text83   528   1275        51
+##   text84   415   1019        30
+##   text85   325    687        24
+##   text86   476   1227        58
+##   text87   368    833        25
+##   text88   498   1380        35
+##   text89   336    701        10
+##   text90   229    484        13
+##   text91   664   1930        64
+##   text92   442   1036        39
+##   text93   342    798         1
+##   text94   359    776        27
+##   text95   666   1899        61
+##   text96   425    979        36
+##   text97   408    967        45
+##   text98   670   2009        62
+##   text99   691   1982        66
+##  text100   639   1814        49
+##                                                                                                                                                 url
+##                                                                    /government/news/moderna-to-open-vaccine-research-and-manufacturing-centre-in-uk
+##                                                                                    /government/news/prime-minister-announces-covid-19-inquiry-chair
+##                                                                        /government/speeches/pm-statement-at-covid-press-conference-21-february-2022
+##                                                                                 /government/news/prime-minister-sets-out-plan-for-living-with-covid
+##                                                                             /government/speeches/pm-statement-on-living-with-covid-21-february-2022
+##                    /government/news/prime-minister-declares-uk-one-of-the-most-open-countries-in-europe-and-ready-for-an-international-tourism-boom
+##                                                               /government/speeches/pm-statement-to-the-house-of-commons-on-covid-19-19-january-2022
+##                                                                /government/speeches/pm-statement-to-the-house-of-commons-on-covid-19-5-january-2022
+##                                                               /government/speeches/pm-opening-statement-at-covid-19-press-conference-4-january-2022
+##                       /government/news/prime-minister-reissues-call-for-public-to-get-boosted-and-announces-new-critical-workforce-testing-measures
+##                                                        /government/news/prime-minister-celebrates-success-of-vaccine-programme-in-new-years-message
+##                                  /government/news/pm-call-with-first-minister-paul-givan-and-deputy-first-minister-michelle-oneill-17-december-2021
+##                                                                           /government/news/pm-call-with-first-minister-of-scotland-17-december-2021
+##                                                                              /government/news/pm-call-with-first-minister-of-wales-17-december-2021
+##                                                             /government/speeches/pm-opening-statement-at-covid-19-press-conference-15-december-2021
+##                                         /government/news/prime-ministeer-and-head-of-the-nhs-call-for-volunteers-to-support-national-booster-effort
+##                                                                                              /government/news/urgent-omicron-appeal-get-boosted-now
+##                                                                                  /government/news/prime-minister-confirms-move-to-plan-b-in-england
+##                                                              /government/speeches/pm-opening-statement-at-covid-19-press-conference-8-december-2021
+##                                                                    /government/news/uk-marks-one-year-since-deploying-worlds-first-covid-19-vaccine
+##                                                             /government/speeches/pm-opening-statement-at-covid-19-press-conference-30-november-2021
+##                                                                 /government/news/measures-against-omicron-variant-come-into-effect-30-november-2021
+##                                                             /government/speeches/pm-opening-statement-at-covid-19-press-conference-27-november-2021
+##  /government/news/uk-government-publishes-union-connectivity-review-proposed-transport-investments-for-stronger-and-better-connected-united-kingdom
+##                   /government/news/uk-government-and-overseas-territories-leaders-gather-to-discuss-covid-19-climate-change-and-economic-resilience
+##                                                             /government/speeches/pm-opening-statement-at-covid-19-press-conference-15-november-2021
+##                                                                         /government/news/prime-minister-issues-vaccine-call-to-arms-ahead-of-winter
+##                                            /government/news/pm-covid-recovery-meeting-with-the-first-ministers-and-deputy-first-minister-18-october
+##                                                   /government/news/pm-meeting-with-representatives-of-bereaved-families-4-justice-28-september-2021
+##                                                                               /government/news/prime-minister-sets-out-autumn-and-winter-covid-plan
+##                                                                 /government/speeches/pm-statement-at-coronavirus-press-conference-14-september-2021
+##                                                                         /government/news/prime-minister-to-set-out-autumn-and-winter-plan-for-covid
+##                                                                             /government/news/prime-minister-to-set-out-next-steps-in-covid-response
+##                                                                         /government/news/record-36-billion-investment-to-reform-nhs-and-social-care
+##                                                               /government/news/additional-54-billion-for-nhs-covid-19-response-over-next-six-months
+##                                                                          /government/news/3-in-4-uk-adults-receive-both-doses-of-a-covid-19-vaccine
+##                                                                      /government/speeches/pm-statement-at-coronavirus-press-conference-19-july-2021
+##                                                                                         /government/news/every-adult-in-uk-offered-covid-19-vaccine
+##                                                                            /government/news/prime-minister-urges-caution-as-england-moves-to-step-4
+##                                                                        /government/news/more-than-two-in-three-adults-receive-both-doses-of-vaccine
+##                                                                      /government/speeches/pm-statement-at-coronavirus-press-conference-12-july-2021
+##                                                                                             /government/news/prime-minister-confirms-move-to-step-4
+##                                                                       /government/speeches/pm-statement-at-coronavirus-press-conference-5-july-2021
+##                                                                                    /government/news/prime-minister-to-set-out-plans-ahead-of-step-4
+##                                                                                 /government/news/uk-to-donate-100-million-coronavirus-vaccine-doses
+##                                                                              /government/news/vaccination-programme-accelerated-as-step-4-is-paused
+##                                                                      /government/speeches/pm-statement-at-coronavirus-press-conference-14-june-2021
+##                                                                                              /government/news/the-queens-birthday-honours-list-2021
+##                                                   /government/speeches/pm-boris-johnsons-remarks-at-the-first-session-of-the-g7-summit-11-june-2021
+##                                                                                        /government/news/pm-announces-plan-for-global-pandemic-radar
+##                                                                       /government/speeches/pm-statement-at-coronavirus-press-conference-14-may-2021
+##                                                                             /government/speeches/pm-house-of-commons-statement-on-covid-12-may-2021
+##                                                                       /government/speeches/pm-statement-at-coronavirus-press-conference-10-may-2021
+##                                                                                      /government/news/uk-sends-further-life-saving-support-to-india
+##                                                                                    /government/news/uk-sends-life-saving-medical-equipment-to-india
+##                                                                     /government/speeches/pm-statement-at-coronavirus-press-conference-20-april-2021
+##                                                                          /government/news/10-million-people-receive-second-dose-of-covid-19-vaccine
+##                                                                      /government/speeches/pm-statement-at-coronavirus-press-conference-5-april-2021
+##                                                                  /government/news/twice-weekly-rapid-testing-to-be-available-to-everyone-in-england
+##                                                                     /government/speeches/pm-statement-at-coronavirus-press-conference-29-march-2021
+##                                                                     /government/speeches/pm-statement-at-coronavirus-press-conference-23-march-2021
+##                                                                     /government/speeches/pm-statement-at-coronavirus-press-conference-18-march-2021
+##                                       /government/speeches/pm-boris-johnson-the-oxford-vaccine-shows-why-we-and-the-world-need-britain-to-be-global
+##                                                                     /government/news/move-to-boost-transport-connections-across-the-whole-of-the-uk
+##                                                                      /government/speeches/pm-statement-at-coronavirus-press-conference-8-march-2021
+##                                                    /government/news/schools-and-colleges-to-reopen-from-tomorrow-as-part-of-step-one-of-the-roadmap
+##                                                                  /government/speeches/pm-statement-at-coronavirus-press-conference-22-february-2021
+##                   /government/speeches/pm-statement-to-the-house-of-commons-on-roadmap-for-easing-lockdown-restrictions-in-england-22-february-2021
+##                                                         /government/news/prime-minister-to-publish-roadmap-for-cautiously-easing-covid-restrictions
+##                                                             /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-15-february-2021
+##                                                                           /government/news/new-commissioner-appointed-to-oversee-education-catch-up
+##                                                             /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-10-february-2021
+##                                                              /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-3-february-2021
+##                                                              /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-27-january-2021
+##                                               /government/speeches/prime-ministers-statement-to-the-house-of-commons-on-coronavirus-27-january-2021
+##                                                              /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-26-january-2021
+##                                                              /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-22-january-2021
+##                                                              /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-15-january-2021
+##                                                               /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-7-january-2021
+##                                       /government/speeches/prime-ministers-statement-to-the-house-of-commons-on-covid-19-regulations-6-january-2021
+##                                                               /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-5-january-2021
+##                                                                                         /government/news/prime-minister-announces-national-lockdown
+##                                                                           /government/speeches/prime-ministers-address-to-the-nation-4-january-2021
+##                                                             /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-30-december-2020
+##                                          /government/news/prime-minister-announces-tier-4-stay-at-home-alert-level-in-response-to-new-covid-variant
+##                                                             /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-19-december-2020
+##                                                             /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-16-december-2020
+##                        /government/news/governments-vaccines-taskforce-has-worked-decisively-and-at-great-pace-to-improve-uks-pandemic-preparedness
+##                                                              /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-2-december-2020
+##                                                                     /government/news/prime-minister-announces-1000-christmas-grant-for-wet-led-pubs
+##                                   /government/speeches/prime-ministers-statement-to-the-house-of-commons-on-coronavirus-regulations-1-december-2020
+##                                                             /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-26-november-2020
+##                                                             /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-23-november-2020
+##                                                                                         /government/news/prime-minister-publishes-covid-winter-plan
+##                                                                          /government/speeches/pm-statement-on-covid-19-winter-plan-23-november-2020
+##                                                              /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-9-november-2020
+##                                                              /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-5-november-2020
+##                                               /government/speeches/prime-ministers-statement-to-the-house-of-commons-on-coronavirus-4-november-2020
+##                                                                                 /government/speeches/pm-commons-statement-on-coronavirus-2-november
+##                                                              /government/speeches/prime-ministers-statement-on-coronavirus-covid-19-31-october-2020
+```
+
+---
+
+# Create a document-term matrix
+
+
+```r
+announce_dtm &lt;- announce_corpus %&gt;%
+                  tokens(remove_punct = TRUE) %&gt;%
+                  dfm() %&gt;%
+                  dfm_remove(stopwords("english")) %&gt;%
+                  dfm_wordstem() 
+
+announce_dtm
+```
+
+```
+## Document-feature matrix of: 155 documents, 4,804 features (94.31% sparse) and 1 docvar.
+##        features
+## docs    nhs patient access next generat mrna vaccin treatment moderna set
+##   text1   6       7      5    5       4   11     21         7      11   2
+##   text2   0       0      1    0       0    0      0         0       0   1
+##   text3   2       0      0    0       0    0     10         3       0   1
+##   text4   4       0      0    1       0    0     12         1       0   9
+##   text5   2       0      1    2       0    0     15         6       0   2
+##   text6   0       0      0    0       1    0      3         0       0   3
+## [ reached max_ndoc ... 149 more documents, reached max_nfeat ... 4,794 more features ]
+```
+
+---
+
+## The "mullet" of text analysis
+
+
+```r
+xfun::pkg_attach2("quanteda.textplots")
+textplot_wordcloud(announce_dtm, min_count = 10)
+```
+
+&lt;img src="pdf-and-text-as-data_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: inverse, center, middle
+background-color: #FF8C03
+
+# 🥅 Practice
+
+Scrape and clean up the first table from &lt;https://www.visionofhumanity.org/wp-content/uploads/2020/10/GPI_2020_web.pdf&gt;
+
+---
+
+class: inverse, center, middle
+background-color: #FF8C03
+
+# 🥅 Extended Practice
+
+With a partner, find an online data source. 
+
+What research question might you answer with this data set?
+
+Scrape and clean it for analysis.
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
