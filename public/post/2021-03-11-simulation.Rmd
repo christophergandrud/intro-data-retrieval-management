@@ -18,9 +18,9 @@ bibliography: main.bib
 
 > "It is immoral to collect data before simulating the hypothesized data generating process." -- Andrew Gelman (what I remember of a comment to the Stanford Causal Inference Seminar in 2020).
 
-```{r echo=FALSE}
+```{r echo=FALSE, echo=FALSE}
 # Load required packages
-xfun::pkg_attach2("DiagrammeR")
+## xfun::pkg_attach2("DiagrammeR")
 ```
 
 ## 📝 Lesson Preview
@@ -55,7 +55,7 @@ The second reason we are covering statistical simulation, and most importantly f
 
 This is a typical simulation workflow:
 
-```{r sim-workflow, echo=FALSE}
+```{r sim-workflow, echo=FALSE, eval=FALSE}
 DiagrammeR::mermaid("
 graph TB
   A[Hypothesise DGP]-->AA[Identification strategies]
@@ -455,7 +455,7 @@ When we do this, we can find that we incorrectly divide `control_prob` by `(cont
 
 **B.** Imagine that we are interested in understanding how bad [confounding](https://en.wikipedia.org/wiki/Confounding) by an unobserved variable could be in a DGP:
 
-```{r confounding, echo=FALSE}
+```{r confounding, echo=FALSE, eval=FALSE}
 DiagrammeR::mermaid("
 graph LR
   Z-->Y

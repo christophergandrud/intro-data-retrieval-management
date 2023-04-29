@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>PDF on Programming Methods for Data Retrieval &amp; Management</title>
+    <link>https://brave-pasteur-c09ffa.netlify.app/tags/pdf/</link>
+    <description>Recent content in PDF on Programming Methods for Data Retrieval &amp; Management</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 30 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://brave-pasteur-c09ffa.netlify.app/tags/pdf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Parse PDFs and Text as Data</title>
+      <link>https://brave-pasteur-c09ffa.netlify.app/post/nested-json-and-text-as-data/</link>
+      <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://brave-pasteur-c09ffa.netlify.app/post/nested-json-and-text-as-data/</guid>
+      <description> 📝 Lesson Preview  Scraping tables in PDFs
+ Text as data
+   📣 Lecture slides   </description>
+    </item>
+    
+  </channel>
+</rss>
