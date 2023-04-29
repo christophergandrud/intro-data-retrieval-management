@@ -30,6 +30,8 @@ theme_set(theme_minimal())
 
 - Automation - Effort trade off
 
+- Upcoming role of Large Language Models (e.g. ChatGPT)
+
 ---
 
 class: inverse, center, middle
@@ -484,6 +486,21 @@ If we have time, we'll look into more details on how to thinking about software 
 
 ---
 
+# Large Language Models (LLM) and Automation
+
+Large Language Models, like [ChatGPT](https://chat.openai.com/), have the potential to **dramatically reduce** automation time and effort, making automation a better decision than before.
+
+**Human in the Loop Coding**:
+
+`Describe automation task -> ChatGPT -> Run/Debug and Modify Request -> ChatGPT -> Run/Debug and Modify (including refactor), etc.`
+
+&#x2753; **Do we need to learn to code anymore?**
+
+-   Yes. LLMs are amazing. But they mess up a lot. 
+
+-   To be effective, you need to **understand** their output and be **able to ask** informative debugging questions.
+
+---
 
 # 👀 Course preview: from structured to unstructured data
 
