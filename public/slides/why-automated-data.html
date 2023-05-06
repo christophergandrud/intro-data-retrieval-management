@@ -4,7 +4,7 @@
     <title>Why Automated Data Retrieval and Management?</title>
     <meta charset="utf-8" />
     <meta name="author" content="Christopher Gandrud" />
-    <script src="libs/header-attrs-2.14/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.21/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/robot.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
   </head>
@@ -22,7 +22,7 @@ class: center, middle, inverse, title-slide
 ### HU DYNAMICS
 ]
 .date[
-### 2022-06-10 (updated: 2022-06-05)
+### 2022-06-10 (updated: 2023-04-29)
 ]
 
 ---
@@ -41,6 +41,8 @@ class: center, middle, inverse, title-slide
 - Personal data privacy and GDPR
 
 - Automation - Effort trade off
+
+- Upcoming role of Large Language Models (e.g. ChatGPT)
 
 ---
 
@@ -139,7 +141,7 @@ color: #24292F
 
     + e.g. [World Bank Development Indicators](http://data.worldbank.org/data-catalog/world-development-indicators),
     [GovData Germany](https://www.govdata.de/neues), [Berlin Open Data](https://daten.berlin.de/), [data.gov.uk](http://data.gov.uk/),
-    [New York City](https://nycopendata.socrata.com/),
+    [New York City](https://opendata.cityofnewyork.us/),
     [data.gov](https://www.data.gov/open-gov/)
 
 - Governments rely on data analysis for evidence based decision-making.
@@ -166,6 +168,15 @@ Ex. Former Hertie Master's students co-founded
 Automated data collection and retrieval **scales**.
 
 We don't just want to solve a customer problem once, we want to solve it many times with the **marginal cost decreasing** each additional time we solve the problem.
+
+
+```
+## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+## ℹ Please use `linewidth` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.
+```
 
 ![](why-automated-data_files/figure-html/return-to-scale-1.png)&lt;!-- --&gt;
 
@@ -477,6 +488,21 @@ If we have time, we'll look into more details on how to thinking about software 
 
 ---
 
+# Large Language Models (LLM) and Automation
+
+Large Language Models, like [ChatGPT](https://chat.openai.com/), have the potential to **dramatically reduce** automation time and effort, making automation a better decision than before.
+
+**Human in the Loop Coding**:
+
+`Describe automation task -&gt; ChatGPT -&gt; Run/Debug and Modify Request -&gt; ChatGPT -&gt; Run/Debug and Modify (including refactor), etc.`
+
+&amp;#x2753; **Do we need to learn to code anymore?**
+
+-   Yes. LLMs are amazing. But they mess up a lot. 
+
+-   To be effective, you need to **understand** their output and be **able to ask** informative debugging questions.
+
+---
 
 # 👀 Course preview: from structured to unstructured data
 

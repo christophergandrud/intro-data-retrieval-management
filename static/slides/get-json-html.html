@@ -4,13 +4,9 @@
     <title>Get and Parse HTML Data</title>
     <meta charset="utf-8" />
     <meta name="author" content="Christopher Gandrud" />
-    <script src="libs/header-attrs-2.20/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.21/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/robot.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
-    <script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
-    <script src="libs/viz-1.8.2/viz.js"></script>
-    <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
-    <script src="libs/grViz-binding-1.0.9/grViz.js"></script>
   </head>
   <body>
     <textarea id="source">
@@ -26,7 +22,7 @@ class: center, middle, inverse, title-slide
 ### HU DYNAMICS
 ]
 .date[
-### 2022-06-10 (updated: 2023-02-18)
+### 2022-06-10 (updated: 2023-05-01)
 ]
 
 ---
@@ -352,8 +348,7 @@ Allowed documents to be **linked** to each other.
 
 Today HTTP defines **request** and **response** *methods*.
 
-<div id="htmlwidget-36e490e3eb69b1dea513" style="width:504px;height:504px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-36e490e3eb69b1dea513">{"x":{"diagram":"\n    digraph http {\n      graph [layout = dot, rankdir = LR, overlap = true];\n      edge [arrowsize = 0.5];\n      node [shape = rectangle];\n\n      d1   [label = \"Your Computer (client)\"];\n      d2   [label = \"Server (host)\"];\n\n      d1 -> d2[label=\"Request\"];\n      d2 -> d1[label=\"Response\"]\n  } \n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+&lt;img src="img/request-response.png" width="500px" style="display: block; margin: auto;" /&gt;
 
 ---
 

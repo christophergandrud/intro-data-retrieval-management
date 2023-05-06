@@ -35,21 +35,6 @@ numeric_vector &amp;lt;- c(2.</description>
     </item>
     
     <item>
-      <title>[Intro to Computational Thinking] Introduction to Computational Thinking via Simulation with R</title>
-      <link>https://brave-pasteur-c09ffa.netlify.app/post/optional-r-basics-3/</link>
-      <pubDate>Sun, 15 May 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://brave-pasteur-c09ffa.netlify.app/post/optional-r-basics-3/</guid>
-      <description>“What I cannot create, I do not understand” – Richard Feynman
-  “It is immoral to collect data before simulating the hypothesized data generating process.” – Andrew Gelman (what I remember of a comment to the Stanford Causal Inference Seminar in 2020).
- 📝 Lesson Preview  Why simulate?
- Simple simulation workflow
- Documenting Functions in R
- Monte Carlo with apply and parallelization
- Debugging in R</description>
-    </item>
-    
-    <item>
       <title>File Organisation and Tidy Data Structures</title>
       <link>https://brave-pasteur-c09ffa.netlify.app/post/tidy-data-structures/</link>
       <pubDate>Fri, 22 May 2020 00:00:00 +0000</pubDate>

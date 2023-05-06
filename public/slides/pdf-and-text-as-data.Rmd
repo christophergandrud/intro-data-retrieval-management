@@ -109,6 +109,28 @@ Key tools include the [quanteda](https://github.com/quanteda/quanteda) and [tm](
 
 ---
 
+## Large Language Models (LLMs) and Text Analysis
+
+LLMs not only have the potential to improve our coding practice, but also
+have considerable potential for analysing texts:
+
+-   high level of "understanding"
+
+-   flexible for texts
+
+-   texts still require cleaning, but likely less (e.g. don't have to remove
+"stopwords")
+
+⚠️ But there are pitfalls, including:
+
+-   **challenging reproducibility**, especially for proprietary models like GPT-4
+
+-   computational expense, especially for long texts (though should improve 
+over time with [Moore's Law](https://en.wikipedia.org/wiki/Moore%27s_law)-type improvements) 
+
+
+---
+
 # Example
 
 Let's scrape COVID-19 press releases from the British Government.
@@ -365,9 +387,9 @@ announce_dtm
 
 ## The "mullet" of text analysis
 
-```{r, warning=FALSE, cache=TRUE}
+```{r, warning=FALSE, cache=FALSE}
 xfun::pkg_attach2("quanteda.textplots")
-textplot_wordcloud(announce_dtm, min_count = 10)
+textplot_wordcloud(announce_dtm, min_count = 9)
 ```
 
 ---

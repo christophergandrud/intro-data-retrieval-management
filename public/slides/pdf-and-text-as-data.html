@@ -4,7 +4,7 @@
     <title>Parse PDFs and Text as Data</title>
     <meta charset="utf-8" />
     <meta name="author" content="Christopher Gandrud" />
-    <script src="libs/header-attrs-2.20/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.21/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/robot.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
   </head>
@@ -22,7 +22,7 @@ class: center, middle, inverse, title-slide
 ### HU DYNAMICS
 ]
 .date[
-### 2022-06-10 (updated: 2023-02-18)
+### 2022-06-10 (updated: 2023-05-06)
 ]
 
 ---
@@ -118,6 +118,28 @@ Key tools include the [quanteda](https://github.com/quanteda/quanteda) and [tm](
 
 ---
 
+## Large Language Models (LLMs) and Text Analysis
+
+LLMs not only have the potential to improve our coding practice, but also
+have considerable potential for analysing texts:
+
+-   high level of "understanding"
+
+-   flexible for texts
+
+-   texts still require cleaning, but likely less (e.g. don't have to remove
+"stopwords")
+
+⚠️ But there are pitfalls, including:
+
+-   **challenging reproducibility**, especially for proprietary models like GPT-4
+
+-   computational expense, especially for long texts (though should improve 
+over time with [Moore's Law](https://en.wikipedia.org/wiki/Moore%27s_law)-type improvements) 
+
+
+---
+
 # Example
 
 Let's scrape COVID-19 press releases from the British Government.
@@ -165,7 +187,7 @@ announce_page
 ```
 ## {html_document}
 ## &lt;html class="govuk-template" lang="en"&gt;
-## [1] &lt;head&gt;\n&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8 ...
+## [1] &lt;head&gt;\n&lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8 ...
 ## [2] &lt;body class="gem-c-layout-for-public govuk-template__body "&gt;\n    &lt;script ...
 ```
 
@@ -1163,10 +1185,10 @@ summary(announce_corpus)
 ##    text1   394   1072        33
 ##    text2    17     30         1
 ##    text3     4      4         1
-##    text4   251    578        20
+##    text4   252    578        20
 ##    text5    17     30         1
 ##    text6    31     36         3
-##    text7   419    986        35
+##    text7   420    986        35
 ##    text8     4      4         1
 ##    text9   518   1230        45
 ##   text10    17     30         1
@@ -1176,16 +1198,16 @@ summary(announce_corpus)
 ##   text14   591   1537        42
 ##   text15    17     30         1
 ##   text16     4      4         1
-##   text17   572   1459        53
+##   text17   574   1459        53
 ##   text18     4      4         1
 ##   text19   514   1309        42
 ##   text20     4      4         1
-##   text21   476   1110        35
+##   text21   477   1110        35
 ##   text22     4      4         1
 ##   text23   263    468        15
 ##   text24    17     30         1
 ##   text25     4      4         1
-##   text26   353    882        30
+##   text26   354    882        30
 ##   text27    17     30         1
 ##   text28     4      4         1
 ##   text29    62     89         4
@@ -1197,28 +1219,28 @@ summary(announce_corpus)
 ##   text35    62     86         4
 ##   text36    17     30         1
 ##   text37     4      4         1
-##   text38   455   1022        35
+##   text38   457   1022        35
 ##   text39     4      4         1
-##   text40   339    841        28
+##   text40   342    841        28
 ##   text41    17     30         1
 ##   text42     4      4         1
-##   text43   377    910        30
+##   text43   378    910        30
 ##   text44    17     30         1
 ##   text45     4      4         1
 ##   text46   411    983        34
 ##   text47    17     30         1
 ##   text48     4      4         1
-##   text49   423   1001        31
+##   text49   424   1001        31
 ##   text50     4      4         1
 ##   text51   470   1248        36
 ##   text52    17     30         1
 ##   text53     4      4         1
-##   text54   324    692        25
+##   text54   325    692        25
 ##   text55     4      4         1
 ##   text56   312    700        25
 ##   text57    17     30         1
 ##   text58     4      4         1
-##   text59   358    885        33
+##   text59   359    885        33
 ##   text60     4      4         1
 ##   text61   361    907        19
 ##   text62    17     30         1
@@ -1228,16 +1250,16 @@ summary(announce_corpus)
 ##   text66     4      4         1
 ##   text67   359    779        27
 ##   text68     4      4         1
-##   text69   291    710        26
+##   text69   292    710        26
 ##   text70    17     30         1
 ##   text71     4      4         1
-##   text72   211    499        14
+##   text72   212    499        14
 ##   text73    17     30         1
 ##   text74     4      4         1
 ##   text75   114    214         8
 ##   text76    17     30         1
 ##   text77     4      4         1
-##   text78   341    708        22
+##   text78   342    708        22
 ##   text79    17     30         1
 ##   text80     4      4         1
 ##   text81   359    799        42
@@ -1245,19 +1267,19 @@ summary(announce_corpus)
 ##   text83   147    274        11
 ##   text84    17     30         1
 ##   text85     4      4         1
-##   text86   310    706        29
+##   text86   311    706        29
 ##   text87    17     30         1
 ##   text88     4      4         1
-##   text89   502   1513        53
+##   text89   503   1513        53
 ##   text90    17     30         1
 ##   text91     4      4         1
 ##   text92   359    975        28
 ##   text93    17     30         1
 ##   text94     4      4         1
-##   text95   452   1244        35
+##   text95   453   1244        35
 ##   text96    17     30         1
 ##   text97     4      4         1
-##   text98   390    983        32
+##   text98   393    981        32
 ##   text99     4      4         1
 ##  text100   420   1007        33
 ##                                                                                                                                                 url
@@ -1405,105 +1427,105 @@ summary(announce_corpus)
 ## 
 ##     Text Types Tokens Sentences
 ##    text1   394   1072        33
-##    text2   251    578        20
-##    text3   405    963        35
+##    text2   252    578        20
+##    text3   406    963        35
 ##    text4   518   1230        45
 ##    text5   642   1706        59
 ##    text6   587   1514        41
-##    text7   565   1448        53
+##    text7   567   1448        53
 ##    text8   509   1298        42
-##    text9   464   1087        35
+##    text9   465   1087        35
 ##   text10   263    468        15
-##   text11   353    882        30
+##   text11   354    882        30
 ##   text12    62     89         4
 ##   text13    59     89         4
 ##   text14    62     86         4
-##   text15   446   1004        35
-##   text16   339    841        28
-##   text17   377    910        30
+##   text15   448   1004        35
+##   text16   342    841        28
+##   text17   378    910        30
 ##   text18   411    983        34
-##   text19   408    978        31
+##   text19   409    978        31
 ##   text20   470   1248        36
-##   text21   314    674        25
+##   text21   315    674        25
 ##   text22   312    700        25
-##   text23   349    867        33
+##   text23   350    867        33
 ##   text24   361    907        19
 ##   text25   312    624        19
 ##   text26   347    761        27
-##   text27   291    710        26
-##   text28   211    499        14
+##   text27   292    710        26
+##   text28   212    499        14
 ##   text29   114    214         8
-##   text30   341    708        22
+##   text30   342    708        22
 ##   text31   350    781        42
 ##   text32   147    274        11
-##   text33   310    706        29
-##   text34   502   1513        53
+##   text33   311    706        29
+##   text34   503   1513        53
 ##   text35   359    975        28
-##   text36   452   1244        35
-##   text37   379    965        32
+##   text36   453   1244        35
+##   text37   382    963        32
 ##   text38   420   1007        33
 ##   text39   273    620        24
 ##   text40   368    884        28
-##   text41   373    802        34
-##   text42   341    779        34
-##   text43   462   1090        33
-##   text44   293    666        24
+##   text41   374    802        34
+##   text42   342    779        34
+##   text43   463   1090        33
+##   text44   294    666        24
 ##   text45   343    887        31
 ##   text46   313    747        27
-##   text47   359    838        26
+##   text47   360    838        26
 ##   text48   423    955        30
 ##   text49   184    390        19
-##   text50   335    797        26
-##   text51   422   1077        37
-##   text52   511   1305        37
-##   text53   427    919        30
-##   text54   375    922        32
+##   text50   336    797        26
+##   text51   423   1077        37
+##   text52   512   1305        37
+##   text53   428    919        30
+##   text54   376    922        32
 ##   text55   293    717        25
 ##   text56   317    661        20
 ##   text57   342    768        24
-##   text58   263    529        16
-##   text59   485   1379        45
-##   text60   278    560        14
+##   text58   264    529        16
+##   text59   486   1379        45
+##   text60   280    560        14
 ##   text61   237    466        12
-##   text62   295    673        23
+##   text62   297    673        23
 ##   text63   432    989        38
 ##   text64   427   1034        27
-##   text65   244    528        14
+##   text65   245    528        14
 ##   text66   444   1083        34
-##   text67   423    975        24
-##   text68   772   2182        77
+##   text67   424    975        24
+##   text68   773   2182        77
 ##   text69   255    525        21
-##   text70   247    506        20
+##   text70   248    506        20
 ##   text71   299    743        23
 ##   text72   311    657        18
-##   text73   296    592        14
-##   text74   327    807        16
-##   text75   666   1873        45
+##   text73   297    592        14
+##   text74   328    807        16
+##   text75   667   1873        45
 ##   text76   206    395        10
 ##   text77   284    591        17
 ##   text78   344    769        24
-##   text79   432    988        23
+##   text79   433    988        23
 ##   text80   654   1704        45
-##   text81   275    589        13
-##   text82   414    914        30
+##   text81   276    589        13
+##   text82   415    914        30
 ##   text83   528   1275        51
-##   text84   415   1019        30
-##   text85   325    687        24
+##   text84   416   1019        30
+##   text85   326    687        24
 ##   text86   476   1227        58
-##   text87   368    833        25
+##   text87   369    833        25
 ##   text88   498   1380        35
 ##   text89   336    701        10
-##   text90   229    484        13
-##   text91   664   1930        64
-##   text92   442   1036        39
-##   text93   342    798         1
-##   text94   359    776        27
-##   text95   666   1899        61
-##   text96   425    979        36
+##   text90   230    484        13
+##   text91   666   1929        64
+##   text92   443   1036        39
+##   text93   343    798         1
+##   text94   360    776        27
+##   text95   667   1899        61
+##   text96   427    978        36
 ##   text97   408    967        45
-##   text98   670   2009        62
-##   text99   691   1982        66
-##  text100   639   1814        49
+##   text98   673   2008        62
+##   text99   692   1982        66
+##  text100   640   1814        49
 ##                                                                                                                                                 url
 ##                                                                    /government/news/moderna-to-open-vaccine-research-and-manufacturing-centre-in-uk
 ##                                                                                    /government/news/prime-minister-announces-covid-19-inquiry-chair
@@ -1623,16 +1645,16 @@ announce_dtm
 ```
 
 ```
-## Document-feature matrix of: 155 documents, 4,804 features (94.31% sparse) and 1 docvar.
+## Document-feature matrix of: 155 documents, 4,913 features (94.36% sparse) and 1 docvar.
 ##        features
 ## docs    nhs patient access next generat mrna vaccin treatment moderna set
-##   text1   6       7      5    5       4   11     21         7      11   2
+##   text1   6       7      5    5       4   11     21         7      10   2
 ##   text2   0       0      1    0       0    0      0         0       0   1
 ##   text3   2       0      0    0       0    0     10         3       0   1
 ##   text4   4       0      0    1       0    0     12         1       0   9
 ##   text5   2       0      1    2       0    0     15         6       0   2
 ##   text6   0       0      0    0       1    0      3         0       0   3
-## [ reached max_ndoc ... 149 more documents, reached max_nfeat ... 4,794 more features ]
+## [ reached max_ndoc ... 149 more documents, reached max_nfeat ... 4,903 more features ]
 ```
 
 ---
@@ -1642,7 +1664,7 @@ announce_dtm
 
 ```r
 xfun::pkg_attach2("quanteda.textplots")
-textplot_wordcloud(announce_dtm, min_count = 10)
+textplot_wordcloud(announce_dtm, min_count = 9)
 ```
 
 &lt;img src="pdf-and-text-as-data_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;

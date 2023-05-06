@@ -1,7 +1,7 @@
 ---
 title: '[Intro to Computational Thinking] Introduction to Computational Thinking via Simulation with R'
 author: Christopher Gandrud
-date: '2022-05-15'
+date: '2023-05-15'
 slug: optional-r-basics-3
 weight: 4
 categories:
@@ -14,6 +14,14 @@ Tags: [R, simulation, distributed, functions]
 bibliography: main.bib
 ---
 
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/rmarkdown-libs/d3/d3.min.js"></script>
+<script src="/rmarkdown-libs/dagre/dagre-d3.min.js"></script>
+<link href="/rmarkdown-libs/mermaid/dist/mermaid.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/mermaid/dist/mermaid.slim.min.js"></script>
+<link href="/rmarkdown-libs/DiagrammeR-styles/styles.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/chromatography/chromatography.js"></script>
+<script src="/rmarkdown-libs/DiagrammeR-binding/DiagrammeR.js"></script>
 
 
 <blockquote>
@@ -22,6 +30,8 @@ bibliography: main.bib
 <blockquote>
 <p>“It is immoral to collect data before simulating the hypothesized data generating process.” – Andrew Gelman (what I remember of a comment to the Stanford Causal Inference Seminar in 2020).</p>
 </blockquote>
+<pre class="r"><code># Load required packages
+xfun::pkg_attach2(&quot;DiagrammeR&quot;)</code></pre>
 <div id="lesson-preview" class="section level2">
 <h2>📝 Lesson Preview</h2>
 <ul>
@@ -45,6 +55,8 @@ bibliography: main.bib
 <div id="workflow" class="section level2">
 <h2>Simple simulation workflow</h2>
 <p>This is a typical simulation workflow:</p>
+<div class="DiagrammeR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-1" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"diagram":"\ngraph TB\n  A[Hypothesise DGP]-->AA[Identification strategies]\n  AA-->B[Functions for 1 draw & analysis]\n  B-->C[Function to repeat for n draws]\n  B-- Debug -->B\n  C-->D[Plot simulations]\n  C-- Debug -->C \n  D-- Debug -->D\n  D-- Iterate -->A\n"},"evals":[],"jsHooks":[]}</script>
 <p>We start by hypothesizing what the data generating process we care about might be. Then we propose one or more candidate strategies to identify effects in this data generating process, e.g. regression, matching, difference in differences. We begin implementing the simulation for the DGP-identification strategy by creating function(s) for simulating and analyzing the data for <em>one simulation draw</em>. Once we have the simulation correctly working for one draw, we create a function(s) to make <span class="math inline">\(n\)</span> additional draws. We then (usually) examine the results by plotting quantities of interest from the simulations. Quantities of interest could be the distribution of some estimate we are interested in or the error from some “ground truth” across simulations. Frequently, we learn something unexpected by the end of this process. Our learnings could include a new understanding of the data generating process or our candidate identification strategies. Because we often learn something about how our originally selected identification strategy is lacking or our proposed DGP is too simplistic, we often need to repeat the process a number of times before we are confident we understand even the simulated data and its hypothetical relationship to the real social phenomenon we are interested in.</p>
 <p>Notice that most steps can involve some debugging. We’ll dig into debugging <a href="#debugging-intro">below</a>. But let’s look at a simple ideal case first.</p>
 <div id="example-1-simple-ab-test-discrete-probabilities" class="section level3">
@@ -111,7 +123,7 @@ plot_histogram(treatment_y, subtitle = &quot;Treatment Group&quot;)</code></pre>
 <p><img src="/post/2021-03-11-simulation_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>Finally, we compare the means of the two groups:</p>
 <pre class="r"><code>mean(treatment_y) - mean(control_y) </code></pre>
-<pre><code>## [1] 0.0010145</code></pre>
+<pre><code>## [1] 0.001373</code></pre>
 <p>That’s one simulation. Let’s wrap it up in a function so it will be easy to run <span class="math inline">\(n\)</span> simulations</p>
 <pre class="r"><code># @param n integer number of draws per treatment arm
 # @param control_prob numeric probability of control success [0, 1]
@@ -129,7 +141,7 @@ one_sim &lt;- function(n, control_prob, rel_effect) {
 <p>Let’s test it to make sure it works.</p>
 <pre class="r"><code>one_sim(n = n_obs, control_prob = control_prob, 
         rel_effect = rel_effect)</code></pre>
-<pre><code>## [1] 0.001061</code></pre>
+<pre><code>## [1] 0.0008815</code></pre>
 <p>This is very close to the true increase absolute of <code>0.001</code> (i.e. 1% of the <code>control_prob</code> of 0.1).</p>
 <hr />
 </div>
@@ -187,7 +199,7 @@ hist(mean_diff)</code></pre>
                                        rel_effect = rel_effect))
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   5.299   0.144   5.444</code></pre>
+##   5.713   0.156   5.884</code></pre>
 <p>I wrapped this call in <code>system.time()</code> so that we can keep track of how much computation time we spend on the call. Monte Carlo simulations are just doing the same thing over and over. This computation time can add up.</p>
 <p>We can see that the the <code>apply</code> version (above) in this case is pretty much as slow as the <code>for</code> loop (below).<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a></p>
 <pre class="r"><code>system.time(
@@ -197,12 +209,13 @@ hist(mean_diff)</code></pre>
   }
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   5.373   0.141   5.522</code></pre>
+##   5.764   0.154   5.953</code></pre>
 <p>So far we have been running all of our simulations in sequence. However, each simulation, by construction, is independent of the others. This is a perfect use case for parallelization.</p>
 <p>There is a <code>mc_replicate()</code> helper function (originally from the <a href="https://github.com/rmcelreath/rethinking"><em>rethinking</em></a> package) that makes this easy for the code we have written so far.</p>
 <pre class="r"><code>xfun::pkg_attach2(&quot;mcreplicate&quot;)</code></pre>
-<pre><code>## Installing package into &#39;/opt/homebrew/lib/R/4.3/site-library&#39;
-## (as &#39;lib&#39; is unspecified)</code></pre>
+<pre><code>## 
+## The downloaded binary packages are in
+## 	/var/folders/m8/_syljrtn2fgghrv7r3wy_wvm0000gn/T//RtmpvtJDao/downloaded_packages</code></pre>
 <pre class="r"><code>system.time(
   mc_replicate(n_sims, one_sim(n = n_obs, 
                               control_prob = control_prob, 
@@ -210,7 +223,7 @@ hist(mean_diff)</code></pre>
               mc.cores = 4)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   4.750   0.154   1.698</code></pre>
+##   3.202   0.102   1.730</code></pre>
 <p>As we would expect from running the simulations across 4 rather than one core, the <code>elapsed</code> time is faster with <code>mc_replicate()</code>. Note it is not 4 times faster in this case, because there is overhead in setting up the parallelization. With more samples we the overhead as a proportion of total computation time will decrease and we will approach 4x computation time.</p>
 <p>Finally, let’s see if the difference of means is a useful way of estimating the treatment effect for a binary outcome? Let’s run a few more simulations. We should see normally distributed difference of means centered on 0.001:</p>
 <pre class="r"><code>diff_means_1000 &lt;- mc_replicate(1e3, one_sim(n = n_obs, 

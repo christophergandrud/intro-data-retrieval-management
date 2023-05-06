@@ -1,7 +1,7 @@
 ---
 title: '[Intro to Computational Thinking] Introduction to Computational Thinking via Simulation with R'
 author: Christopher Gandrud
-date: '2022-05-15'
+date: '2023-05-15'
 slug: optional-r-basics-3
 weight: 4
 categories:
@@ -18,9 +18,9 @@ bibliography: main.bib
 
 > "It is immoral to collect data before simulating the hypothesized data generating process." -- Andrew Gelman (what I remember of a comment to the Stanford Causal Inference Seminar in 2020).
 
-```{r echo=FALSE, echo=FALSE}
+```{r echo=FALSE, echo=TRUE}
 # Load required packages
-## xfun::pkg_attach2("DiagrammeR")
+xfun::pkg_attach2("DiagrammeR")
 ```
 
 ## 📝 Lesson Preview
@@ -55,7 +55,7 @@ The second reason we are covering statistical simulation, and most importantly f
 
 This is a typical simulation workflow:
 
-```{r sim-workflow, echo=FALSE, eval=FALSE}
+```{r sim-workflow, echo=FALSE, eval=TRUE}
 DiagrammeR::mermaid("
 graph TB
   A[Hypothesise DGP]-->AA[Identification strategies]
