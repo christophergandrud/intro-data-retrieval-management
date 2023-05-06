@@ -150,7 +150,8 @@ words &lt;- &quot;Hello World&quot;</code></pre>
 do to the object. For example, you cannot take the mean of a character
 object like the <em>words</em> object:</p>
 <pre class="r"><code>mean(words)</code></pre>
-<pre><code>## Warning in mean.default(words): argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(words): argument is not numeric or logical: returning
+## NA</code></pre>
 <pre><code>## [1] NA</code></pre>
 <p>Trying to find the mean of our <em>words</em> object gives us a warning message
 and returns the value NA: not applicable. You can also
@@ -168,10 +169,10 @@ equivalent to the data structures you would be familiar with from using
 a program such as Microsoft Excel. We will be using data frames
 extensively throughout the book. Before looking at data frames it is
 useful to first look at the simpler objects that make up data frames.
-These are called vectors. Vectors are R’s “workhorse” <span class="citation">(<a href="#ref-matloff2011" role="doc-biblioref">Matloff 2011</a>)</span>.</p>
+These are called vectors. Vectors are R’s “workhorse” <span class="citation">(<a href="#ref-matloff2011">Matloff 2011</a>)</span>.</p>
 <div id="vectors" class="section level5">
 <h5>Vectors</h5>
-<p>Vectors are the “fundamental data type” in R <span class="citation">(<a href="#ref-matloff2011" role="doc-biblioref">Matloff 2011</a>)</span>. They are an
+<p>Vectors are the “fundamental data type” in R <span class="citation">(<a href="#ref-matloff2011">Matloff 2011</a>)</span>. They are an
 ordered group of numbers, character strings, and so on. It may be useful
 to think of most data in R as composed of vectors. For example, data
 frames are basically collections of vectors of the same length, i.e.
@@ -250,8 +251,8 @@ not mean that they are now numeric data. To prove this, try to find the
 mean of <strong>character_vector</strong> by running it through the <code>mean()</code>
 function:</p>
 <pre class="r"><code>mean(string_num_df$character_vector)</code></pre>
-<pre><code>## Warning in mean.default(string_num_df$character_vector): argument is not numeric
-## or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(string_num_df$character_vector): argument is not
+## numeric or logical: returning NA</code></pre>
 <pre><code>## [1] NA</code></pre>
 </div>
 </div>
@@ -376,6 +377,6 @@ Matloff, Norman. 2011. <em>The Art of Programming in r: A Tour of Statistical Pr
 <div class="footnotes footnotes-end-of-document">
 <hr />
 <ol>
-<li id="fn1"><p>These lessons are based on <span class="citation">Gandrud (<a href="#ref-gandrud2020" role="doc-biblioref">2020</a>)</span>, Chapter 3.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>These lessons are based on <span class="citation">Gandrud (<a href="#ref-gandrud2020">2020</a>)</span>, Chapter 3.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>

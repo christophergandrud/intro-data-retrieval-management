@@ -1,0 +1,30 @@
+---
+title: File Organisation and Tidy Data Structures
+author: Christopher Gandrud
+date: '2020-05-22'
+slug: tidy-data-structures
+weight: 6
+categories:
+  - R
+tags:
+  - R
+  - programming
+  - data management
+Categories: []
+Tags: [R, data management, programming]
+bibliography: main.bib
+---
+
+## 📝 Lesson Preview
+
+- Why is file management important?
+
+- What is tidy data?
+
+- Manipulating tidy data (1)
+
+## 📣 Lecture slides
+
+```{r echo=FALSE}
+knitr::include_url("https://brave-pasteur-c09ffa.netlify.app/slides/tidy-data-structures")
+```

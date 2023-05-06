@@ -206,13 +206,13 @@ detectCores()</code></pre>
 <p>Let’s compute the mean of each vector in the list in parallel:</p>
 <pre class="r"><code>mclapply(three_list, mean, mc.cores = 3)</code></pre>
 <pre><code>## $A
-## [1] 1.022425
+## [1] 1.139379
 ## 
 ## $B
-## [1] 2.109696
+## [1] 1.973661
 ## 
 ## $C
-## [1] 5.152018</code></pre>
+## [1] 4.967049</code></pre>
 <p><code>mc.cores</code> sets the number of cores to use. Usually use 1 minus <em>n</em>, the number of cores you have available.</p>
 <p>For Windows, we need to use <code>parLapply()</code>. First create a cluster with <code>cl &lt;- makeCluster(cores = 2)</code> (for 2 cores) and then run the function.</p>
 </div>

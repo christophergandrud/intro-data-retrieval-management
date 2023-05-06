@@ -1,4 +1,3 @@
-DiagrammeR
 tidyverse
 ggplot2
 tibble
@@ -8,5 +7,6 @@ purrr
 dplyr
 stringr
 forcats
+lubridate
 progress
 mcreplicate

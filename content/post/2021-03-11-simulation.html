@@ -1,7 +1,7 @@
 ---
 title: '[Intro to Computational Thinking] Introduction to Computational Thinking via Simulation with R'
 author: Christopher Gandrud
-date: '2022-05-15'
+date: '2023-05-15'
 slug: optional-r-basics-3
 weight: 4
 categories:
@@ -30,6 +30,8 @@ bibliography: main.bib
 <blockquote>
 <p>“It is immoral to collect data before simulating the hypothesized data generating process.” – Andrew Gelman (what I remember of a comment to the Stanford Causal Inference Seminar in 2020).</p>
 </blockquote>
+<pre class="r"><code># Load required packages
+xfun::pkg_attach2(&quot;DiagrammeR&quot;)</code></pre>
 <div id="lesson-preview" class="section level2">
 <h2>📝 Lesson Preview</h2>
 <ul>
@@ -46,14 +48,14 @@ bibliography: main.bib
 <p>We’ve covered the basics of programming in R. Let’s bring many of these concepts together to help us better understand our research problems, even before we gather any data. To do this, we’ll learn how to use R to simulate and analyse <strong>data generating processes (DGP)</strong>.</p>
 <p>A data generating process is the process that creates the data in a data set. These processes can include, for example, both the social processes that result in migration data and even unexpected (or undesired) issues in the sampling procedure like non-random study attrition.</p>
 <p>Why are we talking about simulating data generating processes in an introduction to R course? There are two sets of reasons.</p>
-<p>First, computational generative modeling–simulating data generating processes with a computer–is a useful <strong>tool for understanding and evaluating the statistical methods</strong> you are using to study data generating processes <span class="citation">(<a href="#ref-gelmanhillaki2021" role="doc-biblioref">Gelman, Hill, and Vehtari 2021, 76</a>)</span>. Will your chosen statistical model identify the effect you are interested, even if you completely understand the DGP? This is surprisingly often not the case, especially for non-trivial data generating processes. Simulation allows you to stress test your models, with a given assumed DGP, and compare the appropriateness of different models for this DGP.</p>
+<p>First, computational generative modeling–simulating data generating processes with a computer–is a useful <strong>tool for understanding and evaluating the statistical methods</strong> you are using to study data generating processes <span class="citation">(<a href="#ref-gelmanhillaki2021">Gelman, Hill, and Vehtari 2021, 76</a>)</span>. Will your chosen statistical model identify the effect you are interested, even if you completely understand the DGP? This is surprisingly often not the case, especially for non-trivial data generating processes. Simulation allows you to stress test your models, with a given assumed DGP, and compare the appropriateness of different models for this DGP.</p>
 <p>In Gelman’s strong view stated above, if your identification strategy can’t recover effects in known–simulated data–you shouldn’t waste time and money collecting real world data. If data gathering is time consuming and expensive, you can also use generative modelling to make progress on your problem before your data is fully collected.</p>
 <p>The second reason we are covering statistical simulation, and most importantly for this class, is that simulation requires you to <strong>work your new R programmering skills</strong>. The DGP we will work with are probabilistic. You need to repeat the simulations with the same data generating process multiple times to understand its statistical properties. This is called the <a href="https://en.wikipedia.org/wiki/Monte_Carlo_method">Monte Carlo Method</a>. You should never do this repeated sampling by rewriting the same function over and over. Instead, encode the sampling in a function that you can run repeatedly and, ideally, efficiently, e.g. in parallel.</p>
 </div>
 <div id="workflow" class="section level2">
 <h2>Simple simulation workflow</h2>
 <p>This is a typical simulation workflow:</p>
-<div id="htmlwidget-1" style="width:672px;height:480px;" class="DiagrammeR html-widget"></div>
+<div class="DiagrammeR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-1" style="width:672px;height:480px;"></div>
 <script type="application/json" data-for="htmlwidget-1">{"x":{"diagram":"\ngraph TB\n  A[Hypothesise DGP]-->AA[Identification strategies]\n  AA-->B[Functions for 1 draw & analysis]\n  B-->C[Function to repeat for n draws]\n  B-- Debug -->B\n  C-->D[Plot simulations]\n  C-- Debug -->C \n  D-- Debug -->D\n  D-- Iterate -->A\n"},"evals":[],"jsHooks":[]}</script>
 <p>We start by hypothesizing what the data generating process we care about might be. Then we propose one or more candidate strategies to identify effects in this data generating process, e.g. regression, matching, difference in differences. We begin implementing the simulation for the DGP-identification strategy by creating function(s) for simulating and analyzing the data for <em>one simulation draw</em>. Once we have the simulation correctly working for one draw, we create a function(s) to make <span class="math inline">\(n\)</span> additional draws. We then (usually) examine the results by plotting quantities of interest from the simulations. Quantities of interest could be the distribution of some estimate we are interested in or the error from some “ground truth” across simulations. Frequently, we learn something unexpected by the end of this process. Our learnings could include a new understanding of the data generating process or our candidate identification strategies. Because we often learn something about how our originally selected identification strategy is lacking or our proposed DGP is too simplistic, we often need to repeat the process a number of times before we are confident we understand even the simulated data and its hypothetical relationship to the real social phenomenon we are interested in.</p>
 <p>Notice that most steps can involve some debugging. We’ll dig into debugging <a href="#debugging-intro">below</a>. But let’s look at a simple ideal case first.</p>
@@ -121,7 +123,7 @@ plot_histogram(treatment_y, subtitle = &quot;Treatment Group&quot;)</code></pre>
 <p><img src="/post/2021-03-11-simulation_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>Finally, we compare the means of the two groups:</p>
 <pre class="r"><code>mean(treatment_y) - mean(control_y) </code></pre>
-<pre><code>## [1] 0.000809</code></pre>
+<pre><code>## [1] 0.001373</code></pre>
 <p>That’s one simulation. Let’s wrap it up in a function so it will be easy to run <span class="math inline">\(n\)</span> simulations</p>
 <pre class="r"><code># @param n integer number of draws per treatment arm
 # @param control_prob numeric probability of control success [0, 1]
@@ -139,7 +141,7 @@ one_sim &lt;- function(n, control_prob, rel_effect) {
 <p>Let’s test it to make sure it works.</p>
 <pre class="r"><code>one_sim(n = n_obs, control_prob = control_prob, 
         rel_effect = rel_effect)</code></pre>
-<pre><code>## [1] 0.001078</code></pre>
+<pre><code>## [1] 0.0008815</code></pre>
 <p>This is very close to the true increase absolute of <code>0.001</code> (i.e. 1% of the <code>control_prob</code> of 0.1).</p>
 <hr />
 </div>
@@ -197,7 +199,7 @@ hist(mean_diff)</code></pre>
                                        rel_effect = rel_effect))
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   5.403   0.129   5.544</code></pre>
+##   5.713   0.156   5.884</code></pre>
 <p>I wrapped this call in <code>system.time()</code> so that we can keep track of how much computation time we spend on the call. Monte Carlo simulations are just doing the same thing over and over. This computation time can add up.</p>
 <p>We can see that the the <code>apply</code> version (above) in this case is pretty much as slow as the <code>for</code> loop (below).<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a></p>
 <pre class="r"><code>system.time(
@@ -207,12 +209,13 @@ hist(mean_diff)</code></pre>
   }
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   5.393   0.110   5.508</code></pre>
+##   5.764   0.154   5.953</code></pre>
 <p>So far we have been running all of our simulations in sequence. However, each simulation, by construction, is independent of the others. This is a perfect use case for parallelization.</p>
 <p>There is a <code>mc_replicate()</code> helper function (originally from the <a href="https://github.com/rmcelreath/rethinking"><em>rethinking</em></a> package) that makes this easy for the code we have written so far.</p>
 <pre class="r"><code>xfun::pkg_attach2(&quot;mcreplicate&quot;)</code></pre>
-<pre><code>## Installing package into &#39;/opt/homebrew/lib/R/4.2/site-library&#39;
-## (as &#39;lib&#39; is unspecified)</code></pre>
+<pre><code>## 
+## The downloaded binary packages are in
+## 	/var/folders/m8/_syljrtn2fgghrv7r3wy_wvm0000gn/T//RtmpvtJDao/downloaded_packages</code></pre>
 <pre class="r"><code>system.time(
   mc_replicate(n_sims, one_sim(n = n_obs, 
                               control_prob = control_prob, 
@@ -220,7 +223,7 @@ hist(mean_diff)</code></pre>
               mc.cores = 4)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   4.556   0.156   1.604</code></pre>
+##   3.202   0.102   1.730</code></pre>
 <p>As we would expect from running the simulations across 4 rather than one core, the <code>elapsed</code> time is faster with <code>mc_replicate()</code>. Note it is not 4 times faster in this case, because there is overhead in setting up the parallelization. With more samples we the overhead as a proportion of total computation time will decrease and we will approach 4x computation time.</p>
 <p>Finally, let’s see if the difference of means is a useful way of estimating the treatment effect for a binary outcome? Let’s run a few more simulations. We should see normally distributed difference of means centered on 0.001:</p>
 <pre class="r"><code>diff_means_1000 &lt;- mc_replicate(1e3, one_sim(n = n_obs, 
@@ -342,8 +345,6 @@ for (i in seq_along(mean_diff)) {
 <p><strong>A.</strong> Replicate the example above. This time use Monte Carlo simulation to find the distribution of p-values if you had a <em>total</em> sample size of 2,000. Hint: extract p-values in R from a t-test with <code>t.test()$p.value</code> .</p>
 <p>“Extra credit”: how often would you incorrectly reject the null hypothesis of no difference of means at the 95% level with <em>total</em> sample sizes of 1,000, 2,000, 10,000, and 100,000? Plot the proportion of simulations falsely rejected across these sample sizes.</p>
 <p><strong>B.</strong> Imagine that we are interested in understanding how bad <a href="https://en.wikipedia.org/wiki/Confounding">confounding</a> by an unobserved variable could be in a DGP:</p>
-<div id="htmlwidget-2" style="width:672px;height:480px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2">{"x":{"diagram":"\ngraph LR\n  Z-->Y\n  Z-->X\n  X-->Y\n"},"evals":[],"jsHooks":[]}</script>
 <p><span class="math inline">\(Z\)</span> is a confounder. It causes both <span class="math inline">\(X\)</span> and our outcome of interest <span class="math inline">\(Y\)</span>. Imagine we couldn’t observe <span class="math inline">\(Z\)</span>. Create a Monte Carlo simulation to explore how this confounder could be biasing our estimate of the relationship between <span class="math inline">\(X\)</span> and our <span class="math inline">\(Y\)</span>.</p>
 <p>Assume a data generating process described by:</p>
 <p><span class="math display">\[
@@ -382,7 +383,7 @@ Gelman, Andrew, Jennifer Hill, and Aki Vehtari. 2021. <em>Regression and Other S
 <div class="footnotes footnotes-end-of-document">
 <hr />
 <ol>
-<li id="fn1"><p>This example is modified from <span class="citation">Gelman, Hill, and Vehtari (<a href="#ref-gelmanhillaki2021" role="doc-biblioref">2021</a> Ch. 5, p.69-70)</span>.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>This example is modified from <span class="citation">Gelman, Hill, and Vehtari (<a href="#ref-gelmanhillaki2021">2021</a> Ch. 5, p.69-70)</span>.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
 <li id="fn2"><p>We can express this in R using scientific notation, e.g. <code>2e6</code>.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
 <li id="fn3"><p>These conventions are established by the <a href="https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html">roxygen2</a> package. If you create an R package to contain your functions, you can use roxygen2 to automatically generate package documentation. For more details see <a href="https://r-pkgs.org/">R Packages</a>.<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
 <li id="fn4"><p>If you ever need to kill an R process (e.g. because it is taking way longer than you expected, use <code>Ctrl + c</code> in your R console.<a href="#fnref4" class="footnote-back">↩︎</a></p></li>

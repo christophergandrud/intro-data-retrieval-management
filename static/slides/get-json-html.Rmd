@@ -16,7 +16,7 @@ bibliography: main.bib
 
 ```{r setup, include=FALSE}
 library(xfun)
-pkg_attach2("tidyverse", "jsonlite", "janitor", "DiagrammeR")
+pkg_attach2("tidyverse", "jsonlite", "janitor")
 knitr::opts_chunk$set(fig.align = 'center')
 ```
 
@@ -304,20 +304,9 @@ Allowed documents to be **linked** to each other.
 
 Today HTTP defines **request** and **response** *methods*.
 
-```{r http, echo=FALSE,, cache=TRUE, fig.width=7}
-DiagrammeR::grViz('
-    digraph http {
-      graph [layout = dot, rankdir = LR, overlap = true];
-      edge [arrowsize = 0.5];
-      node [shape = rectangle];
+```{r http, echo=FALSE, out.width="500px"}
+knitr::include_graphics("img/request-response.png")
 
-      d1   [label = "Your Computer (client)"];
-      d2   [label = "Server (host)"];
-
-      d1 -> d2[label="Request"];
-      d2 -> d1[label="Response"]
-  } 
-')
 ```
 
 ---
