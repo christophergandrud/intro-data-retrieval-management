@@ -4,7 +4,7 @@
     <title>Get and Clean Tidy Data</title>
     <meta charset="utf-8" />
     <meta name="author" content="Christopher Gandrud" />
-    <script src="libs/header-attrs-2.14/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.21/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/robot.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
   </head>
@@ -22,7 +22,7 @@ class: center, middle, inverse, title-slide
 ### HU DYNAMICS
 ]
 .date[
-### 2022-06-10 (updated: 2022-06-05)
+### 2022-06-10 (updated: 2023-05-06)
 ]
 
 ---
@@ -32,87 +32,19 @@ class: center, middle, inverse, title-slide
 
 # 📝 Lesson Preview
 
-- What is public data?
-
 - Retrieving and cleaning (tabular) public data
 
 - APIs
 
 - Cleaning grouped data
 
----
-
-class: inverse, center, middle
-
-# What is open public data?
-
----
-
-# What is open public data?
-
-Janssen (2012, 258):
-
-&gt; "Non-privacy-restricted and non-confidential data which is produced with public money and is made available without any restrictions on its usage or distribution."
-
----
-
-# Some benefits of open public data
-
-- **Greater returns** on public investment in data gathering.
-
-- Better **coordination** within government.
-
-- Provides **policy-makers with information** needed to address complex problems.
-
-- "**Mends the traditional separation** between public organizations and users".
-
-See Janssen (2012, 261) for more.
-
----
-
-# Mending separation between public and users
-
-- **Assumes** that government **considers outside** views and information (including opposing) views as **constructive**.
-
-  + Not always a correct assumption. E.g. there are reasons why it is basically impossible to get US-wide data on deaths by police.
-
-- Results in government **giving up** (some) control and more **actively interacting** with its environment.
-
----
-
-# An ideal for open public data
-
-
-&gt; Not only should data be published, but potential **data users in society** should be
-**actively** sought for input on **improving government**.
-
----
-
-# Challenges to open data
-
-- **Lack of technological competence** to implement open data that is **useful**.
-
-- **Worry** by bureaucrats that open data will be used to **criticise** them.
-
-- **No incentives** for users to access the data. **Lack of skills** needed
-to use and understand the data.
-
-- Balancing individual **privacy** concerns.
-
-See Janssen (2012, 262-263) for more.
-
----
-
-# Recommended podcast
-
-Max Ogden on the Request for Commits podcast discussing challenges faced working 
-for the City of Boston with Code for America (&lt;https://changelog.com/rfc/6&gt;).
+- Introduction to SQL and quierying relational databases
 
 ---
 
 # Accessing data
 
-[Maybe -- added 2022] Social science and public data is becoming **increasingly open** and **accessible**.
+Significant amounts of data are open for researchers and the public generally.
 
 However, the level of **accessibility varies**:
 
@@ -161,13 +93,10 @@ Do as much **data gathering** and **cleaning** as possible programmatically:
 
 # "Easy" automatic data gathering
 
-1. Plain-text data (e.g. CSV) stored at non-secure (http) URL, not embedded in
+1. Plain-text data (e.g. CSV) stored at secure (https) URL, not embedded in
 a larger HTML marked-up website.
 
-2. Plain-text data (e.g. CSV) stored at secure (https) URL, not embedded in
-a larger HTML marked-up website.
-
-3. Data stored in a database with a well structured API (Application Programming
+2. Data stored in a database with a well structured API (Application Programming
     Interface), that has a corresponding R package.
 
 ---
@@ -198,6 +127,8 @@ You can download and load data files stored in compressed formats (e.g. `.zip`).
 # Loading compressed plain-text data
 
 Load data from @Pemstein2010 in a file called *uds_summary.csv*.
+
+Note: this example no longer works because the website was taken down.
 
 
 ```r
@@ -232,7 +163,21 @@ Data on GitHub is stored at secure URLs. Select the **RAW** URL:
 ```r
 URL &lt;- paste0('https://raw.githubusercontent.com/christophergandrud/',
         'LegislativeViolence/master/Data/LegViolenceDescriptives.csv')
-main &lt;- rio::import(URL)
+leg_violence &lt;- readr::read_csv(URL)
+head(leg_violence)
+```
+
+```
+## # A tibble: 6 × 10
+##   country      year violence violence_y_cum udems_mean dem_age polity2 durable
+##   &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;          &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Afghanistan  1980        0              0      -2.03       0      NA       0
+## 2 Afghanistan  1981        0              0      -1.84       0      NA       0
+## 3 Afghanistan  1982        0              0      -1.83       0      NA       0
+## 4 Afghanistan  1983        0              0      -1.61       0      NA       0
+## 5 Afghanistan  1984        0              0      -1.62       0      NA       0
+## 6 Afghanistan  1985        0              0      -1.83       0      NA       0
+## # ℹ 2 more variables: disproportionality &lt;dbl&gt;, maj &lt;dbl&gt;
 ```
 
 ---
@@ -248,7 +193,7 @@ Each download can be checked against the Hash:
 
 
 ```r
-main &lt;- repmis::source_data(URL,
+leg_violence &lt;- repmis::source_data(URL,
                 sha1 = '01cff579b689cea9ef9c98e433ce3122745cc5cb')
 ```
 
@@ -268,7 +213,7 @@ main &lt;- repmis::source_data(URL,
 
 The `source_XlsxData()` function in repmis does the same hash check as `source_data()`, but for Excel files. It builds on `read.xlsx()` for loading locally stored Excel files. 
 
-Can also use `import()` from rio.
+Can also use `read_excel()` from [readxl](https://readxl.tidyverse.org/).
 
 Note: Excel data often needs **a lot of cleaning** before it is useful
 for statistical/graphical analyses.
@@ -368,7 +313,7 @@ For a good beginner list see:
 
 | Format                                      | R packages                                                              |
 | ------------------------------------------- | ----------------------------------------------------------------------- |
-| Excel, Stata, SPSS, SAS                     | rio                                                                     |
+| Excel, Stata, SPSS, SAS                     | rio, readxl                                                                     |
 | [JSON](http://en.wikipedia.org/wiki/JSON)   | [jsonlite](https://cran.r-project.org/web/packages/jsonlite/index.html) |
 | Databases, e.g. a Google BigQuery data base | [dbplyr](https://dbplyr.tidyverse.org/)                                 |
 
@@ -536,18 +481,18 @@ tail(alt_energy, n = 3)
 ```
 
 ```r
-tail(uds, n = 3)
+tail(leg_violence, n = 3)
 ```
 
 ```
-##         X       country year cowcode      mean        sd    median     pct025
-## 9135 9135 Western Samoa 2006     990 0.2485397 0.2155926 0.2474691 -0.1702781
-## 9136 9136 Western Samoa 2007     990 0.2439135 0.2151686 0.2487054 -0.1874372
-## 9137 9137 Western Samoa 2008     990 0.2407623 0.2192563 0.2443505 -0.1881970
-##         pct975
-## 9135 0.6648156
-## 9136 0.6571918
-## 9137 0.6622615
+##         country year violence violence_y_cum udems_mean dem_age polity2 durable
+## 5481     Taiwan 2010        1              3         NA      NA      NA      NA
+## 5482    Ukraine 2010        1              2         NA      NA      NA      NA
+## 5483 Yugoslavia 1991       NA              0         NA      NA      -5       0
+##      disproportionality maj
+## 5481              16.89  NA
+## 5482               3.59  NA
+## 5483                 NA  NA
 ```
 
 ---
@@ -559,45 +504,21 @@ Unique identifier will be
 and **year**.
 
 Use the [countrycode](https://github.com/vincentarelbundock/countrycode)
-package to turn UDS data's
-[Correlates of War Country Code](http://www.correlatesofwar.org/datasets.htm)
-(`cowcode`) to `iso2c`.
+package to turn *leg_violence* data's
+country names to `iso2c`.
 
 
 ```r
 library(countrycode)
 
 # Assign iso2c codes base on correlates of war codes
-uds$iso2c &lt;- countrycode(uds$cowcode, origin = 'cown',
-                             destination = 'iso2c', warn = TRUE)
+leg_violence$iso2c &lt;- countrycode(leg_violence$country, 
+                                  origin = 'country.name',
+                                  destination = 'iso2c', 
+                                  warn = TRUE)
 ```
 
 **NOTE**: Always check the data to make sure the correct codes have been applied!
-
----
-
-# Creating IDs: geocodes
-
-countrycode clearly only works for standardising country IDs
-
-Other packages can be useful for standardising other unit IDs.
-
-For example, `geocode` from
-[ggmap](http://journal.r-project.org/archive/2013-1/kahle-wickham.pdf) can be
-used to create latitude/longitudes for other geographic units:
-
-
-```r
-places &lt;- c('Bavaria', 'Seoul', '6 Parisier Platz, Berlin')
-ggmap::geocode(places, source = 'google')
-
-##         lon      lat
-## 1  11.49789 48.79045
-## 2 126.97797 37.56654
-## 3  13.37854 52.51701
-```
-
-Note: [you need to](https://github.com/dkahle/ggmap#attention) sign up for a Google Cloud account to use this.
 
 ---
 
@@ -634,27 +555,27 @@ Note: Times should always go from **longest to shortest** unit (e.g. YEAR-MONTH-
 
 ```r
 # Keep only desired variables
-uds &lt;- uds[, c('iso2c', 'year', 'median')]
-names(uds)
+leg_violence &lt;- leg_violence[, c('iso2c', 'year', 'udems_mean')]
+names(leg_violence)
 ```
 
 ```
-## [1] "iso2c"  "year"   "median"
+## [1] "iso2c"      "year"       "udems_mean"
 ```
 
 
 ```r
 combined &lt;- full_join(x = alt_energy, 
-                      y = uds,
+                      y = leg_violence,
                       by = c('iso2c', 'year'))
 head(combined, n = 3)
 ```
 
 ```
-##   iso2c                     country EG.USE.COMM.CL.ZS year median
-## 1    ZH Africa Eastern and Southern                NA 2021     NA
-## 2    ZH Africa Eastern and Southern                NA 2020     NA
-## 3    ZH Africa Eastern and Southern                NA 2019     NA
+##   iso2c                     country EG.USE.COMM.CL.ZS year udems_mean
+## 1    ZH Africa Eastern and Southern                NA 2021         NA
+## 2    ZH Africa Eastern and Southern                NA 2020         NA
+## 3    ZH Africa Eastern and Southern                NA 2019         NA
 ```
 
 ---
@@ -705,13 +626,13 @@ head(combined)
 ```
 
 ```
-##                       country iso2c EG.USE.COMM.CL.ZS new_year median
-## 1 Africa Eastern and Southern    ZH                NA     2021     NA
-## 2 Africa Eastern and Southern    ZH                NA     2020     NA
-## 3 Africa Eastern and Southern    ZH                NA     2019     NA
-## 4 Africa Eastern and Southern    ZH                NA     2018     NA
-## 5 Africa Eastern and Southern    ZH                NA     2017     NA
-## 6 Africa Eastern and Southern    ZH                NA     2016     NA
+##                       country iso2c EG.USE.COMM.CL.ZS new_year udems_mean
+## 1 Africa Eastern and Southern    ZH                NA     2021         NA
+## 2 Africa Eastern and Southern    ZH                NA     2020         NA
+## 3 Africa Eastern and Southern    ZH                NA     2019         NA
+## 4 Africa Eastern and Southern    ZH                NA     2018         NA
+## 5 Africa Eastern and Southern    ZH                NA     2017         NA
+## 6 Africa Eastern and Southern    ZH                NA     2016         NA
 ```
 
 ---
@@ -751,13 +672,13 @@ head(data)
 ```
 
 ```
-##           people year    income
-## 1 Abraham, James 2010 28101.001
-## 2 Abraham, James 2011  2716.519
-## 3 Abraham, James 2012 31689.159
-## 4 Abraham, James 2013 53506.863
-## 5   Adams, Ebony 2010 28536.318
-## 6   Adams, Ebony 2011 37734.746
+##             people year     income
+## 1   Abeyta, Amanda 2010   929.1221
+## 2   Abeyta, Amanda 2011 21536.3039
+## 3   Abeyta, Amanda 2012 25090.8023
+## 4   Abeyta, Amanda 2013 69358.1747
+## 5 Abeyta, Courtney 2010     0.0000
+## 6 Abeyta, Courtney 2011 59779.2156
 ```
 
 ---
@@ -774,13 +695,13 @@ head(higher_income)
 ```
 
 ```
-##               people year   income
-## 1     Agustin, Julia 2010 67074.84
-## 2 al-Aboud, Imtinaan 2013 74822.57
-## 3   al-Akhter, Uqbah 2011 62221.84
-## 4   al-Akhter, Uqbah 2013 61950.59
-## 5   al-Alam, Muntaha 2011 77712.02
-## 6    al-Aman, Khawla 2011 61948.84
+##                people year   income
+## 1      Abeyta, Amanda 2013 69358.17
+## 2        Aken, Blanca 2012 74046.89
+## 3 al-Abdulla, Maisoon 2011 67877.35
+## 4    al-Aboud, Kabeer 2013 65387.64
+## 5    al-Ahmad, Raaida 2012 63470.02
+## 6      al-Amen, Muzna 2013 61506.77
 ```
 
 ---
@@ -800,13 +721,13 @@ head(people_income)
 ```
 
 ```
-##           people    income
-## 1 Abraham, James 28101.001
-## 2 Abraham, James  2716.519
-## 3 Abraham, James 31689.159
-## 4 Abraham, James 53506.863
-## 5   Adams, Ebony 28536.318
-## 6   Adams, Ebony 37734.746
+##             people     income
+## 1   Abeyta, Amanda   929.1221
+## 2   Abeyta, Amanda 21536.3039
+## 3   Abeyta, Amanda 25090.8023
+## 4   Abeyta, Amanda 69358.1747
+## 5 Abeyta, Courtney     0.0000
+## 6 Abeyta, Courtney 59779.2156
 ```
 
 ---
@@ -825,13 +746,13 @@ head(group_data)[1:5, ]
 ```
 ## # A tibble: 5 × 3
 ## # Groups:   people [2]
-##   people          year income
-##   &lt;chr&gt;          &lt;int&gt;  &lt;dbl&gt;
-## 1 Abraham, James  2010 28101.
-## 2 Abraham, James  2011  2717.
-## 3 Abraham, James  2012 31689.
-## 4 Abraham, James  2013 53507.
-## 5 Adams, Ebony    2010 28536.
+##   people            year income
+##   &lt;chr&gt;            &lt;int&gt;  &lt;dbl&gt;
+## 1 Abeyta, Amanda    2010   929.
+## 2 Abeyta, Amanda    2011 21536.
+## 3 Abeyta, Amanda    2012 25091.
+## 4 Abeyta, Amanda    2013 69358.
+## 5 Abeyta, Courtney  2010     0
 ```
 
 Note: the following functions work on **non-grouped data** as well.
@@ -855,11 +776,11 @@ head(min_max_income)[1:3, ]
 
 ```
 ## # A tibble: 3 × 3
-##   people         min_income max_income
-##   &lt;chr&gt;               &lt;dbl&gt;      &lt;dbl&gt;
-## 1 Abraham, James      2717.     53507.
-## 2 Adams, Ebony       16322.     46054.
-## 3 Agan, Reeanna      13749.     43667.
+##   people                 min_income max_income
+##   &lt;chr&gt;                       &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Abeyta, Amanda               929.     69358.
+## 2 Abeyta, Courtney               0      59779.
+## 3 Acevedo Salinas, Maria     21407.     53774.
 ```
 
 ---
@@ -878,11 +799,11 @@ head(ascending)[1:3, ]
 
 ```
 ## # A tibble: 3 × 3
-##   people        min_income max_income
-##   &lt;chr&gt;              &lt;dbl&gt;      &lt;dbl&gt;
-## 1 Coe, Austin           0      11590.
-## 2 Lowe, Shanice         0      14909.
-## 3 Nguyen, Angel      9627.     15295.
+##   people            min_income max_income
+##   &lt;chr&gt;                  &lt;dbl&gt;      &lt;dbl&gt;
+## 1 el-Sala, Wisaam         249.     11010.
+## 2 el-Murad, Mawdood      7776.     12010.
+## 3 Roel, Kimberly            0      13230.
 ```
 
 ---
@@ -900,11 +821,11 @@ head(descending)[1:3, ]
 
 ```
 ## # A tibble: 3 × 3
-##   people            min_income max_income
-##   &lt;chr&gt;                  &lt;dbl&gt;      &lt;dbl&gt;
-## 1 Haltom, Christian     18335.    105514.
-## 2 Sheahan, Thu              0      93293.
-## 3 Perry, Lexus            864.     92384.
+##   people              min_income max_income
+##   &lt;chr&gt;                    &lt;dbl&gt;      &lt;dbl&gt;
+## 1 O'Brien, Coleburn       38709.    102495.
+## 2 Slusarczyk, Kathryn     17792.     99101.
+## 3 Ball, Taulric           11272.     97805.
 ```
 
 ---
@@ -929,10 +850,99 @@ head(data)[1:3, ]
 ## # Groups:   people [1]
 ##   people          year income min_income max_income
 ##   &lt;chr&gt;          &lt;int&gt;  &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
-## 1 Abraham, James  2010 28101.      2717.     53507.
-## 2 Abraham, James  2011  2717.      2717.     53507.
-## 3 Abraham, James  2012 31689.      2717.     53507.
+## 1 Abeyta, Amanda  2010   929.       929.     69358.
+## 2 Abeyta, Amanda  2011 21536.       929.     69358.
+## 3 Abeyta, Amanda  2012 25091.       929.     69358.
 ```
+
+---
+
+# Introduction to SQL and accessing databases from R
+
+SQL (Structured Query Language) is a programming language used to manage and manipulate **relational databases**.
+
+Relational databases aren't super common in academics, but **industry runs on them**.
+
+---
+
+# What is a "relational database"?
+
+&gt; A relational database is a type of database that stores data in tables with rows and columns. Each table represents a **specific entity** or concept, such as customers, orders, or products. The **relationships** between the tables are defined by common fields, or **keys**, which allow data to be linked and combined from multiple tables. 
+
+🗯
+If you understand **tidy data principles** and merging data, working with SQL databases should be conceptually easy. **dbplyr** even lets you use dplyr syntax to query databases/generate SQL from R code (`translate_sql`).
+
+The devil is in the **connections** (to the tables) and **syntax**.
+
+---
+
+# High level example 
+
+- Illustrates basic steps:
+
+  - Connect to database (project)
+  
+  - Run query and return output to R
+
+- From [bigrquery](https://bigrquery.r-dbi.org/#dplyr) docs
+
+- Assumes you have already set up BigQuery.
+
+```r
+library(dplyr)
+
+# Connect to natality table for a prespecified connection
+natality &lt;- tbl(con, "natality")
+
+# Query table
+natality %&gt;%
+  select(year, month, day, weight_pounds) %&gt;% 
+  head(10) %&gt;%
+  collect()
+```
+
+---
+
+# SQL Syntax walk through
+
+```sql
+SELECT *
+FROM alt_energy
+JOIN leg_violence
+ON alt_energy.iso2c = leg_violence.iso2c AND alt_energy.year = leg_violence.year
+WHERE (alt_energy.iso2c = 'DE' OR alt_energy.iso2c = 'KR') AND alt_energy.year &gt;= 2001
+LIMIT 100;
+```
+
+---
+
+# Note!
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+Note, to run a SQL example from R we would need to connect to set up database connections, which we don't have time for in this course and are service specific.
+
+Instead we aim to give you the core principles needed so that you can get started faster with a relational database you do encounter "in the wild".
+
+---
+
+# But you can play with SQL from BigQuery's web interface
+
+[Google BigQuery](https://cloud.google.com/bigquery) is one popular relational database hosting platform. 
+
+You can interact with it using **dbplyr** or [bigrquery](https://bigrquery.r-dbi.org/)
+
+To follow along, you will need to sign up for a [Google Cloud](https://cloud.google.com/bigquery) account. You need a credit card, but "free" with ~$300 credit for 90 days.
+
+- Once you are signed up, Click "Analyze and manage data (BigQuery)" to access BigQuery"
+
+---
+
+# BigQuery web interface
+
+&lt;img src="img/bigrquery-interface.png" width="4117" /&gt;
 
 ---
 

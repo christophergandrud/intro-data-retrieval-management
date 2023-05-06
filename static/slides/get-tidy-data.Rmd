@@ -17,7 +17,7 @@ bibliography: main.bib
 ```{r setup, include=FALSE}
 library(xfun)
 pkg_attach2("tidyverse", "devtools", "repmis", "countrycode", "WDI", 
-            "quantmod", "lubridate")
+            "quantmod", "lubridate", "bigrquery", "dbplyr")
 ```
 
 # 📝 Lesson Preview
@@ -27,6 +27,8 @@ pkg_attach2("tidyverse", "devtools", "repmis", "countrycode", "WDI",
 - APIs
 
 - Cleaning grouped data
+
+- Introduction to SQL and quierying relational databases
 
 ---
 
@@ -660,6 +662,108 @@ head(data)[1:3, ]
 
 ---
 
+# Introduction to SQL and accessing databases from R
+
+SQL (Structured Query Language) is a programming language used to manage and manipulate **relational databases**.
+
+Relational databases aren't super common in academics, but **industry runs on them**.
+
+---
+
+# What is a "relational database"?
+
+> A relational database is a type of database that stores data in tables with rows and columns. Each table represents a **specific entity** or concept, such as customers, orders, or products. The **relationships** between the tables are defined by common fields, or **keys**, which allow data to be linked and combined from multiple tables. 
+
+🗯
+If you understand **tidy data principles** and merging data, working with SQL databases should be conceptually easy. **dbplyr** even lets you use dplyr syntax to query databases/generate SQL from R code (`translate_sql`).
+
+The devil is in the **connections** (to the tables) and **syntax**.
+
+---
+
+# High level example 
+
+- Illustrates basic steps:
+
+  - Connect to database (project)
+  
+  - Run query and return output to R
+
+- From [bigrquery](https://bigrquery.r-dbi.org/#dplyr) docs
+
+- Assumes you have already set up BigQuery.
+
+```r
+library(dplyr)
+
+# Connect to natality table for a prespecified connection
+natality <- tbl(con, "natality")
+
+# Query table
+natality %>%
+  select(year, month, day, weight_pounds) %>% 
+  head(10) %>%
+  collect()
+```
+
+---
+
+# SQL Syntax walk through
+
+Assume we have two databases with the data as above for `alt_engergy` and `leg_violence`. 
+The following SQL query joins the "alt_energy" and "leg_violence" databases for the specific countries and years:
+
+```sql
+SELECT *
+FROM alt_energy
+JOIN leg_violence
+ON alt_energy.iso2c = leg_violence.iso2c AND alt_energy.year = leg_violence.year
+WHERE (alt_energy.iso2c = 'DE' OR alt_energy.iso2c = 'KR') AND alt_energy.year >= 2001
+LIMIT 100;
+```
+
+- `*` selects all columns from both data sets. Specify specific columns with the (unquoted) names, separated by `,` commas.
+
+- `FROM` and `JOIN` specifies the base table and the one to join with it.
+
+- `WHERE` clause filters the results to include only specific rows.
+  
+- `LIMIT 100` limits the data returned to the first 100 rows (for convenience)
+
+---
+
+# Note!
+
+<br>
+<br>
+<br>
+
+Note, to run a SQL example from R we would need to connect to set up database connections, which we don't have time for in this course and are service specific.
+
+Instead we aim to give you the core principles needed so that you can get started faster with a relational database you do encounter "in the wild".
+
+---
+
+# But you can play with SQL from BigQuery's web interface
+
+[Google BigQuery](https://cloud.google.com/bigquery) is one popular relational database hosting platform. 
+
+You can interact with it using **dbplyr** or [bigrquery](https://bigrquery.r-dbi.org/)
+
+To follow along, you will need to sign up for a [Google Cloud](https://cloud.google.com/bigquery) account. You need a credit card, but "free" with ~$300 credit for 90 days.
+
+- Once you are signed up, Click "Analyze and manage data (BigQuery)" to access BigQuery"
+
+---
+
+# BigQuery web interface
+
+```{r big-query-interface, echo=FALSE}
+knitr::include_graphics("img/bigrquery-interface.png")
+```
+
+---
+
 class: inverse, center, middle
 background-color: #FF8C03
 
@@ -667,3 +771,4 @@ background-color: #FF8C03
 
 Download two data sets (that conceivable could be merged) using the API-based packages discussed today. Either in the same or a linked R script  **clean** and **merge** the data.
 
+And/Or set up GoogleBig Query and practice querying from the included example data sets. 

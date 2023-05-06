@@ -4,7 +4,7 @@
     <title>File Organisation and Tidy Data Structures</title>
     <meta charset="utf-8" />
     <meta name="author" content="Christopher Gandrud" />
-    <script src="libs/header-attrs-2.14/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.21/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/robot.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
   </head>
@@ -22,7 +22,7 @@ class: center, middle, inverse, title-slide
 ### HU DYNAMICS
 ]
 .date[
-### 2022-06-10 (updated: 2022-06-05)
+### 2022-06-10 (updated: 2023-05-06)
 ]
 
 ---
@@ -138,7 +138,7 @@ US, United States, 1.050
 
 Makes:
 
-![](img/CSVBasic.png)&lt;!-- --&gt;
+&lt;img src="img/CSVBasic.png" width="299" /&gt;
 
 ---
 
@@ -247,11 +247,11 @@ list.files()
 ##  [7] "get-tidy-data.html"         "get-tidy-data.Rmd"         
 ##  [9] "img"                        "libs"                      
 ## [11] "main.bib"                   "pdf-and-text-as-data_cache"
-## [13] "pdf-and-text-as-data.html"  "pdf-and-text-as-data.Rmd"  
-## [15] "tidy-data-structures_cache" "tidy-data-structures.html" 
-## [17] "tidy-data-structures.Rmd"   "why-automated-data_cache"  
-## [19] "why-automated-data_files"   "why-automated-data.html"   
-## [21] "why-automated-data.Rmd"
+## [13] "pdf-and-text-as-data_files" "pdf-and-text-as-data.html" 
+## [15] "pdf-and-text-as-data.Rmd"   "tidy-data-structures_cache"
+## [17] "tidy-data-structures.html"  "tidy-data-structures.Rmd"  
+## [19] "why-automated-data_cache"   "why-automated-data_files"  
+## [21] "why-automated-data.html"    "why-automated-data.Rmd"
 ```
 
 ```R
@@ -324,7 +324,7 @@ list.files("child")
 
 Will show the files in the *child* directory, which is in the working directory.
 
-You can also back up the tree from the working directory with `../`. For example,
+You can also go **back up the tree** from the working directory with `../`. For example,
 
 ```
 list.files("../") 
@@ -365,7 +365,7 @@ read.csv('data/test-data.csv')
 
 - Save Data: e.g. `write.csv()`, `write.dta()`, `jsonlite::write_json()`
 
-- Databases: [dbplyr](https://db.rstudio.com/dplyr/)
+- Databases: [dbplyr](https://dbplyr.tidyverse.org/)
 
 - Load and run R source code: `source()`
 
@@ -403,7 +403,7 @@ head(disprop)
 
 Not covered in this course, but you should always manage your source code with a tool like Git/GitHub. 
 
-See [here](https://cdn.rawgit.com/HertieDataScience/SyllabusAndLectures/8392513e7e826f5d7842bd437d9a415b808ef745/LectureSlides/Lecture3/Lecture3.html#26) for more details.
+See [here](https://docs.github.com/en/get-started/using-git/about-git) for more details.
 
 Let me know if you are interested and I can give you an introduction if we have time.
 
@@ -461,11 +461,11 @@ All values are assigned to a **variable** and an **observation**.
 
 &lt;br&gt;
 
-1. Each variable forms a column.
+1. Each **variable** forms a column.
 
-2. Each observation forms a row.
+2. Each **observation** forms a row.
 
-3. Each type of observational unit forms a table.
+3. Each **type** of observational unit forms a table.
 
 .small[[Wickham (2014)](https://www.jstatsoft.org/article/view/v059i10)]
 

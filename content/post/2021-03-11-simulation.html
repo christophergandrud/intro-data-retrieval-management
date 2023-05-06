@@ -123,7 +123,7 @@ plot_histogram(treatment_y, subtitle = &quot;Treatment Group&quot;)</code></pre>
 <p><img src="/post/2021-03-11-simulation_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>Finally, we compare the means of the two groups:</p>
 <pre class="r"><code>mean(treatment_y) - mean(control_y) </code></pre>
-<pre><code>## [1] 0.000949</code></pre>
+<pre><code>## [1] 0.000808</code></pre>
 <p>That’s one simulation. Let’s wrap it up in a function so it will be easy to run <span class="math inline">\(n\)</span> simulations</p>
 <pre class="r"><code># @param n integer number of draws per treatment arm
 # @param control_prob numeric probability of control success [0, 1]
@@ -141,7 +141,7 @@ one_sim &lt;- function(n, control_prob, rel_effect) {
 <p>Let’s test it to make sure it works.</p>
 <pre class="r"><code>one_sim(n = n_obs, control_prob = control_prob, 
         rel_effect = rel_effect)</code></pre>
-<pre><code>## [1] 0.001308</code></pre>
+<pre><code>## [1] 0.0009145</code></pre>
 <p>This is very close to the true increase absolute of <code>0.001</code> (i.e. 1% of the <code>control_prob</code> of 0.1).</p>
 <hr />
 </div>
@@ -199,7 +199,7 @@ hist(mean_diff)</code></pre>
                                        rel_effect = rel_effect))
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   5.696   0.153   5.853</code></pre>
+##   5.657   0.139   5.796</code></pre>
 <p>I wrapped this call in <code>system.time()</code> so that we can keep track of how much computation time we spend on the call. Monte Carlo simulations are just doing the same thing over and over. This computation time can add up.</p>
 <p>We can see that the the <code>apply</code> version (above) in this case is pretty much as slow as the <code>for</code> loop (below).<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a></p>
 <pre class="r"><code>system.time(
@@ -209,7 +209,7 @@ hist(mean_diff)</code></pre>
   }
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   5.728   0.147   5.894</code></pre>
+##   5.663   0.143   5.808</code></pre>
 <p>So far we have been running all of our simulations in sequence. However, each simulation, by construction, is independent of the others. This is a perfect use case for parallelization.</p>
 <p>There is a <code>mc_replicate()</code> helper function (originally from the <a href="https://github.com/rmcelreath/rethinking"><em>rethinking</em></a> package) that makes this easy for the code we have written so far.</p>
 <pre class="r"><code>xfun::pkg_attach2(&quot;mcreplicate&quot;)
@@ -221,7 +221,7 @@ system.time(
               mc.cores = 4)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   5.175   0.201   1.894</code></pre>
+##   4.634   0.191   1.636</code></pre>
 <p>As we would expect from running the simulations across 4 rather than one core, the <code>elapsed</code> time is faster with <code>mc_replicate()</code>. Note it is not 4 times faster in this case, because there is overhead in setting up the parallelization. With more samples we the overhead as a proportion of total computation time will decrease and we will approach 4x computation time.</p>
 <p>Finally, let’s see if the difference of means is a useful way of estimating the treatment effect for a binary outcome? Let’s run a few more simulations. We should see normally distributed difference of means centered on 0.001:</p>
 <pre class="r"><code>diff_means_1000 &lt;- mc_replicate(1e3, one_sim(n = n_obs, 

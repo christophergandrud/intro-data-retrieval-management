@@ -1,7 +1,7 @@
 ---
 title: '[Intro to Computational Thinking] R Basics 2'
 author: Christopher Gandrud
-date: '2020-05-15'
+date: '2023-05-12'
 slug: optional-r-basics-2
 weight: 3
 categories:
@@ -195,9 +195,15 @@ for (i in 1:ncol(swiss)) {
     paste(names(swiss)[i], ., "\n") %>%  # the . directs the pipe
     cat()
 }
+```
 
+The first line reads: "for each `i` in the vector 1 through the number of columns in the **swiss** data frame . . . "
 
-# To do over lunch
+We then use `i` in the subscripts `[]` to select each column of **swiss** to find and print its mean.
+
+FYI: the following code uses only Base R for an alternative approach:
+
+```{r base-r-swiss example}
 means_df <- data.frame()
 swiss_names <- names(swiss)
 
@@ -210,9 +216,6 @@ for (i in 1:ncol(swiss)) {
 means_df
 ```
 
-The first line reads: "for each `i` in the vector 1 through the number of columns in the **swiss** data frame . . . "
-
-We then use `i` in the subscripts `[]` to select each column of **swiss** to find and print its mean.
 
 ### Apply {#apply-intro}
 

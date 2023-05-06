@@ -18,13 +18,13 @@ Tags: [R, programming, GET, tidy, data retrieval]
 
 ## 📝 Lesson Preview
 
-- What is public data?
-
 - Retrieving and cleaning (tabular) public data
 
 - Application Programming Interfaces (APIs)
 
 - Cleaning grouped data
+
+- Introduction to SQL and quierying relational databases
 
 ## 📣 Lecture slides
 

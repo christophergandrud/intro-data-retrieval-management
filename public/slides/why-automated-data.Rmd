@@ -149,6 +149,65 @@ NGO's are becoming increasingly data-oriented and need people with **skills** to
 Ex. Former Hertie Master's students co-founded
 [CorrelAid](http://correlaid.org/) to assist NGOs with data analysis.
 
+class: inverse, center, middle
+
+# What is open public data?
+
+---
+
+# What is open public data?
+
+Janssen (2012, 258):
+
+> "Non-privacy-restricted and non-confidential data which is produced with public money and is made available without any restrictions on its usage or distribution."
+
+---
+
+# Some benefits of open public data
+
+- **Greater returns** on public investment in data gathering.
+
+- Better **coordination** within government.
+
+- Provides **policy-makers with information** needed to address complex problems.
+
+- "**Mends the traditional separation** between public organizations and users".
+
+See Janssen (2012, 261) for more.
+
+---
+
+# Mending separation between public and users
+
+- **Assumes** that government **considers outside** views and information (including opposing) views as **constructive**.
+
+  + Not always a correct assumption. E.g. there are reasons why it is basically impossible to get US-wide data on deaths by police.
+
+- Results in government **giving up** (some) control and more **actively interacting** with its environment.
+
+---
+
+# An ideal for open public data
+
+
+> Not only should data be published, but potential **data users in society** should be
+**actively** sought for input on **improving government**.
+
+---
+
+# Challenges to open data
+
+- **Lack of technological competence** to implement open data that is **useful**.
+
+- **Worry** by bureaucrats that open data will be used to **criticise** them.
+
+- **No incentives** for users to access the data. **Lack of skills** needed
+to use and understand the data.
+
+- Balancing individual **privacy** concerns.
+
+See Janssen (2012, 262-263) for more.
+
 ---
 
 # 🏭 Industry 
@@ -162,7 +221,7 @@ x <- seq(1, 10, 0.01)
 returns_to_scale <- tibble(x = x, y = x^-2)
 
 ggplot(returns_to_scale, aes(x, y)) +
-  geom_line(color = "pink", size = 1) +
+  geom_line(color = "pink", linewidth = 1) +
   xlab("Quantity produced") + ylab("Cost of production\n") +
   theme(
         axis.text.x=element_blank(),
@@ -186,11 +245,13 @@ ggplot(returns_to_scale, aes(x, y)) +
 
 # 🏭 Industry 
 
-So, being able to scale data science--automate data retrieval and management--is highly valued. E.g. on [PayScale](https://www.payscale.com/research/DE/Job=Data_Scientist/Salary):
+<br>
+<br>
+<br>
 
-```{r pay-by-experience, echo=FALSE}
-knitr::include_graphics("img/pay-by-experience.png")
-```
+⚠️ While automated data retrieval and management is more important than ever
+within companies, it's the openness of companies to each other and researchers,
+e.g. via APIs, is perhaps declining as companies develop **walled data gardens**.
 
 ---
 
@@ -348,7 +409,7 @@ background-color: #000000
 
 # 🏛 Ethical data retrieval and management
 
-> Privacy and data protection are fundamental rights, which need to be protected. ([EUI 2019](https://www.eui.eu/Documents/ServicesAdmin/DeanOfStudies/ResearchEthics/Guide-Data-Protection-Research.pdf))
+> Privacy and data protection are fundamental rights, which need to be protected. ([EUI 2022](https://www.eui.eu/Documents/ServicesAdmin/DeanOfStudies/ResearchEthics/Guide-Data-Protection-Research.pdf))
 
 ---
 
@@ -439,7 +500,7 @@ the data subjects' rights pursuant to Articles 12 to 222
 
 - ⚠️ **Never transport** personally identifiable data in non-secure ways (e.g. email)
 
-- ⚠️ **Never store** credentials in non-secure locations
+- ⚠️ **Never store** credentials in non-secure locations (e.g. use a password manager with command line access)
 
 ---
 
@@ -492,13 +553,13 @@ Large Language Models, like [ChatGPT](https://chat.openai.com/), have the potent
 
 **Human in the Loop Coding**:
 
-`Describe automation task -> ChatGPT -> Run/Debug and Modify Request -> ChatGPT -> Run/Debug and Modify (including refactor), etc.`
+`Describe automation task -> ChatGPT Creates Code -> Run/Debug and Modify Request -> ChatGPT Creates Code -> Run/Debug and Modify (including refactor), etc.`
 
 &#x2753; **Do we need to learn to code anymore?**
 
 -   Yes. LLMs are amazing. But they mess up a lot. 
 
--   To be effective, you need to **understand** their output and be **able to ask** informative debugging questions.
+-   To be effective, you need to **understand** their output and be **able to ask** informative debugging questions. --> This course will give you a foundation to be able to do this effectively.
 
 ---
 
