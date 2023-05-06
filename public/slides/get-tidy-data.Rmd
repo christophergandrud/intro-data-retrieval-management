@@ -710,6 +710,9 @@ natality %>%
 
 # SQL Syntax walk through
 
+Assume we have two databases with the data as above for `alt_engergy` and `leg_violence`. 
+The following SQL query joins the "alt_energy" and "leg_violence" databases for the specific countries and years:
+
 ```sql
 SELECT *
 FROM alt_energy
@@ -718,6 +721,14 @@ ON alt_energy.iso2c = leg_violence.iso2c AND alt_energy.year = leg_violence.year
 WHERE (alt_energy.iso2c = 'DE' OR alt_energy.iso2c = 'KR') AND alt_energy.year >= 2001
 LIMIT 100;
 ```
+
+- `*` selects all columns from both data sets. Specify specific columns with the (unquoted) names, separated by `,` commas.
+
+- `FROM` and `JOIN` specifies the base table and the one to join with it.
+
+- `WHERE` clause filters the results to include only specific rows.
+  
+- `LIMIT 100` limits the data returned to the first 100 rows (for convenience)
 
 ---
 
@@ -760,3 +771,4 @@ background-color: #FF8C03
 
 Download two data sets (that conceivable could be merged) using the API-based packages discussed today. Either in the same or a linked R script  **clean** and **merge** the data.
 
+And/Or set up GoogleBig Query and practice querying from the included example data sets. 

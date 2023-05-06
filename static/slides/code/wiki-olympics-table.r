@@ -1,7 +1,7 @@
 #################
 # Scrape BBC Sochi Olympics Medals Table
 # Christopher Gandrud
-# 6 June 2021
+# 6 May 2023
 #################
 
 # Load packages
@@ -14,7 +14,7 @@ URL <- 'https://en.wikipedia.org/wiki/2012_Summer_Olympics_medal_table'
 medals_table <- URL %>% read_html() %>%
                 html_nodes('table') %>%
                 html_table() %>% 
-                pluck(3) %>% # Extract the third table using pluck from purrr
+                pluck(4) %>% # Extract the third table using pluck from purrr
                 as.data.frame
 
 medals_table <- clean_names(medals_table)
