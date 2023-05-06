@@ -22,7 +22,7 @@ class: center, middle, inverse, title-slide
 ### HU DYNAMICS
 ]
 .date[
-### 2022-06-10 (updated: 2023-04-29)
+### 2022-06-10 (updated: 2023-05-06)
 ]
 
 ---
@@ -161,6 +161,65 @@ NGO's are becoming increasingly data-oriented and need people with **skills** to
 Ex. Former Hertie Master's students co-founded
 [CorrelAid](http://correlaid.org/) to assist NGOs with data analysis.
 
+class: inverse, center, middle
+
+# What is open public data?
+
+---
+
+# What is open public data?
+
+Janssen (2012, 258):
+
+&gt; "Non-privacy-restricted and non-confidential data which is produced with public money and is made available without any restrictions on its usage or distribution."
+
+---
+
+# Some benefits of open public data
+
+- **Greater returns** on public investment in data gathering.
+
+- Better **coordination** within government.
+
+- Provides **policy-makers with information** needed to address complex problems.
+
+- "**Mends the traditional separation** between public organizations and users".
+
+See Janssen (2012, 261) for more.
+
+---
+
+# Mending separation between public and users
+
+- **Assumes** that government **considers outside** views and information (including opposing) views as **constructive**.
+
+  + Not always a correct assumption. E.g. there are reasons why it is basically impossible to get US-wide data on deaths by police.
+
+- Results in government **giving up** (some) control and more **actively interacting** with its environment.
+
+---
+
+# An ideal for open public data
+
+
+&gt; Not only should data be published, but potential **data users in society** should be
+**actively** sought for input on **improving government**.
+
+---
+
+# Challenges to open data
+
+- **Lack of technological competence** to implement open data that is **useful**.
+
+- **Worry** by bureaucrats that open data will be used to **criticise** them.
+
+- **No incentives** for users to access the data. **Lack of skills** needed
+to use and understand the data.
+
+- Balancing individual **privacy** concerns.
+
+See Janssen (2012, 262-263) for more.
+
 ---
 
 # 🏭 Industry 
@@ -168,15 +227,6 @@ Ex. Former Hertie Master's students co-founded
 Automated data collection and retrieval **scales**.
 
 We don't just want to solve a customer problem once, we want to solve it many times with the **marginal cost decreasing** each additional time we solve the problem.
-
-
-```
-## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-## ℹ Please use `linewidth` instead.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-## generated.
-```
 
 ![](why-automated-data_files/figure-html/return-to-scale-1.png)&lt;!-- --&gt;
 
@@ -194,9 +244,13 @@ We don't just want to solve a customer problem once, we want to solve it many ti
 
 # 🏭 Industry 
 
-So, being able to scale data science--automate data retrieval and management--is highly valued. E.g. on [PayScale](https://www.payscale.com/research/DE/Job=Data_Scientist/Salary):
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
 
-![](img/pay-by-experience.png)&lt;!-- --&gt;
+⚠️ While automated data retrieval and management is more important than ever
+within companies, it's the openness of companies to each other and researchers,
+e.g. via APIs, is perhaps declining as companies develop **walled data gardens**.
 
 ---
 
@@ -352,7 +406,7 @@ background-color: #000000
 
 # 🏛 Ethical data retrieval and management
 
-&gt; Privacy and data protection are fundamental rights, which need to be protected. ([EUI 2019](https://www.eui.eu/Documents/ServicesAdmin/DeanOfStudies/ResearchEthics/Guide-Data-Protection-Research.pdf))
+&gt; Privacy and data protection are fundamental rights, which need to be protected. ([EUI 2022](https://www.eui.eu/Documents/ServicesAdmin/DeanOfStudies/ResearchEthics/Guide-Data-Protection-Research.pdf))
 
 ---
 
@@ -443,7 +497,7 @@ the data subjects' rights pursuant to Articles 12 to 222
 
 - ⚠️ **Never transport** personally identifiable data in non-secure ways (e.g. email)
 
-- ⚠️ **Never store** credentials in non-secure locations
+- ⚠️ **Never store** credentials in non-secure locations (e.g. use a password manager with command line access)
 
 ---
 
@@ -494,13 +548,13 @@ Large Language Models, like [ChatGPT](https://chat.openai.com/), have the potent
 
 **Human in the Loop Coding**:
 
-`Describe automation task -&gt; ChatGPT -&gt; Run/Debug and Modify Request -&gt; ChatGPT -&gt; Run/Debug and Modify (including refactor), etc.`
+`Describe automation task -&gt; ChatGPT Creates Code -&gt; Run/Debug and Modify Request -&gt; ChatGPT Creates Code -&gt; Run/Debug and Modify (including refactor), etc.`
 
 &amp;#x2753; **Do we need to learn to code anymore?**
 
 -   Yes. LLMs are amazing. But they mess up a lot. 
 
--   To be effective, you need to **understand** their output and be **able to ask** informative debugging questions.
+-   To be effective, you need to **understand** their output and be **able to ask** informative debugging questions. --&gt; This course will give you a foundation to be able to do this effectively.
 
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: '[Intro to Computational Thinking] R Basics 2'
 author: Christopher Gandrud
-date: '2020-05-15'
+date: '2023-05-12'
 slug: optional-r-basics-2
 weight: 3
 categories:
@@ -153,8 +153,10 @@ greater_than_5</code></pre>
 ## Education 11 
 ## Catholic 41.1 
 ## Infant.Mortality 19.9</code></pre>
-<pre class="r"><code># To do over lunch
-means_df &lt;- data.frame()
+<p>The first line reads: “for each <code>i</code> in the vector 1 through the number of columns in the <strong>swiss</strong> data frame . . .”</p>
+<p>We then use <code>i</code> in the subscripts <code>[]</code> to select each column of <strong>swiss</strong> to find and print its mean.</p>
+<p>FYI: the following code uses only Base R for an alternative approach:</p>
+<pre class="r"><code>means_df &lt;- data.frame()
 swiss_names &lt;- names(swiss)
 
 for (i in 1:ncol(swiss)) {
@@ -171,8 +173,6 @@ means_df</code></pre>
 ## 4      Examination       16.5
 ## 5      Agriculture       50.7
 ## 6        Fertility       70.1</code></pre>
-<p>The first line reads: “for each <code>i</code> in the vector 1 through the number of columns in the <strong>swiss</strong> data frame . . .”</p>
-<p>We then use <code>i</code> in the subscripts <code>[]</code> to select each column of <strong>swiss</strong> to find and print its mean.</p>
 </div>
 <div id="apply-intro" class="section level3">
 <h3>Apply</h3>
@@ -206,13 +206,13 @@ detectCores()</code></pre>
 <p>Let’s compute the mean of each vector in the list in parallel:</p>
 <pre class="r"><code>mclapply(three_list, mean, mc.cores = 3)</code></pre>
 <pre><code>## $A
-## [1] 1.139379
+## [1] 0.9566119
 ## 
 ## $B
-## [1] 1.973661
+## [1] 2.079376
 ## 
 ## $C
-## [1] 4.967049</code></pre>
+## [1] 4.967201</code></pre>
 <p><code>mc.cores</code> sets the number of cores to use. Usually use 1 minus <em>n</em>, the number of cores you have available.</p>
 <p>For Windows, we need to use <code>parLapply()</code>. First create a cluster with <code>cl &lt;- makeCluster(cores = 2)</code> (for 2 cores) and then run the function.</p>
 </div>

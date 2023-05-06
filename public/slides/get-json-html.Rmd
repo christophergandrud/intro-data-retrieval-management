@@ -96,6 +96,7 @@ Objects can be **nested** inside of each other:
     "state": "NY",
     "postalCode": "10021-3100"
   }
+}
 ```
 
 There are multiple key-value pairs nested in `address`. 

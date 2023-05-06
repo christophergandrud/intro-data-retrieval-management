@@ -22,8 +22,6 @@ pkg_attach2("tidyverse", "devtools", "repmis", "countrycode", "WDI",
 
 # 📝 Lesson Preview
 
-- What is public data?
-
 - Retrieving and cleaning (tabular) public data
 
 - APIs
@@ -32,77 +30,9 @@ pkg_attach2("tidyverse", "devtools", "repmis", "countrycode", "WDI",
 
 ---
 
-class: inverse, center, middle
-
-# What is open public data?
-
----
-
-# What is open public data?
-
-Janssen (2012, 258):
-
-> "Non-privacy-restricted and non-confidential data which is produced with public money and is made available without any restrictions on its usage or distribution."
-
----
-
-# Some benefits of open public data
-
-- **Greater returns** on public investment in data gathering.
-
-- Better **coordination** within government.
-
-- Provides **policy-makers with information** needed to address complex problems.
-
-- "**Mends the traditional separation** between public organizations and users".
-
-See Janssen (2012, 261) for more.
-
----
-
-# Mending separation between public and users
-
-- **Assumes** that government **considers outside** views and information (including opposing) views as **constructive**.
-
-  + Not always a correct assumption. E.g. there are reasons why it is basically impossible to get US-wide data on deaths by police.
-
-- Results in government **giving up** (some) control and more **actively interacting** with its environment.
-
----
-
-# An ideal for open public data
-
-
-> Not only should data be published, but potential **data users in society** should be
-**actively** sought for input on **improving government**.
-
----
-
-# Challenges to open data
-
-- **Lack of technological competence** to implement open data that is **useful**.
-
-- **Worry** by bureaucrats that open data will be used to **criticise** them.
-
-- **No incentives** for users to access the data. **Lack of skills** needed
-to use and understand the data.
-
-- Balancing individual **privacy** concerns.
-
-See Janssen (2012, 262-263) for more.
-
----
-
-# Recommended podcast
-
-Max Ogden on the Request for Commits podcast discussing challenges faced working 
-for the City of Boston with Code for America (<https://changelog.com/rfc/6>).
-
----
-
 # Accessing data
 
-[Maybe -- added 2022] Social science and public data is becoming **increasingly open** and **accessible**.
+Significant amounts of data are open for researchers and the public generally.
 
 However, the level of **accessibility varies**:
 
@@ -151,13 +81,10 @@ Do as much **data gathering** and **cleaning** as possible programmatically:
 
 # "Easy" automatic data gathering
 
-1. Plain-text data (e.g. CSV) stored at non-secure (http) URL, not embedded in
+1. Plain-text data (e.g. CSV) stored at secure (https) URL, not embedded in
 a larger HTML marked-up website.
 
-2. Plain-text data (e.g. CSV) stored at secure (https) URL, not embedded in
-a larger HTML marked-up website.
-
-3. Data stored in a database with a well structured API (Application Programming
+2. Data stored in a database with a well structured API (Application Programming
     Interface), that has a corresponding R package.
 
 ---
@@ -187,6 +114,8 @@ You can download and load data files stored in compressed formats (e.g. `.zip`).
 # Loading compressed plain-text data
 
 Load data from @Pemstein2010 in a file called *uds_summary.csv*.
+
+Note: this example no longer works because the website was taken down.
 
 ```{r, cache=TRUE, warning=FALSE, eval=FALSE}
 # For simplicity, store the URL in an object called 'URL'.
@@ -218,10 +147,11 @@ Use `import()` from the *rio* package.
 
 Data on GitHub is stored at secure URLs. Select the **RAW** URL:
 
-```{r}
+```{r, message=FALSE}
 URL <- paste0('https://raw.githubusercontent.com/christophergandrud/',
         'LegislativeViolence/master/Data/LegViolenceDescriptives.csv')
-main <- rio::import(URL)
+leg_violence <- readr::read_csv(URL)
+head(leg_violence)
 ```
 
 ---
@@ -236,7 +166,7 @@ Data maintainers (unfortunately) often change data sets with little or no docume
 Each download can be checked against the Hash:
 
 ```{r, cache=TRUE}
-main <- repmis::source_data(URL,
+leg_violence <- repmis::source_data(URL,
                 sha1 = '01cff579b689cea9ef9c98e433ce3122745cc5cb')
 ```
 
@@ -248,7 +178,7 @@ main <- repmis::source_data(URL,
 
 The `source_XlsxData()` function in repmis does the same hash check as `source_data()`, but for Excel files. It builds on `read.xlsx()` for loading locally stored Excel files. 
 
-Can also use `import()` from rio.
+Can also use `read_excel()` from [readxl](https://readxl.tidyverse.org/).
 
 Note: Excel data often needs **a lot of cleaning** before it is useful
 for statistical/graphical analyses.
@@ -342,7 +272,7 @@ For a good beginner list see:
 
 | Format                                      | R packages                                                              |
 | ------------------------------------------- | ----------------------------------------------------------------------- |
-| Excel, Stata, SPSS, SAS                     | rio                                                                     |
+| Excel, Stata, SPSS, SAS                     | rio, readxl                                                                     |
 | [JSON](http://en.wikipedia.org/wiki/JSON)   | [jsonlite](https://cran.r-project.org/web/packages/jsonlite/index.html) |
 | Databases, e.g. a Google BigQuery data base | [dbplyr](https://dbplyr.tidyverse.org/)                                 |
 
@@ -485,7 +415,7 @@ Data frames don't have explicit key-value pairings
 
 ```{r}
 tail(alt_energy, n = 3)
-tail(uds, n = 3)
+tail(leg_violence, n = 3)
 ```
 
 ---
@@ -497,43 +427,20 @@ Unique identifier will be
 and **year**.
 
 Use the [countrycode](https://github.com/vincentarelbundock/countrycode)
-package to turn UDS data's
-[Correlates of War Country Code](http://www.correlatesofwar.org/datasets.htm)
-(`cowcode`) to `iso2c`.
+package to turn *leg_violence* data's
+country names to `iso2c`.
 
 ```{r warning=FALSE}
 library(countrycode)
 
 # Assign iso2c codes base on correlates of war codes
-uds$iso2c <- countrycode(uds$cowcode, origin = 'cown',
-                             destination = 'iso2c', warn = TRUE)
+leg_violence$iso2c <- countrycode(leg_violence$country, 
+                                  origin = 'country.name',
+                                  destination = 'iso2c', 
+                                  warn = TRUE)
 ```
 
 **NOTE**: Always check the data to make sure the correct codes have been applied!
-
----
-
-# Creating IDs: geocodes
-
-countrycode clearly only works for standardising country IDs
-
-Other packages can be useful for standardising other unit IDs.
-
-For example, `geocode` from
-[ggmap](http://journal.r-project.org/archive/2013-1/kahle-wickham.pdf) can be
-used to create latitude/longitudes for other geographic units:
-
-```{r, eval=FALSE}
-places <- c('Bavaria', 'Seoul', '6 Parisier Platz, Berlin')
-ggmap::geocode(places, source = 'google')
-
-##         lon      lat
-## 1  11.49789 48.79045
-## 2 126.97797 37.56654
-## 3  13.37854 52.51701
-```
-
-Note: [you need to](https://github.com/dkahle/ggmap#attention) sign up for a Google Cloud account to use this.
 
 ---
 
@@ -564,13 +471,13 @@ Note: Times should always go from **longest to shortest** unit (e.g. YEAR-MONTH-
 
 ```{r}
 # Keep only desired variables
-uds <- uds[, c('iso2c', 'year', 'median')]
-names(uds)
+leg_violence <- leg_violence[, c('iso2c', 'year', 'udems_mean')]
+names(leg_violence)
 ```
 
 ```{r}
 combined <- full_join(x = alt_energy, 
-                      y = uds,
+                      y = leg_violence,
                       by = c('iso2c', 'year'))
 head(combined, n = 3)
 ```
