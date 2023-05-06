@@ -419,4 +419,3 @@ Bonus: [sign up for ChatGPT](https://chat.openai.com/auth/login) and try incorpo
 -   What process is most effective?
 
 -   When did it help? When was it not useful?
-- 
