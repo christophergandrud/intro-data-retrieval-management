@@ -1,7 +1,7 @@
 ---
 title: '[Intro to Computational Thinking] Introduction to Computational Thinking via Simulation with R'
 author: Christopher Gandrud
-date: '2023-05-15'
+date: '2023-05-12'
 slug: optional-r-basics-3
 weight: 4
 categories:
