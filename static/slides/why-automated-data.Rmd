@@ -149,6 +149,8 @@ NGO's are becoming increasingly data-oriented and need people with **skills** to
 Ex. Former Hertie Master's students co-founded
 [CorrelAid](http://correlaid.org/) to assist NGOs with data analysis.
 
+---
+
 class: inverse, center, middle
 
 # What is open public data?

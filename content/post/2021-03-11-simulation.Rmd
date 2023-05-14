@@ -18,7 +18,7 @@ bibliography: main.bib
 
 > "It is immoral to collect data before simulating the hypothesized data generating process." -- Andrew Gelman (what I remember of a comment to the Stanford Causal Inference Seminar in 2020).
 
-```{r echo=FALSE, echo=TRUE}
+```{r echo=FALSE}
 # Load required packages
 xfun::pkg_attach2("DiagrammeR")
 ```
